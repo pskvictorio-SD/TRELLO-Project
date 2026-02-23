@@ -1,5 +1,3 @@
-
-
 const script_db = `
     CREATE DATABASE IF NOT EXISTS trello_app;
     USE trello_app;
@@ -9,19 +7,21 @@ const script_db = `
     -- =========================
     CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    avatar_url VARCHAR(255),
+    avatar VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE,
+    role ENUM('admin', 'user') DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL
     );
 
     -- =========================
-    -- GROUPS (WORKSPACES)
+    -- workspaces (WORKSPACES)
     -- =========================
-    CREATE TABLE groups (
+    CREATE TABLE workspaces (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT,
@@ -31,17 +31,17 @@ const script_db = `
     );
 
     -- =========================
-    -- GROUP MEMBERS
+    -- WORKSPACE MEMBERS
     -- =========================
-    CREATE TABLE group_members (
+    CREATE TABLE workspace_members (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    group_id INT NOT NULL,
+    workspace_id INT NOT NULL,
     role ENUM('admin', 'member', 'viewer') DEFAULT 'member',
     joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (user_id, group_id),
+    UNIQUE (user_id, workspace_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE
+    FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE
     );
 
     -- =========================
@@ -49,11 +49,11 @@ const script_db = `
     -- =========================
     CREATE TABLE boards (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    group_id INT NOT NULL,
+    workspace_id INT NOT NULL,
     name VARCHAR(100) NOT NULL,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE
+    FOREIGN KEY (group_id) REFERENCES workspaces(id) ON DELETE CASCADE
     );
 
     -- =========================
@@ -120,6 +120,6 @@ const script_db = `
     action VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (group_id) REFERENCES groups(id)
+    FOREIGN KEY (group_id) REFERENCES workspaces(id)
     );
 `;

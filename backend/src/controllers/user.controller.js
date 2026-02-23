@@ -32,7 +32,6 @@ export const getMe = (req, res) => {
 
 export const deleteAccount = (req, res) => {
   const userId = req.user.id;
-  console.log(userId)
   const { password } = req.body;
 
   if (!password) {

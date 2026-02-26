@@ -50,7 +50,7 @@ const script_db = `
     CREATE TABLE boards (
     id INT AUTO_INCREMENT PRIMARY KEY,
     workspace_id INT NOT NULL,
-    name VARCHAR(100) NOT NULL,
+    title VARCHAR(100) NOT NULL,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (group_id) REFERENCES workspaces(id) ON DELETE CASCADE

@@ -1,8 +1,7 @@
 import { Router } from "express";
 import {
   createWorkspace,
-  getWorkspaces,
-  getWorkspace,
+  getUserWorkspaces,
   updateWorkspace,
   deleteWorkspace,
 } from "../controllers/workspace.controller.js";
@@ -20,13 +19,7 @@ router.post("/", authMiddleware, createWorkspace);
  * @route   GET /api/workspaces
  * @desc    Obtener todos los workspaces del usuario autenticado
  */
-router.get("/", authMiddleware, getWorkspaces);
-
-/**
- * @route   GET /api/workspaces/:workspaceId
- * @desc    Obtener un workspace por su ID
- */
-router.get("/:workspaceId", authMiddleware, getWorkspace);
+router.get("/", authMiddleware, getUserWorkspaces);
 
 /**
  * @route   PUT /api/workspaces/:workspaceId

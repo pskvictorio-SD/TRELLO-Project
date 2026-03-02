@@ -19,7 +19,7 @@ router.post(
   "/:workspaceId/boards",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace,
+  userRoleWorkspace("admin", "member"),
   createBoard,
 );
 
@@ -42,9 +42,9 @@ router.put(
   "/:workspaceId/boards/:boardId",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace,
+  userRoleWorkspace("admin", "member"),
   updateBoard,
-)
+);
 
 /**
  * @route   DELETE /api/workspaces/:workspaceId/boards/:boardId
@@ -54,8 +54,8 @@ router.delete(
   "/:workspaceId/boards/:boardId",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace,
+  userRoleWorkspace("admin", "member"),
   deleteBoard,
-)
+);
 
 export default router;

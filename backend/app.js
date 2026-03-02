@@ -26,6 +26,9 @@ app.use("/api/workspaces", workspaceMembersRoutes)
 // Ruta de manejo de boards
 import boardRoutes from "./src/routes/board.route.js"
 app.use("/api/workspaces", boardRoutes)
+// Ruta de manejo de listas
+import listRoutes from "./src/routes/list.route.js"
+app.use("/api/workspaces", listRoutes)
 
 // Puerto
 const PORT = process.env.PORT || 3000

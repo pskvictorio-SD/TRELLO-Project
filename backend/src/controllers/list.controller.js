@@ -10,7 +10,9 @@ export const createList = (req, res) => {
       message: "El nombre es requerido",
     });
   }
-  // Obtener última posición
+
+  const trimmedName = name.trim();
+
   conn.query(
     "SELECT MAX(position) AS maxPosition FROM lists WHERE board_id = ?",
     [boardId],
@@ -23,13 +25,12 @@ export const createList = (req, res) => {
         });
       }
 
-      const maxPosition = results[0].maxPosition;
-      const position = maxPosition !== null ? maxPosition + 10 : 10;
+      const position =
+        results[0].maxPosition !== null ? results[0].maxPosition + 10 : 10;
 
-      // Insertar nueva lista
       conn.query(
         "INSERT INTO lists (board_id, name, position) VALUES (?, ?, ?)",
-        [boardId, name.trim(), position],
+        [boardId, trimmedName, position],
         (err, insertResult) => {
           if (err) {
             return res.status(500).json({
@@ -44,8 +45,8 @@ export const createList = (req, res) => {
             message: "Lista creada correctamente",
             list: {
               id: insertResult.insertId,
-              name: name.trim(),
-              boardId,
+              name: trimmedName,
+              boardId: Number(boardId),
               position,
             },
           });
@@ -100,6 +101,12 @@ export const updateList = (req, res) => {
           error: err.message,
         });
       }
+      if (results.affectedRows === 0) {
+        return res.status(404).json({
+          ok: false,
+          message: "Lista no encontrada",
+        });
+      }
       return res.status(200).json({
         ok: true,
         message: "Lista actualizada correctamente",
@@ -109,22 +116,20 @@ export const updateList = (req, res) => {
 };
 
 export const moveList = (req, res) => {
-  const { listId } = req.params;
   const { position } = req.body;
+  const list = req.list;
 
-  // Validar posición
   if (position === undefined || isNaN(position)) {
     return res.status(400).json({
       ok: false,
-      message: "La posición debe ser un número válido",
+      message: "La posición debe ser válida",
     });
   }
 
-  // Actualizar posición
   conn.query(
     "UPDATE lists SET position = ? WHERE id = ?",
-    [position, listId],
-    (err, updateResult) => {
+    [position, list.id],
+    (err) => {
       if (err) {
         return res.status(500).json({
           ok: false,
@@ -133,16 +138,7 @@ export const moveList = (req, res) => {
         });
       }
 
-      return res.status(200).json({
-        ok: true,
-        message: "Lista movida correctamente",
-        list: {
-          id: list.id,
-          name: list.name,
-          boardId: list.board_id,
-          position,
-        },
-      });
+      return res.status(200).json({ ok: true, message: "Lista movida", list });
     },
   );
 };

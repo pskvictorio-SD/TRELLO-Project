@@ -1,37 +1,40 @@
-import express from "express"
-import cors from "cors"
-import dotenv from "dotenv"
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 
 // Configuración de entorno
-dotenv.config()
-const app = express()
+dotenv.config();
+const app = express();
 
 // Middlewares
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
 // Rutas
 // Ruta de autenticacion de usuarios
-import authRoutes from "./src/routes/auth.route.js"
-app.use("/api/auth", authRoutes)
+import authRoutes from "./src/routes/auth.route.js";
+app.use("/api/auth", authRoutes);
 // Ruta de manejo de usuarios
-import userRoutes from "./src/routes/user.routes.js"
-app.use("/api/users", userRoutes)
+import userRoutes from "./src/routes/user.routes.js";
+app.use("/api/users", userRoutes);
 // Ruta de manejo de workspaces
-import workspaceRoutes from "./src/routes/workspace.route.js"
-app.use("/api/workspaces", workspaceRoutes)
+import workspaceRoutes from "./src/routes/workspace.route.js";
+app.use("/api/workspaces", workspaceRoutes);
 // Ruta de manejo de miembros de workspaces
-import workspaceMembersRoutes from "./src/routes/workspaceMembers.route.js"
-app.use("/api/workspaces", workspaceMembersRoutes)
+import workspaceMembersRoutes from "./src/routes/workspaceMembers.route.js";
+app.use("/api/workspaces", workspaceMembersRoutes);
 // Ruta de manejo de boards
-import boardRoutes from "./src/routes/board.route.js"
-app.use("/api/workspaces", boardRoutes)
+import boardRoutes from "./src/routes/board.route.js";
+app.use("/api/workspaces", boardRoutes);
 // Ruta de manejo de listas
-import listRoutes from "./src/routes/list.route.js"
-app.use("/api/workspaces", listRoutes)
+import listRoutes from "./src/routes/list.route.js";
+app.use("/api/workspaces", listRoutes);
+// Ruta de manejo de tareas
+import taskRoutes from "./src/routes/task.route.js";
+app.use("/api/workspaces", taskRoutes);
 
 // Puerto
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`✅ Server running on http://localhost:${PORT}`)
-})
+  console.log(`✅ Server running on http://localhost:${PORT}`);
+});

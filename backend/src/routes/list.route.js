@@ -9,6 +9,8 @@ import {
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { userInWorkspace } from "../middleware/userInWorkspace.js";
 import { userRoleWorkspace } from "../middleware/userRoleWorkspace.js";
+import { validateBoardExists } from "../middleware/validateBoardExists.js";
+import { validateListExists } from "../middleware/validateListExistsAndBelongsToBoard.js";
 
 const router = Router();
 
@@ -20,7 +22,8 @@ router.post(
   "/:workspaceId/boards/:boardId/lists",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace,
+  userRoleWorkspace("admin", "member"),
+  validateBoardExists,
   createList,
 );
 
@@ -32,6 +35,7 @@ router.get(
   "/:workspaceId/boards/:boardId/lists",
   authMiddleware,
   userInWorkspace,
+  validateBoardExists,
   getListsOfBoard,
 );
 
@@ -43,20 +47,24 @@ router.put(
   "/:workspaceId/boards/:boardId/lists/:listId",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace,
+  userRoleWorkspace("admin", "member"),
+  validateBoardExists,
+  validateListExists,
   updateList,
 );
 
 /**
- * @route   PATCH /api/workspaces/:workspaceId/boards/:boardId/lists/:listId
+ * @route   PATCH /api/workspaces/:workspaceId/boards/:boardId/lists/:listId/move
  * @desc    Mover una lista
  */
 router.patch(
   "/:workspaceId/boards/:boardId/lists/:listId/move",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace,
-  moveList,
+  userRoleWorkspace("admin", "member"),
+  validateBoardExists,
+  validateListExists,
+  moveList
 );
 
 /**
@@ -67,7 +75,9 @@ router.delete(
   "/:workspaceId/boards/:boardId/lists/:listId",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace,
+  userRoleWorkspace("admin", "member"),
+  validateBoardExists,
+  validateListExists,
   deleteList,
 );
 

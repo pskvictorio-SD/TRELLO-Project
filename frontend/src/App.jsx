@@ -1,7 +1,10 @@
+import Login from "./pages/Login.jsx";
+// import ComponentsUi from "./components/ui/ComponentsUi.jsx";
 
-function App() {
+const App = () => {
   return (
-    <h1 className="">Hola mundo</h1>
+    // <ComponentsUi/>
+    <Login/>
   )
 }
 

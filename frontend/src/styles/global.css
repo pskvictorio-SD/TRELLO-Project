@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+:root {
+  --color-background: rgb(206, 206, 206);
+  --color-background-components: rgb(218, 218, 218);
+  --color-text: rgb(0, 0, 0);
+  --color-text-secondary: rgb(100, 100, 100);
+
+  --color-primary: rgb(0, 102, 255);
+  --color-primary-dark: rgb(0, 73, 184);
+  --color-primary-light: rgb(68, 143, 255);
+  --color-text-primary: rgb(219, 219, 219);
+
+  --color-secondary: rgb(209, 209, 209);
+  --color-secondary-dark: rgb(158, 158, 158);
+  --color-secondary-light: rgb(230, 230, 230);
+}
+
+* {
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s ease-in-out;
+}
+
+body {
+  background-color: var(--color-background);
+}
+
+.App {
+  background-color: var(--color-background-components);
+  color: var(--color-text);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

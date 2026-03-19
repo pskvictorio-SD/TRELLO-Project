@@ -1,47 +1,18 @@
-const InputText = ({ children, placeholder, className = "" }) => {
+export default function Input({
+  type = "text",
+  placeholder,
+  className = "",
+  ...props
+}) {
+  const base =
+    "bg-gray-300 px-4 py-2 rounded w-full shadow focus:outline-none focus:ring-2 focus:ring-blue-500";
+
   return (
     <input
-      className={`bg-gray-300 px-6 py-2 rounded w-full shadow hover:shadow-lg ${className}`}
-      type="text"
+      type={type}
       placeholder={placeholder}
+      className={`${base} ${className}`}
+      {...props}
     />
   );
-};
-
-const InputEmail = ({ children, placeholder, className = "" }) => {
-  return (
-    <input
-      className={`bg-gray-300 px-6 py-2 rounded w-full shadow hover:shadow-lg ${className}`}
-      type="email"
-      placeholder={placeholder}
-    />
-  );
-};
-
-const InputPassword = ({ children, placeholder, className = "" }) => {
-  return (
-    <input
-      className={`bg-gray-300 px-6 py-2 rounded w-full shadow hover:shadow-lg ${className}`}
-      type="password"
-      placeholder={placeholder}
-    />
-  );
-};
-
-const InputDate = ({ children, placeholder, className = "" }) => {
-  return (
-    <input
-      className={`bg-gray-300 px-6 py-2 rounded w-full shadow hover:shadow-lg ${className}`}
-      type="date"
-      placeholder={placeholder}
-    />
-  );
-};
-
-const Input = {
-  InputText,
-  InputEmail,
-  InputPassword,
-  InputDate,
-};
-export default Input;
+}

@@ -7,6 +7,7 @@ import Avatar from "./Avatar.jsx";
 import Dropdown from "./Dropdown.jsx";
 import Badge from "./Badge.jsx";
 import Spinner from "./Spinner.jsx";
+import Link from "./Link.jsx";
 import { useState } from "react";
 
 function ComponentsUi() {
@@ -24,33 +25,35 @@ function ComponentsUi() {
       {/* Modals */}
       <h1 className="text-3xl text-center my-2 font-bold">Modal</h1>
       <div className="App">
-        <Button.BtnPrimary onClick={() => setOpen(true)}>
-          Open Modal
-        </Button.BtnPrimary>
+        <Button onClick={() => setOpen(true)}>Open modal</Button>
+
         <Modal isOpen={open} onClose={() => setOpen(false)}>
-          <Card.CardFluid>
+          <Card size="fluid">
             <h1 className="text-3xl font-bold">Modal</h1>
             <p className="text-gray-500 text-sm">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
               elementum, nulla sed elementum varius, nisi est egestas nisi, vel
             </p>
 
-            <Button.BtnPrimary>Primary</Button.BtnPrimary>
-          </Card.CardFluid>
+            <Button>Primary</Button>
+          </Card>
         </Modal>
       </div>
       {/* Buttons */}
       <h1 className="text-3xl text-center my-2 font-bold">Buttons</h1>
       <div className="App">
-        <Button.BtnPrimary>Primary</Button.BtnPrimary>
-        <Button.BtnSecondary>Secondary</Button.BtnSecondary>
-        <Button.BtnEdit>Edit</Button.BtnEdit>
-        <Button.BtnDelete>Delete</Button.BtnDelete>
+        <Button>Primary</Button>
+
+        <Button variant="secondary">Cancelar</Button>
+
+        <Button variant="edit">Editar</Button>
+
+        <Button variant="delete">Eliminar</Button>
       </div>
       {/* Cards */}
       <h1 className="text-3xl text-center my-2 font-bold">Cards</h1>
       <div className="App">
-        <Card.CardSm>
+        <Card size="sm">
           <h1 className="text-3xl font-bold">Card</h1>
           <p className="text-gray-500 text-sm">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
@@ -58,38 +61,42 @@ function ComponentsUi() {
           </p>
 
           <div className="flex justify-around">
-            <Button.BtnPrimary>Primary</Button.BtnPrimary>
-            <Button.BtnSecondary>Secondary</Button.BtnSecondary>
+            <Button>Primary</Button>
+            <Button variant="secondary">Secondary</Button>
           </div>
-        </Card.CardSm>
+        </Card>
 
-        <Card.CardMd>
+        <Card size="md">
           <h1 className="text-3xl font-bold">Card</h1>
           <p className="text-gray-500 text-sm">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
             elementum, nulla sed elementum varius, nisi est egestas nisi, vel
           </p>
 
-          <Button.BtnPrimary>Primary</Button.BtnPrimary>
-        </Card.CardMd>
-        <Card.CardFluid>
+          <Button>Primary</Button>
+        </Card>
+        <Card size="fluid">
           <h1 className="text-3xl font-bold">Card</h1>
           <p className="text-gray-500 text-sm">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
             elementum, nulla sed elementum varius, nisi est egestas nisi, vel
           </p>
 
-          <Button.BtnPrimary>Primary</Button.BtnPrimary>
-        </Card.CardFluid>
+          <Button>Primary</Button>
+        </Card>
       </div>
       {/* Inputs */}
       <h1 className="text-3xl text-center my-2 font-bold">Inputs</h1>
       <div className="App flex flex-col justify-evenly gap-5 p-3">
-        <Textarea> Textarea</Textarea>
-        <Input.InputText placeholder="Text"></Input.InputText>
-        <Input.InputEmail placeholder="Email"></Input.InputEmail>
-        <Input.InputPassword placeholder="Password"></Input.InputPassword>
-        <Input.InputDate placeholder="Date"></Input.InputDate>
+        <Textarea placeholder="Textarea" />
+
+        <Input placeholder="Nombre" />
+
+        <Input type="email" placeholder="Email" />
+
+        <Input type="password" placeholder="Password" />
+
+        <Input type="date" />
       </div>
       {/* Dropdowns */}
       <h1 className="text-3xl text-center my-2 font-bold">Dropdowns</h1>
@@ -112,15 +119,15 @@ function ComponentsUi() {
         <Dropdown title="Navegación">
           <ul className="flex flex-col gap-2">
             <a className="" href="">
-              <Button.BtnPrimary className="w-full">Perfil</Button.BtnPrimary>
+              <Button className="w-full">Perfil</Button>
             </a>
             <a className="" href="">
-              <Button.BtnPrimary className="w-full">Home</Button.BtnPrimary>
+              <Button className="w-full">Home</Button>
             </a>
             <a className="" href="">
-              <Button.BtnSecondary className="w-full">
+              <Button className="w-full" variant="secondary">
                 Contacto
-              </Button.BtnSecondary>
+              </Button>
             </a>
           </ul>
         </Dropdown>
@@ -161,7 +168,7 @@ function ComponentsUi() {
         {/* Ejemplo de uso */}
         <h2>Ejemplo de uso</h2>
         <div className="flex flex-col gap-2">
-          <Card.CardMd>
+          <Card size="md">
             <h3 className="text-3xl font-bold">
               Implementar Inicio de sesion con JWT
             </h3>
@@ -182,13 +189,18 @@ function ComponentsUi() {
               <Badge>JP</Badge>
               <Badge>ML</Badge>
             </div>
-          </Card.CardMd>
+          </Card>
         </div>
       </div>
       {/* Spinner */}
       <h1 className="text-3xl text-center my-2 font-bold">Spinner</h1>
       <div className="App flex flex-col justify-evenly gap-5 p-3">
         <Spinner />
+      </div>
+      <div className="App flex flex-col justify-evenly gap-5 p-3">
+        <Link to="/login" variant="primary" className="">
+          Iniciar sesion
+        </Link>
       </div>
     </div>
   );

@@ -1,32 +1,28 @@
+import clsx from "clsx";
 
-const CardSm = ({ children, className = "" }) => {
+export default function Card({
+  children,
+  size = "md",
+  className = "",
+  ...props
+}) {
+  const sizes = {
+    sm: "w-sm",
+    md: "w-md",
+    lg: "w-lg",
+    fluid: "w-full",
+  };
+
   return (
-    <div className={`bg-white shadow-md rounded-lg p-6 w-sm flex flex-col gap-5 ${className}`}>
+    <div
+      className={clsx(
+        "bg-white shadow-md rounded-lg p-6 flex flex-col gap-5",
+        `${sizes[size]}`,
+        `${className}`,
+      )}
+      {...props}
+    >
       {children}
     </div>
   );
-};
-
-const CardMd = ({ children, className = "" }) => {
-  return (
-    <div className={`bg-white shadow-md rounded-lg p-6 w-md flex flex-col gap-5 ${className}`}>
-      {children}
-    </div>
-  );
-};
-
-const CardFluid = ({ children, className = "" }) => {
-  return (
-    <div className={`bg-white shadow-md rounded-lg p-6 flex flex-col gap-5 ${className}`}>
-      {children}
-    </div>
-  );
-};
-
-const Card = {
-  CardSm,
-  CardMd,
-  CardFluid,
-};
-
-export default Card;
+}

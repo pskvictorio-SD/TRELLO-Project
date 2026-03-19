@@ -1,51 +1,30 @@
-const BtnPrimary = ({ children, onClick, className = "" }) => {
+import clsx from "clsx";
+
+export default function Button({
+  children,
+  onClick,
+  variant = "primary",
+  className = "",
+  ...props
+}) {
+  const variants = {
+    primary: "bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700",
+    secondary: "bg-gray-300 text-black hover:bg-gray-400 active:bg-gray-500",
+    edit: "bg-yellow-500 text-white hover:bg-yellow-600 active:bg-yellow-700",
+    delete: "bg-red-500 text-white hover:bg-red-600 active:bg-red-700",
+  };
+
   return (
     <button
-      className={`bg-blue-500 px-6 py-2 rounded text-gray-200 hover:bg-blue-600 active:bg-blue-700 ${className}`}
       onClick={onClick}
+      className={clsx(
+        "px-6 py-2 rounded text-sm font-medium transition",
+        `${variants[variant]}`,
+        `${className}`,
+      )}
+      {...props}
     >
       {children}
     </button>
   );
-};
-
-const BtnSecondary = ({ children, onClick, className = "" }) => {
-  return (
-    <button
-      className={`bg-gray-300 px-6 py-2 rounded hover:bg-gray-400 active:bg-gray-500 ${className}`}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  );
-};
-
-const BtnEdit = ({ children, onClick, className = "" }) => {
-  return (
-    <button
-      className={`bg-yellow-500 px-6 py-2 rounded text-gray-200 hover:bg-yellow-600 active:bg-yellow-700 ${className}`}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  );
-};
-
-const BtnDelete = ({ children, onClick, className = "" }) => {
-  return (
-    <button
-      className={`bg-red-500 px-6 py-2 rounded text-gray-200 hover:bg-red-600 active:bg-red-700 ${className}`}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  );
-};
-
-const Button = {
-  BtnPrimary,
-  BtnSecondary,
-  BtnEdit,
-  BtnDelete,
-};
-export default Button;
+}

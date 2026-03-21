@@ -19,7 +19,7 @@ export default function Link({
     <RouterLink
       to={to}
       className={clsx(
-        "text-sm font-medium",
+        "text-md font-medium",
         `${variants[variant]}`,
         `${className}`,
       )}

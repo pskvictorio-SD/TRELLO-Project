@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-function Badge({ children, variant = "default", size = "sm", icon = null }) {
+function Badge({ children, variant = "default", size = "sm", icon = null, className = "" }) {
   const variants = {
     default: "bg-gray-200 text-gray-800",
     success: "bg-green-200 text-green-800",
@@ -21,6 +21,7 @@ function Badge({ children, variant = "default", size = "sm", icon = null }) {
         "inline-flex items-center gap-1 rounded-full font-medium",
         variants[variant],
         sizes[size],
+        className,
       )}
     >
       {icon && <span className="flex items-center">{icon}</span>}

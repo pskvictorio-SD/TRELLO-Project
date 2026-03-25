@@ -1,5 +1,4 @@
 import AppLayout from "../layouts/AppLayout";
-import Button from "../components/ui/Button";
 import WorkspaceCard from "../components/workspace/WorkspaceCard.jsx";
 
 export default function Dashboard() {

@@ -13,7 +13,7 @@ export default function AppLayout({ children }) {
       <div className="flex flex-1 gap-5">
 
         {/* Sidebar */}
-        <aside className="w-72 hidden md:flex px-3 py-6 m-5 rounded App">
+        <aside className="w-52 xl:w-72 hidden md:flex px-3 py-6 m-5 rounded App">
           <AppSidebar />
         </aside>
 

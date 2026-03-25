@@ -18,7 +18,7 @@ export default function Button({
     <button
       onClick={onClick}
       className={clsx(
-        "px-6 py-2 rounded text-sm font-medium transition",
+        "px-6 py-2 rounded text-sm font-medium transition cursor-pointer",
         `${variants[variant]}`,
         `${className}`,
       )}

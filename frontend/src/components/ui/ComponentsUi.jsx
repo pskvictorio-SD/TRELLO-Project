@@ -8,6 +8,7 @@ import Dropdown from "./Dropdown.jsx";
 import Badge from "./Badge.jsx";
 import Spinner from "./Spinner.jsx";
 import Link from "./Link.jsx";
+import TaskCard from "../task/TaskCard.jsx";
 import { useState } from "react";
 
 function ComponentsUi() {
@@ -201,6 +202,18 @@ function ComponentsUi() {
         <Link to="/login" variant="primary" className="">
           Iniciar sesion
         </Link>
+      </div>
+      {/* TaskCard */}
+      <h1 className="text-3xl text-center my-2 font-bold">TaskCard</h1>
+      <div className="App flex flex-col justify-evenly gap-5 p-3">
+        <TaskCard task={{
+          name: "Task name",
+          description: "Task description",
+          priority: "High",
+          dueDate: "2023-01-01",
+          isCompleted: true,
+          createdAt: "2023-01-01"
+        }} />
       </div>
     </div>
   );

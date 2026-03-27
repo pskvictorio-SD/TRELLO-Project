@@ -3,11 +3,11 @@ import Badge from "../ui/Badge.jsx";
 
 export default function TaskCard({ task }) {
   return (
-    <Card size="fluid" className="">
+    <Card size="fluid">
       <div
         className="flex flex-col gap-5"
       >
-        <div className="">
+        <div>
           <h3>{task.name}</h3>
           <p>{task.description}</p>
         </div>

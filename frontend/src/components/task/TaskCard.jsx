@@ -1,23 +1,35 @@
 import Card from "../ui/Card.jsx";
 import Badge from "../ui/Badge.jsx";
 
-export default function TaskCard({ task }) {
+export default function TaskCard({ task, setDraggedTask }) {
   return (
-    <Card size="fluid">
-      <div
-        className="flex flex-col gap-5"
-      >
-        <div>
-          <h3>{task.name}</h3>
-          <p>{task.description}</p>
+    <div
+      draggable
+      onDragStart={() => setDraggedTask(task)}
+      className="cursor-grab active:cursor-grabbing"
+    >
+      <Card size="fluid">
+        <div className="flex flex-col gap-5">
+          <div>
+            <h3>{task.name}</h3>
+            <p>{task.description}</p>
+          </div>
+          <div className="flex flex-col gap-2 items-start">
+            <Badge variant="danger">
+              <b>priority:</b> {task.priority}
+            </Badge>
+            <Badge variant="info">
+              <b>due date:</b> {task.dueDate}
+            </Badge>
+            <Badge variant="info">
+              <b>Is completed:</b> {task.isCompleted}
+            </Badge>
+            <Badge variant="info">
+              <b>Created at:</b> {task.createdAt}
+            </Badge>
+          </div>
         </div>
-        <div className="flex flex-col gap-2 items-start">
-            <Badge variant="danger"><b>priority:</b> {task.priority}</Badge>
-            <Badge variant="info"><b>due date:</b> {task.dueDate}</Badge>
-            <Badge variant="info"><b>Is completed:</b> {task.isCompleted}</Badge>
-            <Badge variant="info"><b>Created at:</b> {task.createdAt}</Badge>
-        </div>
-      </div>
-    </Card>
+      </Card>
+    </div>
   );
 }

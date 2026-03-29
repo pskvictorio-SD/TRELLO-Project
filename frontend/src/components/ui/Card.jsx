@@ -17,7 +17,7 @@ export default function Card({
   return (
     <div
       className={clsx(
-        "bg-white shadow-md rounded-lg p-6 flex flex-col gap-5",
+        "bg-white shadow-md rounded-lg p-6 flex flex-col gap-5 overflow-hidden",
         `${sizes[size]}`,
         `${className}`,
       )}

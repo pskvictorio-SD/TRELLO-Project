@@ -1,99 +1,70 @@
-import AppLayout from "../layouts/AppLayout";
-import TaskLists from "../components/task/taskLists";
+import { useState } from "react";
+import TaskLists from "../components/task/taskLists.jsx";
+import AppLayout from "../layouts/AppLayout.jsx";
 
 export default function Board() {
-  const lists = [
+  const [lists, setLists] = useState([
     {
-      id: 1,
-      name: "Pendientes",
+      id: "pending",
+      name: "Pendiente",
       tasks: [
         {
           id: 1,
-          name: "Task name",
-          description: "Task description",
-          priority: "High",
-          dueDate: "2023-01-01",
-          isCompleted: true,
-          createdAt: "2023-01-01",
+          name: "Task 1",
+          description: "Task 1 description",
+          priority: "Low",
+          dueDate: "01/01/2023",
+          isCompleted: false,
+          createdAt: "01/01/2023",
         },
         {
           id: 2,
-          name: "Task name",
-          description: "Task description",
-          priority: "High",
-          dueDate: "2023-01-01",
-          isCompleted: true,
-          createdAt: "2023-01-01",
+          name: "Task 2",
+          description: "Task 2 description",
+          priority: "Medium",
+          dueDate: "01/01/2023",
+          isCompleted: false,
+          createdAt: "01/01/2023",
         },
-      ],
-    },
-    {
-      id: 2,
-      name: "En progreso",
-      tasks: [
         {
           id: 3,
-          name: "Task name",
-          description: "Task description",
+          name: "Task 3",
+          description: "Task 3 description",
           priority: "High",
-          dueDate: "2023-01-01",
-          isCompleted: true,
-          createdAt: "2023-01-01",
-        },
-        {
-          id: 4,
-          name: "Task name",
-          description: "Task description",
-          priority: "High",
-          dueDate: "2023-01-01",
-          isCompleted: true,
-          createdAt: "2023-01-01",
-        },
-        {
-          id: 7,
-          name: "Task name",
-          description: "Task description",
-          priority: "High",
-          dueDate: "2023-01-01",
-          isCompleted: true,
-          createdAt: "2023-01-01",
-        },
+          dueDate: "01/01/2023",
+          isCompleted: false,
+          createdAt: "01/01/2023",
+        }
       ],
     },
     {
-      id: 3,
-      name: "Completadas",
-      tasks: [
-        {
-          id: 5,
-          name: "Task name",
-          description: "Task description",
-          priority: "High",
-          dueDate: "2023-01-01",
-          isCompleted: true,
-          createdAt: "2023-01-01",
-        },
-        {
-          id: 6,
-          name: "Task name",
-          description: "Task description",
-          priority: "High",
-          dueDate: "2023-01-01",
-          isCompleted: true,
-          createdAt: "2023-01-01",
-        },
-      ],
+      id: "inProgress",
+      name: "En proceso",
+      tasks: [],
     },
-  ];
+    {
+      id: "done",
+      name: "Completado",
+      tasks: [],
+    },
+  ]);
+
+  const [draggedTask, setDraggedTask] = useState(null);
 
   return (
     <AppLayout>
-      <h1 className="text-2xl font-bold mb-6 text-center">Tus tareas</h1>
-      <section className="gap-14 md:gap-5 p-3 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
+      <div className="gap-14 md:gap-2 p-3 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
         {lists.map((list) => (
-          <TaskLists key={list.id} name={list.name} tasks={list.tasks} />
+          <TaskLists
+            key={list.id}
+            list={list}
+            lists={lists}
+            setLists={setLists}
+            setDraggedTask={setDraggedTask}
+            draggedTask={draggedTask}
+          />
         ))}
-      </section>
+      </div>
     </AppLayout>
   );
 }

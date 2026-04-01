@@ -1,6 +1,5 @@
 import Card from "../ui/Card.jsx";
 import Badge from "../ui/Badge.jsx";
-import { motion } from "motion/react";
 
 export default function TaskCard({ task, setDraggedTask, handleReorderTasks }) {
   return (

@@ -1,10 +1,8 @@
 import TaskCard from "./TaskCard.jsx";
-import { motion } from "motion/react";
 
 export default function TaskLists({
   list,
   tasks,
-  draggedTask,
   setDraggedTask,
   handleDrop,
   handleReorderTasks,
@@ -26,7 +24,6 @@ export default function TaskLists({
             <TaskCard
               key={task.id}
               task={task}
-              draggedTask={draggedTask}
               setDraggedTask={setDraggedTask}
               handleReorderTasks={handleReorderTasks}
             />

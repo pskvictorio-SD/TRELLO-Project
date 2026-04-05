@@ -3,10 +3,11 @@ import TaskCard from "./TaskCard.jsx";
 export default function TaskLists({
   list,
   tasks,
-  setDraggedTask,
+  setDraggedItem,
   handleDrop,
   handleReorderTasks,
 }) {
+
   return (
     <div
       className="bg-gray-100 p-5 rounded-sm shadow-lg"
@@ -15,6 +16,7 @@ export default function TaskLists({
         handleDrop(list.id);
       }}
     >
+      
       <h2 className="text-center mb-3 text-xl font-semibold">{list.name}</h2>
 
       <div className="flex flex-col gap-5">
@@ -24,7 +26,7 @@ export default function TaskLists({
             <TaskCard
               key={task.id}
               task={task}
-              setDraggedTask={setDraggedTask}
+              setDraggedItem={setDraggedItem}
               handleReorderTasks={handleReorderTasks}
             />
           );

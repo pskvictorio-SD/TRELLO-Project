@@ -1,11 +1,11 @@
 import Card from "../ui/Card.jsx";
 import Badge from "../ui/Badge.jsx";
 
-export default function TaskCard({ task, setDraggedTask, handleReorderTasks }) {
+export default function TaskCard({ task, setDraggedItem, handleReorderTasks }) {
   return (
     <div
       draggable
-      onDragStart={() => setDraggedTask(task)}
+      onDragStart={() => setDraggedItem(task)}
       onDragOver={(e) => {
         e.preventDefault();
         handleReorderTasks(task.id);

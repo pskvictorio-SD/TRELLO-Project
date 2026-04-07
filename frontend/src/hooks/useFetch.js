@@ -1,34 +1,26 @@
 import { useState } from "react";
 
-async function useFetch(URL, method, body, headers, redirect) {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+function useFetch() {
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  try {
-    setLoading(true);
-    const response = await fetch(URL, {
-      method: method,
-      body: body,
-      headers: headers,
-      redirect: redirect,
-    });
+  const request = async (callback) => {
+    try {
+      setLoading(true);
+      setError(false);
 
-    if (!response.ok) {
-      throw new Error("Algo ha salido mal");
+      const data = await callback();
+
+      return data;
+    } catch (error) {
+      setError(true);
+      console.error(error.message);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const data = await response.json();
-    setData(data);
-    setLoading(false);
-
-  } catch (err) {
-    setError(true);
-    setLoading(false);
-    console.error(err);
-  }
-
-  return { data, loading, error };
+  return { request, loading, error };
 }
 
 export default useFetch;

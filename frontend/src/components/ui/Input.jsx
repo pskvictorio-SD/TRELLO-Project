@@ -2,6 +2,7 @@ import clsx from "clsx";
 
 export default function Input({
   type = "text",
+  name,
   variant = "base",
   placeholder,
   onChange,
@@ -18,6 +19,7 @@ export default function Input({
     <input
       className={clsx(`${variants[variant]}`)}
       type={type}
+      name={name}
       onChange={onChange}
       placeholder={placeholder}
       {...props}

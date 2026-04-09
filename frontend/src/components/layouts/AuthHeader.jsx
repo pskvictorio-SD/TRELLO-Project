@@ -16,16 +16,16 @@ export default function AuthHeader() {
 
         {/* Navegación */}
         <nav className="flex items-center gap-4 text-sm font-medium">
-          <Link to="/login">
-            {isActive("/login") ? (
+          <Link to="/auth/login">
+            {isActive("/auth/login") ? (
               <Button>Login</Button>
             ) : (
               <Button variant="secondary">Login</Button>
             )}
           </Link>
 
-          <Link to="/register">
-            {isActive("/register") ? (
+          <Link to="/auth/register">
+            {isActive("/auth/register") ? (
               <Button>Register</Button>
             ) : (
               <Button variant="secondary">Register</Button>

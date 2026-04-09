@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-export function ProtectedRoute({ redirectPath = "/" }) {
+export function ProtectedRoute({ redirectPath = "/auth/login" }) {
   function parseJwt(token) {
     if (!token) return null;
 

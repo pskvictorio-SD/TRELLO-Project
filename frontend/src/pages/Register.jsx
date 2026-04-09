@@ -1,19 +1,21 @@
 import AuthLayout from "../layouts/AuthLayout";
 import Input from "../components/ui/Input";
+import Link from "../components/ui/Link.jsx";
 import Form from "../components/ui/Form.jsx";
 import Spinner from "../components/ui/Spinner.jsx";
-import { registerUser } from "../services/handleUsers/postUser.js";
+import { registerUser } from "../services/authService.js";
 import useFetch from "../hooks/useFetch.js";
 import useForm from "../hooks/useForm.js";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
-  const [ res, setRes ] = useState() 
+  const [res, setRes] = useState();
   const navigate = useNavigate();
 
   function validateRegister(values) {
-    const errors = {};
+    let errors = {};
     const onlyLetters = /[^a-zA-Z ]/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (values.name.length < 4) {
@@ -43,9 +45,9 @@ function Register() {
   const { request, loading, error } = useFetch();
 
   const handleSubmit = async () => {
-    const validationErrors = validate();
+    const valitationErrors = validate();
 
-    if (Object.keys(validationErrors).length > 0) return;
+    if (Object.keys(valitationErrors).length > 0) return;
 
     const res = await request(() =>
       registerUser({
@@ -55,7 +57,12 @@ function Register() {
       }),
     );
 
-    setRes(res.message)
+    setRes(res);
+
+    if (!res.ok) {
+      return;
+    }
+
     localStorage.setItem("token", res.token);
     navigate("/workspace");
   };
@@ -105,6 +112,8 @@ function Register() {
             {res && !res.ok && <p className="text-red-500">{res.message}</p>}
 
             <Input variant="button" type="submit" />
+
+            <Link to="/auth/login">¿Ya tienes una cuenta? Inicia Sesión</Link>
           </div>
         </div>
       </Form>

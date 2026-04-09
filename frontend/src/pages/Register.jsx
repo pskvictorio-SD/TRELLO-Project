@@ -1,6 +1,7 @@
 import AuthLayout from "../layouts/AuthLayout";
 import Input from "../components/ui/Input";
 import Form from "../components/ui/Form.jsx";
+import Spinner from "../components/ui/Spinner.jsx";
 import { registerUser } from "../services/handleUsers/postUser.js";
 import useFetch from "../hooks/useFetch.js";
 import useForm from "../hooks/useForm.js";
@@ -68,7 +69,7 @@ function Register() {
         }}
         size="lg"
       >
-        {loading && <p>Loading...</p>}
+        {loading && <Spinner />}
         {error && <p>Error: {error.message}</p>}
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-3xl font-bold text-center">Register</h1>

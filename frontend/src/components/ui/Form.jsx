@@ -4,7 +4,7 @@ export default function Form({
   children,
   size = "md",
   className = "",
-//   onSubmit,
+  onSubmit,
   ...props
 }) {
 
@@ -22,7 +22,7 @@ export default function Form({
         `${sizes[size]}`,
         `${className}`,
       )}
-    //   onSubmit={onSubmit}
+      onSubmit={onSubmit}
       {...props}
     >
       {children}

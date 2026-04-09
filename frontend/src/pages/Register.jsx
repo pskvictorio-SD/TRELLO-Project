@@ -4,9 +4,13 @@ import Form from "../components/ui/Form.jsx";
 import { registerUser } from "../services/handleUsers/postUser.js";
 import useFetch from "../hooks/useFetch.js";
 import useForm from "../hooks/useForm.js";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
-  // Custom Hook para validar campos de formulario
+  const [ res, setRes ] = useState() 
+  const navigate = useNavigate();
+
   function validateRegister(values) {
     const errors = {};
     const onlyLetters = /[^a-zA-Z ]/;
@@ -28,6 +32,7 @@ function Register() {
 
     return errors;
   }
+  // Custom Hook para validar campos de formulario
   const { values, errors, handleChange, validate } = useForm(
     { name: "", email: "", password: "" },
     validateRegister,
@@ -42,13 +47,16 @@ function Register() {
     if (Object.keys(validationErrors).length > 0) return;
 
     const res = await request(() =>
-      registerUser({ 
+      registerUser({
         username: values.name,
-        email: values.email,
+        email: values.email.toLowerCase(),
         password: values.password,
-       }),
+      }),
     );
-    console.log(res);
+
+    setRes(res.message)
+    localStorage.setItem("token", res.token);
+    navigate("/workspace");
   };
 
   return (
@@ -60,6 +68,8 @@ function Register() {
         }}
         size="lg"
       >
+        {loading && <p>Loading...</p>}
+        {error && <p>Error: {error.message}</p>}
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-3xl font-bold text-center">Register</h1>
           <div className="flex flex-col gap-5 mt-5 w-full px-5">
@@ -91,6 +101,7 @@ function Register() {
             {errors.password && (
               <p className="text-red-500">{errors.password}</p>
             )}
+            {res && !res.ok && <p className="text-red-500">{res.message}</p>}
 
             <Input variant="button" type="submit" />
           </div>

@@ -1,8 +1,8 @@
 import { conn } from "../database/db.js";
 
-// Agregar miembro a un workspace
+// Agregar miembro a un board
 export const addMember = (req, res) => {
-  const { workspaceId } = req.params;
+  const { boardId } = req.params;
   const { email, role } = req.body;
   if (!email || !role) {
     return res.status(400).json({
@@ -31,10 +31,10 @@ export const addMember = (req, res) => {
 
       const userId = results[0].id;
 
-      // Verificar que el usuario no sea ya miembro del workspace
+      // Verificar que el usuario no sea ya miembro del board
       conn.query(
-        "SELECT * FROM workspace_members WHERE user_id = ? AND workspace_id = ?",
-        [userId, workspaceId],
+        "SELECT * FROM board_members WHERE user_id = ? AND board_id = ?",
+        [userId, boardId],
         (err, results) => {
           if (err) {
             return res.status(500).json({
@@ -52,8 +52,8 @@ export const addMember = (req, res) => {
 
           // Insertar nuevo miembro
           conn.query(
-            "INSERT INTO workspace_members (user_id, workspace_id, role) VALUES (?, ?, ?)",
-            [userId, workspaceId, role],
+            "INSERT INTO board_members (user_id, board_id, role) VALUES (?, ?, ?)",
+            [userId, boardId, role],
             (err, results) => {
               if (err) {
                 return res.status(500).json({
@@ -74,17 +74,20 @@ export const addMember = (req, res) => {
   );
 };
 
+// Traer miembros de un workspace con su rol y fecha de ingreso (ademas de su username, avatar y email para mostrarlo en el frontend) (esto lo hago para mostrarlo en la seccion de miembros del workspace, ademas de que lo necesito para mostrar los miembros de un board) (en el caso de los miembros de un board, se mostraran los miembros del workspace con su rol en el board, si es que tienen uno asignado, sino se mostrara su rol en el workspace)
 export const getMembers = (req, res) => {
-  const { workspaceId } = req.params;
+  const { boardId } = req.params;
+
+  console.log(boardId)
 
   const query = `
-    SELECT wm.user_id, wm.role, wm.joined_at, u.username, u.avatar, u.email
-    FROM workspace_members wm 
-    INNER JOIN users u ON wm.user_id = u.id 
-    WHERE wm.workspace_id = ?
+    SELECT bm.user_id, bm.role, bm.joined_at, u.username, u.avatar, u.email
+    FROM board_members bm 
+    INNER JOIN users u ON bm.user_id = u.id 
+    WHERE bm.board_id = ?
   `;
 
-  conn.query(query, [workspaceId], (err, results) => {
+  conn.query(query, [boardId], (err, results) => {
     if (err) {
       return res.status(500).json({
         ok: false,
@@ -103,7 +106,7 @@ export const getMembers = (req, res) => {
 
 // Cambiar rol de un miembro
 export const changeRole = (req, res) => {
-  const { workspaceId, userId } = req.params;
+  const { boardId, userId } = req.params;
   const { role } = req.body;
 
   if (!role) {
@@ -114,8 +117,8 @@ export const changeRole = (req, res) => {
   }
 
   conn.query(
-    "UPDATE workspace_members SET role = ? WHERE user_id = ? AND workspace_id = ?",
-    [role, userId, workspaceId],
+    "UPDATE board_members SET role = ? WHERE user_id = ? AND board_id = ?",
+    [role, userId, boardId],
     (err, results) => {
       if (err) {
         return res.status(500).json({
@@ -140,17 +143,17 @@ export const changeRole = (req, res) => {
 
 // Eliminar miembro de un workspace (cuando haga el frontend vere si vere si lo hago por id o por email, por ahora lo hago por id. Ademas)
 export const deleteMember = (req, res) => {
-  const { workspaceId, userId } = req.params;
+  const { boardId, userId } = req.params;
 
-  if (req.userInWorkspace.user_id === parseInt(userId)) {
+  if (req.userInBoard.user_id === parseInt(userId)) {
     return res.status(400).json({
       ok: false,
       message: "No puedes eliminarte a ti mismo",
     });
   }
   conn.query(
-    "DELETE FROM workspace_members WHERE user_id = ? AND workspace_id = ?",
-    [userId, workspaceId],
+    "DELETE FROM board_members WHERE user_id = ? AND board_id = ?",
+    [userId, boardId],
     (err, results) => {
       if (err) {
         return res.status(500).json({

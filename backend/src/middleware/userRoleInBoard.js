@@ -1,7 +1,7 @@
-// Middleware para verificar que el usuario tiene el rol en el workspace
-export const userRoleWorkspace = (...allowedRoles) => {
+// Middleware para verificar que el usuario tiene el rol en el board
+export const userRoleInBoard = (...allowedRoles) => {
   return (req, res, next) => {
-    const role = req.userInWorkspace?.role;
+    const role = req.userInBoard?.role;
 
     if (!role || !allowedRoles.includes(role)) {
       return res.status(403).json({
@@ -9,7 +9,6 @@ export const userRoleWorkspace = (...allowedRoles) => {
         message: "No tienes permisos",
       });
     }
-
     next();
   };
 };

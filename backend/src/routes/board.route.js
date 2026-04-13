@@ -7,7 +7,6 @@ import {
 } from "../controllers/board.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { userInWorkspace } from "../middleware/userInWorkspace.js";
-import { userRoleWorkspace } from "../middleware/userRoleWorkspace.js";
 
 const router = Router();
 
@@ -19,7 +18,6 @@ router.post(
   "/:workspaceId/boards",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace("admin", "member"),
   createBoard,
 );
 
@@ -42,7 +40,6 @@ router.put(
   "/:workspaceId/boards/:boardId",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace("admin", "member"),
   updateBoard,
 );
 
@@ -54,7 +51,6 @@ router.delete(
   "/:workspaceId/boards/:boardId",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace("admin", "member"),
   deleteBoard,
 );
 

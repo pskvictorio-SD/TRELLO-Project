@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
  * @param {Object} payload - Datos que queremos guardar dentro del token
  * @param {String} expiresIn - Tiempo de expiración (ej: "1h", "7d")
  */
-export const generateToken = (payload, expiresIn = "1h") => {
+export const generateToken = (payload, expiresIn = process.env.JWT_EXPIRES) => {
   return jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn,
   });

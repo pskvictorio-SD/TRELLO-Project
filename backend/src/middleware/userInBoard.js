@@ -1,13 +1,13 @@
 import { conn } from "../database/db.js";
 
-// Middleware para verificar que el usuario este en el workspace
-export const userInWorkspace = (req, res, next) => {
-  const { workspaceId } = req.params;
+// Verificar que el usuario este en el board
+export const userInBoard = (req, res, next) => {
   const userId = req.user.id;
+  const { boardId } = req.params;
 
   conn.query(
-    "SELECT * FROM workspaces WHERE user_id = ? AND id = ?",
-    [userId, workspaceId],
+    "SELECT * FROM board_members WHERE user_id = ? AND board_id = ?",
+    [userId, boardId],
     (err, results) => {
       if (err) {
         return res.status(500).json({
@@ -16,18 +16,14 @@ export const userInWorkspace = (req, res, next) => {
           error: err,
         });
       }
-
       if (results.length === 0) {
         return res.status(401).json({
           ok: false,
-          message: "No perteneces a este workspace",
+          message: "No perteneces a este board",
         });
       }
-
-      const user = results[0];
-
-      req.userInWorkspace = user;
-
+      req.userInBoard = results[0];
+      console.log(req.userInBoard)
       next();
     },
   );

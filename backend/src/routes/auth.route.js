@@ -5,7 +5,7 @@ const router = Router();
 
 /**
  * @route   POST /api/auth/register
- * @desc    Registrar nuevo usuario
+ * @desc    Registrar nuevo usuario y crearle un workspace
  */
 router.post("/register", register);
 

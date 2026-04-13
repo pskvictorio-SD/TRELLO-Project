@@ -8,7 +8,6 @@ import {
 } from "../controllers/list.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { userInWorkspace } from "../middleware/userInWorkspace.js";
-import { userRoleWorkspace } from "../middleware/userRoleWorkspace.js";
 import { validateBoardExists } from "../middleware/validateBoardExists.js";
 import { validateListExists } from "../middleware/validateListExistsAndBelongsToBoard.js";
 
@@ -22,7 +21,6 @@ router.post(
   "/:workspaceId/boards/:boardId/lists",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace("admin", "member"),
   validateBoardExists,
   createList,
 );
@@ -47,7 +45,6 @@ router.put(
   "/:workspaceId/boards/:boardId/lists/:listId",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace("admin", "member"),
   validateBoardExists,
   validateListExists,
   updateList,
@@ -61,7 +58,6 @@ router.patch(
   "/:workspaceId/boards/:boardId/lists/:listId/move",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace("admin", "member"),
   validateBoardExists,
   validateListExists,
   moveList
@@ -75,7 +71,6 @@ router.delete(
   "/:workspaceId/boards/:boardId/lists/:listId",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace("admin", "member"),
   validateBoardExists,
   validateListExists,
   deleteList,

@@ -16,16 +16,27 @@ export const createBoard = (req, res) => {
         });
       }
 
+      // Insertar usuario en board_members con rol de admin
+      const userId = req.user.id;
+      const boardId = results.insertId;
+      conn.query(
+        "INSERT INTO board_members (user_id, board_id, role) VALUES (?, ?, ?)",
+        [userId, boardId, "admin"],
+        (err, results) => {
+          if (err) {
+            return res.status(500).json({
+              ok: false,
+              message: "Error al agregar usuario como admin",
+              error: err,
+            });
+          }
+        },
+      );
+
       res.status(201).json({
         ok: true,
         message: "Board creado exitosamente",
-        board: {
-          id: results.insertId,
-          workspace_id: workspaceId,
-          title,
-          description,
-          created_at: results.insertDate,
-        },
+        board: results,
       });
     },
   );
@@ -55,7 +66,7 @@ export const getBoardsOfWorkspace = (req, res) => {
 };
 
 export const updateBoard = (req, res) => {
-  const {title, description} = req.body;
+  const { title, description } = req.body;
   const { boardId } = req.params;
 
   if (!title || !description) {
@@ -89,35 +100,31 @@ export const updateBoard = (req, res) => {
         message: "Board actualizado exitosamente",
       });
     },
-  )
-}
+  );
+};
 
 export const deleteBoard = (req, res) => {
   const { boardId } = req.params;
 
-  conn.query(
-    "DELETE FROM boards WHERE id = ?",
-    [boardId],
-    (err, results) => {
-      if (err) {
-        return res.status(500).json({
-          ok: false,
-          message: "Error al eliminar el board",
-          error: err,
-        });
-      }
-
-      if (results.affectedRows === 0) {
-        return res.status(404).json({
-          ok: false,
-          message: "Board no encontrado",
-        });
-      }
-
-      return res.status(200).json({
-        ok: true,
-        message: "Board eliminado exitosamente",
+  conn.query("DELETE FROM boards WHERE id = ?", [boardId], (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        ok: false,
+        message: "Error al eliminar el board",
+        error: err,
       });
-    },
-  );
-}
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({
+        ok: false,
+        message: "Board no encontrado",
+      });
+    }
+
+    return res.status(200).json({
+      ok: true,
+      message: "Board eliminado exitosamente",
+    });
+  });
+};

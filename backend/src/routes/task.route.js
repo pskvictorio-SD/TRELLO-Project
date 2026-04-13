@@ -8,7 +8,6 @@ import {
 } from "../controllers/task.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { userInWorkspace } from "../middleware/userInWorkspace.js";
-import { userRoleWorkspace } from "../middleware/userRoleWorkspace.js";
 import { validateBoardExists } from "../middleware/validateBoardExists.js";
 import { validateListExists } from "../middleware/validateListExistsAndBelongsToBoard.js";
 import { validateTaskIsInList } from "../middleware/validateTaskIsInList.js";
@@ -24,7 +23,6 @@ router.post(
   "/:workspaceId/boards/:boardId/lists/:listId/tasks",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace("admin", "member"),
   validateBoardExists,
   validateListExists,
   createTask,
@@ -51,7 +49,6 @@ router.put(
   "/:workspaceId/boards/:boardId/lists/:listId/tasks/:taskId",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace("admin", "member"),
   validateBoardExists,
   validateListExists,
   validateTaskIsInList,
@@ -66,7 +63,6 @@ router.patch(
   "/:workspaceId/boards/:boardId/lists/:listId/tasks/:taskId/move",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace("admin", "member"),
   validateBoardExists,
   validateListExists,
   moveTask,
@@ -80,7 +76,6 @@ router.delete(
   "/:workspaceId/boards/:boardId/lists/:listId/tasks/:taskId",
   authMiddleware,
   userInWorkspace,
-  userRoleWorkspace("admin", "member"),
   validateBoardExists,
   validateListExists,
   validateTaskIsInList,

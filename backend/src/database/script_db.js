@@ -31,17 +31,17 @@ const script_db = `
     );
 
     -- =========================
-    -- WORKSPACE MEMBERS
+    -- BOARD MEMBERS (N:N)
     -- =========================
-    CREATE TABLE workspace_members (
+    CREATE TABLE board_members (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    workspace_id INT NOT NULL,
+    board_id INT NOT NULL,
     role ENUM('admin', 'member', 'viewer') DEFAULT 'member',
     joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (user_id, workspace_id),
+    UNIQUE (user_id, board_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE
+    FOREIGN KEY (board_id) REFERENCES boards(id) ON DELETE CASCADE
     );
 
     -- =========================

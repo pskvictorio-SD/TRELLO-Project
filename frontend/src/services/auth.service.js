@@ -23,5 +23,3 @@ export async function loginUser(user) {
 
   return res;
 }
-
-export async function reactivateAccount(user) {}

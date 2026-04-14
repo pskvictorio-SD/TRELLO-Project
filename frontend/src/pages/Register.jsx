@@ -3,7 +3,9 @@ import Input from "../components/ui/Input";
 import Link from "../components/ui/Link.jsx";
 import Form from "../components/ui/Form.jsx";
 import Spinner from "../components/ui/Spinner.jsx";
-import { registerUser } from "../services/authService.js";
+
+import { registerUser } from "../services/auth.service.js";
+import { createWorkspace } from "../services/workspace.service.js";
 import useFetch from "../hooks/useFetch.js";
 import useForm from "../hooks/useForm.js";
 
@@ -49,6 +51,7 @@ function Register() {
 
     if (Object.keys(valitationErrors).length > 0) return;
 
+    // guarda el usuario en la base de datos y devuelve un token
     const res = await request(() =>
       registerUser({
         username: values.name,
@@ -56,14 +59,20 @@ function Register() {
         password: values.password,
       }),
     );
-
     setRes(res);
-
     if (!res.ok) {
       return;
     }
 
+    // Guarda el token en el localStorage
     localStorage.setItem("token", res.token);
+
+    // Crear workspace para el usuario
+    const workspaceRes = await request(() => {
+      createWorkspace();
+    });
+
+    // redirect al workspace del usuario
     navigate("/workspace");
   };
 
@@ -81,6 +90,7 @@ function Register() {
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-3xl font-bold text-center">Register</h1>
           <div className="flex flex-col gap-5 mt-5 w-full px-5">
+
             <Input
               type="text"
               placeholder="Nombre"

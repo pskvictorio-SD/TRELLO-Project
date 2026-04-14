@@ -11,7 +11,7 @@ export default function AppTopbar() {
       {/* Right */}
       <div className="flex items-center gap-4">
         {/* Botón crear */}
-        <Button variant="primary">+ Crear Workspace</Button>
+        <Button variant="primary">+ Crear Tablero</Button>
 
         {/* Avatar */}
         <Avatar src="https://i.pravatar.cc/40" />

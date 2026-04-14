@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import Button from "../ui/Button.jsx";
+import logo from "../../public/taskforgelogo.png";
 
 export default function AuthHeader() {
   const location = useLocation();
@@ -10,8 +11,8 @@ export default function AuthHeader() {
     <header className="h-full flex shadow-xl border-b bg-white">
       <div className="w-full mx-auto px-6 py-4 flex flex-col md:flex-row gap-8 md:gap-0 items-center justify-around">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-blue-500">
-          TrelloClone
+        <Link to="/" className="">
+          <img src={logo} alt="logo" className="max-h-32"/>
         </Link>
 
         {/* Navegación */}

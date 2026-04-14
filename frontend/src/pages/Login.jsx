@@ -5,7 +5,7 @@ import Form from "../components/ui/Form.jsx";
 import Spinner from "../components/ui/Spinner.jsx";
 import useForm from "../hooks/useForm.js";
 import useFetch from "../hooks/useFetch.js";
-import { loginUser } from "../services/authService.js";
+import { loginUser } from "../services/auth.service.js";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

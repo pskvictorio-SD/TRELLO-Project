@@ -7,6 +7,7 @@ export default function Input({
   placeholder,
   onChange,
   className = "",
+  maxLength,
   ...props
 }) {
   const variants = {
@@ -22,6 +23,7 @@ export default function Input({
       name={name}
       onChange={onChange}
       placeholder={placeholder}
+      maxLength={maxLength}
       {...props}
     />
   );

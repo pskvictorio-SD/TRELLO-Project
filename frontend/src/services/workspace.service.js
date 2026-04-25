@@ -19,6 +19,7 @@ export async function createWorkspace() {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
+
   const res = await response.json();
 
   return res;

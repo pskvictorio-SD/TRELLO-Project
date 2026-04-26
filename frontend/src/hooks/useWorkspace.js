@@ -25,14 +25,12 @@ export default function useWorkspace() {
   const handleCreateWorkspace = async (user) => {
     const res = request(createWorkspace());
     if (!res.ok) {
-      return console.log("Error al crear el workspace", res.message)
+      return console.log("Error al crear el workspace", res.message);
     }
     return res;
   };
 
   return {
     handleGetWorkspace,
-    workspaceLoading: loading,
-    workspaceError: error,
   };
 }

@@ -31,6 +31,10 @@ export const getBoardsOfUser = async (workspaceId) => {
   );
   const res = await response.json();
 
+  if (res.status === 404) {
+    return console.log(res.message);
+  }
+
   return res;
 };
 

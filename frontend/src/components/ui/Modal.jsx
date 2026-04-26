@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Button from "./Button.jsx";
 
 export default function Modal( { isOpen, onClose, children }) {
   useEffect(() => {

@@ -5,7 +5,7 @@ import Button from "../ui/Button.jsx";
 import Form from "../ui/Form.jsx";
 import { useState } from "react";
 
-export default function EditBoardModal({ isOpen, board }) {
+export default function EditBoardModal({ isOpen, onClose, board }) {
   const [newBoardTitle, setNewBoardTitle] = useState(board.title);
   const [newBoardDescription, setNewBoardDescription] = useState(
     board.description,
@@ -20,7 +20,7 @@ export default function EditBoardModal({ isOpen, board }) {
 
   return (
     <>
-      <Modal isOpen={isOpen}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <h2 className="mb-10 text-2xl font-bold">Editar tablero</h2>
 
         <Form size="fluid" className="gap-10">

@@ -41,7 +41,7 @@ export default function Workspace() {
             </h2>
           </Card>
 
-          {handleModal("createBoard", isOpen)}
+          {handleModal("createBoard", isOpen, closeModal)}
 
           {appData?.workspace && appData?.boards?.length === 0 ? (
             <>

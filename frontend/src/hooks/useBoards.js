@@ -10,9 +10,13 @@ export default function useBoards() {
 
   const handleGetBoards = async () => {
     const data = await getBoardsOfUser(workspaceId);
+
     setAppData((prevData) => ({
       ...prevData,
-      boards: data.boards,
+      workspace: {
+        ...(prevData.workspace || {}),
+        boards: data.boards,
+      },
     }));
   };
 
@@ -20,6 +24,9 @@ export default function useBoards() {
     const data = await request(() =>
       createBoard(workspaceId, boardName, boardDescription),
     );
+    if (data.ok) {
+      handleGetBoards();
+    }
   };
 
   return {

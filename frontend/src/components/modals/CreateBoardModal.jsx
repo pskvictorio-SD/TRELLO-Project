@@ -17,7 +17,6 @@ export default function CreateBoardModal({ isOpen, onClose }) {
     // Subir board nuevo
     handleCreateBoard(boardName, boardDescription);
 
-    handleGetBoards();
     onClose();
   };
 

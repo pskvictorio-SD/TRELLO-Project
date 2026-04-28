@@ -20,13 +20,8 @@ export default function Workspace() {
 
   useEffect(() => {
     handleGetWorkspace();
+    handleGetBoards();
   }, []);
-
-  useEffect(() => {
-    if (appData?.workspace) {
-      handleGetBoards();
-    }
-  }, [appData.workspace]);
 
   return (
     <AppLayout>
@@ -42,7 +37,7 @@ export default function Workspace() {
 
           {handleModal("createBoard", isOpen, closeModal)}
 
-          {appData?.boards?.length === 0 ? (
+          {appData?.workspace?.boards?.length === 0 ? (
             <>
               <h2 className="text-2xl font-bold">
                 Aun no tienes tableros. Crea uno
@@ -57,7 +52,7 @@ export default function Workspace() {
             </>
           ) : (
             <div>
-              {appData?.boards?.map((board) => (
+              {appData?.workspace?.boards?.map((board) => (
                 <BoardCard key={board.id} board={board} />
               ))}
             </div>

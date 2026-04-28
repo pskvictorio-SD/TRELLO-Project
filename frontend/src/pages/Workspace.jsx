@@ -28,7 +28,6 @@ export default function Workspace() {
     }
   }, [appData.workspace]);
 
-
   return (
     <AppLayout>
       <h1 className="text-2xl font-bold mb-6 text-center">Tus Tableros</h1>
@@ -43,12 +42,16 @@ export default function Workspace() {
 
           {handleModal("createBoard", isOpen, closeModal)}
 
-          {appData?.workspace && appData?.boards?.length === 0 ? (
+          {appData?.boards?.length === 0 ? (
             <>
               <h2 className="text-2xl font-bold">
                 Aun no tienes tableros. Crea uno
               </h2>
-              <Button variant="primary" className="font-medium">
+              <Button
+                onClick={openModal}
+                variant="primary"
+                className="font-medium"
+              >
                 Crear mi primer tablero +
               </Button>
             </>

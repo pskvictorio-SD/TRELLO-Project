@@ -1,3 +1,5 @@
+import { usestate } from "react";
+
 export const createBoard = async (workspaceId, boardName, boardDescription) => {
   const response = await fetch(
     `http://localhost:3001/api/workspaces/${workspaceId}/boards/`,
@@ -30,10 +32,6 @@ export const getBoardsOfUser = async (workspaceId) => {
     },
   );
   const res = await response.json();
-
-  if (res.status === 404) {
-    return console.log(res.message);
-  }
 
   return res;
 };

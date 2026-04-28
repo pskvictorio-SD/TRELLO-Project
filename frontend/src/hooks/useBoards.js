@@ -1,8 +1,10 @@
 import { useContext } from "react";
 import { dataContext } from "../contexts/dataContext.jsx";
 import { getBoardsOfUser, createBoard } from "../services/board.service.js";
+import useFetch from "./useFetch.js";
 
 export default function useBoards() {
+  const { request, loading, error } = useFetch();
   const { appData, setAppData } = useContext(dataContext);
   const workspaceId = appData?.workspace?.id;
 
@@ -14,16 +16,10 @@ export default function useBoards() {
     }));
   };
 
-  const handleCreateBoard = async (
-    workspaceId,
-    boardName,
-    boardDescription,
-  ) => {
-    const data = await createBoard(workspaceId, boardName, boardDescription);
-    setAppData((prevData) => ({
-      ...prevData,
-      boards: [...prevData.boards, data.board],
-    }));
+  const handleCreateBoard = async (boardName, boardDescription) => {
+    const data = await request(() =>
+      createBoard(workspaceId, boardName, boardDescription),
+    );
   };
 
   return {

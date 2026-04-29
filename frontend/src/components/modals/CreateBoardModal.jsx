@@ -24,7 +24,7 @@ export default function CreateBoardModal({ isOpen, onClose }) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <h2 className="mb-10 text-2xl font-bold">Crear un nuevo tablero</h2>
 
-        <Form onSubmit={handleSubmit} size="fluid" className="gap-10">
+        <Form onSubmit={handleSubmit} size="fluid" className="gap-10 p-6">
           <fieldset>
             <label htmlFor="title">Titulo del tablero *</label>
             <Input

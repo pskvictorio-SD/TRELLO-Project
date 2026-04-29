@@ -1,5 +1,6 @@
 import CreateBoardModal from "../components/modals/CreateBoardModal.jsx";
 import EditBoardModal from "../components/modals/EditBoardModal.jsx";
+import DeleteBoardModal from "../components/modals/DeleteBoardModal.jsx";
 
 export default function ModalRenderer({ type, isOpen, onClose, data }) {
   if (!isOpen) return null;
@@ -10,6 +11,9 @@ export default function ModalRenderer({ type, isOpen, onClose, data }) {
 
     case "editBoard":
       return <EditBoardModal isOpen={isOpen} onClose={onClose} board={data} />;
+
+    case "deleteBoard":
+      return <DeleteBoardModal isOpen={isOpen} onClose={onClose} boardId={data} />;
 
     default:
       return null;

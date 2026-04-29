@@ -18,7 +18,7 @@ export default function Form({
   return (
     <form
       className={clsx(
-        "bg-white shadow-md rounded-lg p-6 flex flex-col gap-5 overflow-hidden",
+        "bg-white shadow-md rounded-lg flex flex-col gap-5 overflow-hidden",
         `${sizes[size]}`,
         `${className}`,
       )}

@@ -8,7 +8,7 @@ import Button from "../ui/Button.jsx";
 
 import { useState } from "react";
 import useModal from "../../hooks/useModal.js";
-import ModalRenderer from "../../utils/handleModalBoard.jsx";
+import ModalRenderer from "../../utils/ModalRenderer.jsx";
 
 export default function BoardCard({ board }) {
   const { modal, openModal, closeModal } = useModal();
@@ -50,6 +50,7 @@ export default function BoardCard({ board }) {
 
           <div className="flex items-center gap-2">
             <button
+              onClick={() => openModal("deleteBoard", board.id)}
               className="p-2 cursor-pointer rounded-md hover:bg-red-100 transition"
               title="Eliminar tablero"
             >

@@ -59,4 +59,18 @@ export const editBoard = async (
   return res;
 };
 
-export const deleteBoard = async () => {};
+export const deleteBoard = async (workspaceId, boardId) => {
+  const response = await fetch(
+    `http://localhost:3001/api/workspaces/${workspaceId}/boards/${boardId}/`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    },
+  );
+  const res = await response.json();
+
+  return res;
+};

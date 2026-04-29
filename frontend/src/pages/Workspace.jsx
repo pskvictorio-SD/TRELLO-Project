@@ -8,21 +8,20 @@ import { useContext, useEffect } from "react";
 import useWorkspace from "../hooks/useWorkspace.js";
 import useBoards from "../hooks/useBoards.js";
 
-import ModalRenderer from "../utils/handleModalBoard.jsx";
+import ModalRenderer from "../utils/ModalRenderer.jsx";
 import useModal from "../hooks/useModal.js";
 
 export default function Workspace() {
   const { appData } = useContext(dataContext);
   const { handleGetBoards } = useBoards();
-  const { handleGetWorkspace } = useWorkspace();
+  const { fetchWorkspaceData } = useWorkspace();
   const { modal, openModal, closeModal } = useModal();
 
-  const boards = appData?.workspace?.boards || [];
-
   useEffect(() => {
-    handleGetWorkspace();
-    handleGetBoards();
+    fetchWorkspaceData();
   }, []);
+
+  const boards = appData?.workspace?.boards || [];
 
   return (
     <AppLayout>
@@ -48,7 +47,7 @@ export default function Workspace() {
           <div className="col-span-full text-center space-y-4">
             <h2 className="text-2xl font-bold">Aún no tienes tableros</h2>
 
-            <Button onClick={openModal} variant="primary">
+            <Button onClick={() => openModal("createBoard")} variant="primary">
               Crear mi primer tablero +
             </Button>
           </div>

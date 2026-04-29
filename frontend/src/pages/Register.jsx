@@ -84,6 +84,7 @@ function Register() {
           handleSubmit();
         }}
         size="lg"
+        className="p-6"
       >
         {loading && <Spinner />}
         {error && <p>Error: {error.message}</p>}

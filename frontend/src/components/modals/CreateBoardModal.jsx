@@ -16,7 +16,6 @@ export default function CreateBoardModal({ isOpen, onClose }) {
     e.preventDefault();
     // Subir board nuevo
     handleCreateBoard(boardName, boardDescription);
-
     onClose();
   };
 

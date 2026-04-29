@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { dataContext } from "../contexts/dataContext.jsx";
-import { getBoardsOfUser, createBoard } from "../services/board.service.js";
+import { getBoardsOfUser, createBoard, editBoard } from "../services/board.service.js";
 import useFetch from "./useFetch.js";
 
 export default function useBoards() {
@@ -29,8 +29,18 @@ export default function useBoards() {
     }
   };
 
+  const handleEditBoard = async (board) => {
+    const data = await request(() =>
+      editBoard(workspaceId, board.id, board.title, board.description),
+    );
+    if (data.ok) {
+      handleGetBoards();
+    }
+  };
+
   return {
     handleGetBoards,
     handleCreateBoard,
+    handleEditBoard,
   };
 }

@@ -4,7 +4,7 @@ export default function Card({
   children,
   size = "md",
   className = "",
-  onclick,
+  onClick,
   ...props
 }) {
   const sizes = {
@@ -21,7 +21,7 @@ export default function Card({
         `${sizes[size]}`,
         `${className}`,
       )}
-      onClick={onclick}
+      onClick={onClick}
       {...props}
     >
       {children}

@@ -1,5 +1,3 @@
-import { usestate } from "react";
-
 export const createBoard = async (workspaceId, boardName, boardDescription) => {
   const response = await fetch(
     `http://localhost:3001/api/workspaces/${workspaceId}/boards/`,

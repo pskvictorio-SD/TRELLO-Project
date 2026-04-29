@@ -3,7 +3,9 @@ import Input from "../ui/Input.jsx";
 import Textarea from "../ui/Textarea.jsx";
 import Button from "../ui/Button.jsx";
 import Form from "../ui/Form.jsx";
+
 import { useState } from "react";
+import useBoards from "../../hooks/useBoards.js";
 
 export default function EditBoardModal({ isOpen, onClose, board }) {
   const [newBoardTitle, setNewBoardTitle] = useState(board.title);
@@ -18,12 +20,25 @@ export default function EditBoardModal({ isOpen, onClose, board }) {
     setNewBoardDescription(e.target.value);
   };
 
+  const { handleEditBoard } = useBoards();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Subir board nuevo
+    handleEditBoard({
+      id: board.id,
+      title: newBoardTitle,
+      description: newBoardDescription,
+    });
+    onClose();
+  };
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <h2 className="mb-10 text-2xl font-bold">Editar tablero</h2>
 
-        <Form size="fluid" className="gap-10">
+        <Form onSubmit={(e) => handleSubmit(e)} size="fluid" className="gap-10">
           <fieldset>
             <label htmlFor="title">Titulo del tablero *</label>
             <Input

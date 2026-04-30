@@ -41,8 +41,6 @@ export default function CreateBoardModal({ isOpen, onClose }) {
             ></Textarea>
           </fieldset>
 
-          <hr />
-
           <Input type="submit" variant="button" />
         </Form>
       </Modal>

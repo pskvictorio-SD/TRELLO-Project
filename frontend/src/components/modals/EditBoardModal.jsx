@@ -57,8 +57,6 @@ export default function EditBoardModal({ isOpen, onClose, board }) {
             ></Textarea>
           </fieldset>
 
-          <hr />
-
           <Input type="submit" variant="button" />
         </Form>
       </Modal>

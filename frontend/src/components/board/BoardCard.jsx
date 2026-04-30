@@ -6,6 +6,7 @@ import pencil_svg from "../../public/pencil.svg";
 import books_svg from "../../public/books.svg";
 import Button from "../ui/Button.jsx";
 
+import { IoMdPersonAdd } from "react-icons/io";
 import { useState } from "react";
 import useModal from "../../hooks/useModal.js";
 import ModalRenderer from "../../utils/ModalRenderer.jsx";
@@ -31,6 +32,9 @@ export default function BoardCard({ board }) {
               {board.description}
             </p>
           </div>
+          <button onClick={() => openModal("addMember", board.id)} className="p-2 text-2xl cursor-pointer rounded-md hover:bg-blue-100 hover:scale-110 transition-all">
+            <IoMdPersonAdd />
+          </button>
         </div>
 
         <hr />
@@ -51,7 +55,7 @@ export default function BoardCard({ board }) {
           <div className="flex items-center gap-2">
             <button
               onClick={() => openModal("deleteBoard", board.id)}
-              className="p-2 cursor-pointer rounded-md hover:bg-red-100 transition"
+              className="p-2 cursor-pointer rounded-md hover:bg-red-100 hover:scale-110 transition-all"
               title="Eliminar tablero"
             >
               <img className="h-5 w-5" src={trash_svg} alt="Eliminar" />
@@ -59,7 +63,7 @@ export default function BoardCard({ board }) {
 
             <button
               onClick={() => openModal("editBoard", board)}
-              className="p-2 cursor-pointer rounded-md hover:bg-blue-100 transition"
+              className="p-2 cursor-pointer rounded-md hover:bg-blue-100 hover:scale-110 transition-all"
               title="Editar tablero"
             >
               <img className="h-5 w-5" src={pencil_svg} alt="Editar" />

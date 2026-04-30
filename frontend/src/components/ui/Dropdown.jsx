@@ -25,6 +25,7 @@ export default function Dropdown({ title, children }) {
   return (
     <div className="relative inline-block text-left w-full" ref={dropdownRef}>
       <button
+        type="button"
         onClick={toggleDropdown}
         className="flex w-full items-center justify-between rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
       >

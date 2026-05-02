@@ -11,13 +11,24 @@ import { useState } from "react";
 import useModal from "../../hooks/useModal.js";
 import ModalRenderer from "../../utils/ModalRenderer.jsx";
 
+import { useContext } from "react";
+import { dataContext } from "../../contexts/dataContext.jsx";
+
 import { useNavigate } from "react-router-dom";
 
 export default function BoardCard({ board }) {
   const { modal, openModal, closeModal } = useModal();
   const navigate = useNavigate();
 
+  const { appData, setAppData } = useContext(dataContext);
+
   const openBoard = () => {
+    // Agregar en el contexto cual es el board seleccionado
+    setAppData((prevData) => ({
+      ...prevData,
+      currentBoard: board,
+    }));
+
     navigate(`/boards`);
   }
 

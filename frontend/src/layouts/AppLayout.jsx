@@ -18,7 +18,7 @@ export default function AppLayout({ children }) {
         </aside>
 
         {/* Main */}
-        <main className="flex-1 px-6 py-6 m-5 rounded App">
+        <main className="w-full flex flex-col gap-5 p-6 m-5 rounded App">
           {children}
         </main>
 

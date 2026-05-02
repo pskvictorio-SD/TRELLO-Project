@@ -12,49 +12,44 @@ import { userRoleInBoard } from "../middleware/userRoleInBoard.js";
 const router = Router();
 
 /**
- * @route   POST /api/workspaces/:workspaceId/boards/:boardId/members
- * @desc    Agregar un miembro a un workspace
+ * @route   POST /api/boards/:boardId/members
+ * @desc    Agregar un miembro a un Board
  */
 router.post(
-  "/:workspaceId/boards/:boardId/members",
+  "/boards/:boardId/members",
   authMiddleware,
   userInBoard,
-  userRoleInBoard(["admin","member"]),
+  userRoleInBoard("admin", "member"),
   addMember,
 );
 
 /**
- * @route   GET /api/workspaces/:workspaceId/boards/:boardId/members
+ * @route   GET /api/boards/:boardId/members
  * @desc    Obtener miembros de un board
  */
-router.get(
-  "/:workspaceId/boards/:boardId/members",
-  authMiddleware,
-  userInBoard,
-  getMembers,
-);
+router.get("/:workspaceId/boards/", authMiddleware, userInBoard, getMembers);
 
 /**
- * @route   PUT /api/workspaces/:workspaceId/boards/:boardId/members/:userId
+ * @route   PUT /api/boards/:boardId/members/:userId
  * @desc    Cambiar rol de un miembro
  */
 router.put(
-  "/:workspaceId/boards/:boardId/members/:userId",
+  "/boards/:boardId/members/:userId",
   authMiddleware,
   userInBoard,
-  userRoleInBoard(["admin","member"]),
+  userRoleInBoard("admin"),
   changeRole,
 );
 
 /**
- * @route   DELETE /api/workspaces/:workspaceId/boards/:boardId/members/:userId
+ * @route   DELETE /api/boards/:boardId/members/:userId
  * @desc    Eliminar un miembro de un board
  */
 router.delete(
-  "/:workspaceId/boards/:boardId/members/:userId",
+  "/boards/:boardId/members/:userId",
   authMiddleware,
   userInBoard,
-  userRoleInBoard(["admin","member"]),
+  userRoleInBoard("admin"),
   deleteMember,
 );
 export default router;

@@ -4,6 +4,13 @@ export const createBoard = (req, res) => {
   const { workspaceId } = req.params;
   const { title, description } = req.body;
 
+  if (!title) {
+    return res.status(400).json({
+      ok: false,
+      message: "Falta el título del board",
+    });
+  }
+
   conn.query(
     "INSERT INTO boards (workspace_id, title, description) VALUES (?, ?, ?)",
     [workspaceId, title, description],
@@ -42,25 +49,43 @@ export const createBoard = (req, res) => {
   );
 };
 
-export const getBoardsOfWorkspace = (req, res) => {
-  const { workspaceId } = req.params;
+export const getBoardsOfUser = (req, res) => {
+  const userId = req.user.id;
 
   conn.query(
-    "SELECT * FROM boards WHERE workspace_id = ?",
-    [workspaceId],
+    "SELECT board_id FROM board_members WHERE user_id = ?",
+    [userId],
     (err, results) => {
       if (err) {
         return res.status(500).json({
           ok: false,
-          message: "Error al obtener los boards del workspace",
+          message: "Error en el servidor",
           error: err,
         });
+      } else if (results.length === 0) {
+        return res.status(404).json({
+          ok: false,
+          message: "Aun no perteneces a ningun tableto, crea uno",
+          boards: [],
+        });
       }
-      return res.status(200).json({
-        ok: true,
-        message: "Boards obtenidos exitosamente",
-        boards: results,
-      });
+      conn.query(
+        "SELECT * FROM boards WHERE id IN (?)",
+        [results.map((r) => r.board_id)],
+        (err, results) => {
+          if (err) {
+            return res.status(500).json({
+              ok: false,
+              message: "Error en el servidor",
+              error: err,
+            });
+          }
+          return res.status(200).json({
+            ok: true,
+            boards: results,
+          });
+        },
+      );
     },
   );
 };

@@ -23,7 +23,6 @@ export const userInBoard = (req, res, next) => {
         });
       }
       req.userInBoard = results[0];
-      console.log(req.userInBoard)
       next();
     },
   );

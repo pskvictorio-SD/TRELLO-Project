@@ -7,8 +7,8 @@ import {
   deleteList,
 } from "../controllers/list.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
-import { userInWorkspace } from "../middleware/userInWorkspace.js";
-import { validateBoardExists } from "../middleware/validateBoardExists.js";
+import { userInBoard } from "../middleware/userInBoard.js";
+import { userRoleInBoard } from "../middleware/userRoleInBoard.js";
 import { validateListExists } from "../middleware/validateListExistsAndBelongsToBoard.js";
 
 const router = Router();
@@ -20,8 +20,8 @@ const router = Router();
 router.post(
   "/:workspaceId/boards/:boardId/lists",
   authMiddleware,
-  userInWorkspace,
-  validateBoardExists,
+  userInBoard,
+  userRoleInBoard("admin", "member"),
   createList,
 );
 
@@ -32,8 +32,7 @@ router.post(
 router.get(
   "/:workspaceId/boards/:boardId/lists",
   authMiddleware,
-  userInWorkspace,
-  validateBoardExists,
+  userInBoard,
   getListsOfBoard,
 );
 
@@ -44,8 +43,8 @@ router.get(
 router.put(
   "/:workspaceId/boards/:boardId/lists/:listId",
   authMiddleware,
-  userInWorkspace,
-  validateBoardExists,
+  userInBoard,
+  userRoleInBoard("admin", "member"),
   validateListExists,
   updateList,
 );
@@ -57,10 +56,10 @@ router.put(
 router.patch(
   "/:workspaceId/boards/:boardId/lists/:listId/move",
   authMiddleware,
-  userInWorkspace,
-  validateBoardExists,
+  userInBoard,
+  userRoleInBoard("admin", "member"),
   validateListExists,
-  moveList
+  moveList,
 );
 
 /**
@@ -70,8 +69,8 @@ router.patch(
 router.delete(
   "/:workspaceId/boards/:boardId/lists/:listId",
   authMiddleware,
-  userInWorkspace,
-  validateBoardExists,
+  userInBoard,
+  userRoleInBoard("admin", "member"),
   validateListExists,
   deleteList,
 );

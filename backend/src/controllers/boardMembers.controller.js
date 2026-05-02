@@ -47,7 +47,6 @@ export const addMember = (req, res) => {
             return res.status(409).json({
               ok: false,
               message: "El usuario ya es miembro del workspace",
-              error: "El usuario ya es miembro del workspace",
             });
 
           // Insertar nuevo miembro
@@ -74,34 +73,47 @@ export const addMember = (req, res) => {
   );
 };
 
-// Traer miembros de un workspace con su rol y fecha de ingreso (ademas de su username, avatar y email para mostrarlo en el frontend) (esto lo hago para mostrarlo en la seccion de miembros del workspace, ademas de que lo necesito para mostrar los miembros de un board) (en el caso de los miembros de un board, se mostraran los miembros del workspace con su rol en el board, si es que tienen uno asignado, sino se mostrara su rol en el workspace)
+// Obtener todos los boards de un usuario determinado
 export const getMembers = (req, res) => {
+  const userId = req.user.id;
   const { boardId } = req.params;
 
-  console.log(boardId)
-
-  const query = `
-    SELECT bm.user_id, bm.role, bm.joined_at, u.username, u.avatar, u.email
-    FROM board_members bm 
-    INNER JOIN users u ON bm.user_id = u.id 
-    WHERE bm.board_id = ?
-  `;
-
-  conn.query(query, [boardId], (err, results) => {
-    if (err) {
-      return res.status(500).json({
-        ok: false,
-        message: "Error en el servidor",
-        error: err,
-      });
-    }
-
-    return res.status(200).json({
-      ok: true,
-      message: "Miembros obtenidos correctamente",
-      members: results,
-    });
-  });
+  conn.query(
+    "SELECT user_id FROM board_members WHERE board_id = ? and user_id != ?",
+    [userId, boardId],
+    (err, results) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          message: "Error en el servidor",
+          error: err,
+        });
+      }
+      if (results.length === 0) {
+        return res.status(404).json({
+          ok: false,
+          message: "No hay miembros en este board",
+        });
+      }
+      conn.query(
+        "SELECT * FROM users WHERE id IN (?)",
+        [results.map((r) => r.user_id)],
+        (err, results) => {
+          if (err) {
+            return res.status(500).json({
+              ok: false,
+              message: "Error en el servidor",
+              error: err,
+            });
+          }
+          return res.status(200).json({
+            ok: true,
+            members: results,
+          });
+        },
+      );
+    },
+  );
 };
 
 // Cambiar rol de un miembro

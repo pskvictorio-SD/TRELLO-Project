@@ -1,12 +1,13 @@
 import { Router } from "express";
 import {
-  getBoardsOfWorkspace,
+  getBoardsOfUser,
   createBoard,
   updateBoard,
   deleteBoard,
 } from "../controllers/board.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
-import { userInWorkspace } from "../middleware/userInWorkspace.js";
+import { userInBoard } from "../middleware/userInBoard.js";
+import { userRoleInBoard } from "../middleware/userRoleInBoard.js";
 
 const router = Router();
 
@@ -14,23 +15,13 @@ const router = Router();
  * @route   POST /api/workspaces/:workspaceId/boards
  * @desc    Crear nuevo board
  */
-router.post(
-  "/:workspaceId/boards",
-  authMiddleware,
-  userInWorkspace,
-  createBoard,
-);
+router.post("/:workspaceId/boards", authMiddleware, createBoard);
 
 /**
  * @route   GET /api/workspaces/:workspaceId/boards
- * @desc    Obtener todos los boards del workspace
+ * @desc    Obtener todos los boards de un usuario
  */
-router.get(
-  "/:workspaceId/boards",
-  authMiddleware,
-  userInWorkspace,
-  getBoardsOfWorkspace,
-);
+router.get("/:workspaceId/boards", authMiddleware, getBoardsOfUser);
 
 /**
  * @route   PUT /api/workspaces/:workspaceId/boards/:boardId
@@ -39,7 +30,8 @@ router.get(
 router.put(
   "/:workspaceId/boards/:boardId",
   authMiddleware,
-  userInWorkspace,
+  userInBoard,
+  userRoleInBoard("admin"),
   updateBoard,
 );
 
@@ -50,7 +42,8 @@ router.put(
 router.delete(
   "/:workspaceId/boards/:boardId",
   authMiddleware,
-  userInWorkspace,
+  userInBoard,
+  userRoleInBoard("admin"),
   deleteBoard,
 );
 

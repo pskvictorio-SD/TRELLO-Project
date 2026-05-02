@@ -12,7 +12,7 @@ export const getWorkspace = (req, res) => {
   }
 
   conn.query(
-    "SELECT name, created_at FROM workspaces WHERE user_id = ?",
+    "SELECT id, name, created_at FROM workspaces WHERE created_by = ?",
     [user_id],
     (err, results) => {
       if (err) {
@@ -36,10 +36,8 @@ export const createWorkspace = (req, res) => {
   const userId = req.user.id;
   const name = "Workspace de " + req.user.username;
 
-  console.log(req.user)
-
   conn.query(
-    "INSERT INTO workspaces (name, user_id) VALUES (?, ?)",
+    "INSERT INTO workspaces (name, created_by) VALUES (?, ?)",
     [name, userId],
     (err, results) => {
       if (err) {

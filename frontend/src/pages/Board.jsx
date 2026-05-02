@@ -1,4 +1,5 @@
 import TaskLists from "../components/task/taskLists.jsx";
+import Card from "../components/ui/Card.jsx";
 import AppLayout from "../layouts/AppLayout.jsx";
 import { useDragAndDrop } from "../hooks/useDragAndDrop.js";
 
@@ -59,14 +60,14 @@ export default function Board() {
       created_at: "2026-03-05T20:28:21.000Z",
     },
   ];
-
+  
   // Drag & Drop Tasks
   const { draggable, setDraggedItem, handleDrop, handleReorderTasks } =
     useDragAndDrop(tasks);
 
   return (
     <AppLayout>
-      <div className="gap-14 md:gap-2 p-3 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3">
+      <div className="flex flex-wrap gap-5">
         {lists.map((list) => (
           <TaskLists
             key={list.id}
@@ -77,6 +78,11 @@ export default function Board() {
             handleReorderTasks={handleReorderTasks}
           ></TaskLists>
         ))}
+        <Card
+          className="text-center flex items-center justify-center max-h-16 max-w-72 cursor-pointer"
+        >
+          <h3 className="text-lg font-medium">Crear otra lista +</h3>
+        </Card>
       </div>
     </AppLayout>
   );

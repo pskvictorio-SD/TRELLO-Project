@@ -23,7 +23,7 @@ export default function DeleteBoardModal({ isOpen, onClose, boardId }) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <h2 className="mb-10 text-2xl font-bold">Estas seguro que deseas eliminar este tablero?</h2>
 
-        <Form onSubmit={(e) => handleSubmit(e)} size="fluid" className="gap-10 p-6">
+        <Form onSubmit={(e) => handleSubmit(e)} size="fluid" className="gap-10">
           <Input value="Eliminar" type="submit" variant="buttonDanger" />
         </Form>
       </Modal>

@@ -10,7 +10,7 @@ export default function TaskLists({
 
   return (
     <div
-      className="bg-gray-100 p-5 rounded-sm shadow-lg"
+      className="bg-gray-100 p-5 rounded-sm shadow-lg max-w-md"
       onDragOver={(e) => {
         e.preventDefault();
         handleDrop(list.id);

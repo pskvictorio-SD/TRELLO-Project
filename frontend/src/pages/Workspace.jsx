@@ -52,7 +52,7 @@ export default function Workspace() {
             </Button>
           </div>
         ) : (
-          boards.map((board) => <BoardCard key={board.id} board={board} />)
+          boards.map((board) => <BoardCard onClick={} key={board.id} board={board} />)
         )}
       </section>
     </AppLayout>

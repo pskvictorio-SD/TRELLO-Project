@@ -23,13 +23,7 @@ export default function BoardCard({ board }) {
   const { appData, setAppData } = useContext(dataContext);
 
   const openBoard = () => {
-    // Agregar en el contexto cual es el board seleccionado
-    setAppData((prevData) => ({
-      ...prevData,
-      currentBoard: board,
-    }));
-
-    navigate(`/boards`);
+    navigate(`/boards?boardId=${board.id}`);
   }
 
   return (

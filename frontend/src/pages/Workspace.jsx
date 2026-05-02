@@ -12,16 +12,16 @@ import ModalRenderer from "../utils/ModalRenderer.jsx";
 import useModal from "../hooks/useModal.js";
 
 export default function Workspace() {
-  const { appData } = useContext(dataContext);
+  const { appData, setAppData } = useContext(dataContext);
   const { handleGetBoards } = useBoards();
   const { fetchWorkspaceData } = useWorkspace();
   const { modal, openModal, closeModal } = useModal();
 
   useEffect(() => {
+    setAppData(null);
+
     fetchWorkspaceData();
   }, []);
-
-  console.log(appData)
 
   const boards = appData?.workspace?.boards || [];
 

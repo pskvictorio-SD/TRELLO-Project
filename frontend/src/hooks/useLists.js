@@ -8,21 +8,30 @@ import {
   deleteList,
 } from "../services/list.service.js";
 import useFetch from "./useFetch.js";
+import { useSearchParams } from "react-router-dom";
 
 export default function useLists() {
   const { request, loading, error } = useFetch();
   const { appData, setAppData } = useContext(dataContext);
-  const boardId = appData?.currentBoard?.id;
+  const [searchParams] = useSearchParams();
 
-  const handleGetLists = async () => {
+  const boardId = searchParams.get("boardId");
+
+  const fetchLists = async () => {
     const data = await getLists(boardId);
-    console.log(data);
+
+    setAppData((prev) => ({
+      ...prev,
+      currentBoard: {
+        lists: data.lists,
+      },
+    }));
   };
 
   const handleCreateList = async (listName) => {
     const data = await request(() => createList(listName, boardId));
     if (data.ok) {
-      handleGetLists();
+      fetchLists();
     }
   };
 
@@ -31,7 +40,7 @@ export default function useLists() {
   const handleDeleteList = async (boardId) => {};
 
   return {
-    handleGetLists,
+    fetchLists,
     handleCreateList,
     handleEditList,
     handleDeleteList,

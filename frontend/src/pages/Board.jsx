@@ -6,35 +6,22 @@ import useModal from "../hooks/useModal.js";
 import ModalRenderer from "../utils/ModalRenderer.jsx";
 
 import { dataContext } from "../contexts/dataContext.jsx";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { useState } from "react";
 import { useDragAndDrop } from "../hooks/useDragAndDrop.js";
+import useLists from "../hooks/useLists.js";
 
 export default function Board() {
   const { modal, openModal, closeModal } = useModal();
-  const { appData } = useContext(dataContext);
+  const { appData, setAppData } = useContext(dataContext);
+  const { fetchLists } = useLists();
 
-  let lists = [
-    {
-      id: 22,
-      board_id: 9,
-      name: "Pendiente",
-      position: 20,
-    },
-    {
-      id: 21,
-      board_id: 9,
-      name: "En proceso",
-      position: 25,
-    },
-    {
-      id: 23,
-      board_id: 9,
-      name: "Completado",
-      position: 30,
-    },
-  ];
+  useEffect(() => {
+    fetchLists();
+  }, []);
+
+  let lists = appData?.currentBoard?.lists || [];
 
   let tasks = [
     {
@@ -71,8 +58,6 @@ export default function Board() {
       created_at: "2026-03-05T20:28:21.000Z",
     },
   ];
-
-  console.log(appData)
 
   // Drag & Drop Tasks
   const { draggable, setDraggedItem, handleDrop, handleReorderTasks } =

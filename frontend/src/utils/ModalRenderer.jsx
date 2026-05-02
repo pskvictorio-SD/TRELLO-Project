@@ -9,6 +9,7 @@ export default function ModalRenderer({ type, isOpen, onClose, data }) {
   if (!isOpen) return null;
 
   switch (type) {
+    // BOARDS
     case "createBoard":
       return <CreateBoardModal isOpen={isOpen} onClose={onClose} />;
 
@@ -25,6 +26,7 @@ export default function ModalRenderer({ type, isOpen, onClose, data }) {
         <AddMemberModal isOpen={isOpen} onClose={onClose} boardId={data} />
       );
 
+      // LISTS
     case "createList":
       return <CreateListModal isOpen={isOpen} onClose={onClose} />;
 

@@ -33,8 +33,41 @@ export const getLists = async (boardId) => {
   return res;
 };
 
-export const editList = async (boardId, listName) => {};
+export const editList = async (boardId, listName, listId) => {
+  const response = await fetch(
+    `http://localhost:3001/api/boards/${boardId}/lists/${listId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        name: listName,
+      }),
+    },
+  );
+
+  const res = await response.json();
+
+  return res;
+};
 
 export const moveList = async (boardId, listId, position) => {};
 
-export const deleteList = async (boardId, listId) => {};
+export const deleteList = async (boardId, listId) => {
+  const response = await fetch(
+    `http://localhost:3001/api/boards/${boardId}/lists/${listId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    },
+  );
+
+  const res = await response.json();
+
+  return res;
+};

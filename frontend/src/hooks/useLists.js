@@ -35,9 +35,19 @@ export default function useLists() {
     }
   };
 
-  const handleEditList = async (board) => {};
+  const handleEditList = async (listName, listId) => {
+    const data = await request(() => editList(boardId, listName, listId));
+    if (data.ok) {
+      fetchLists();
+    }
+  };
 
-  const handleDeleteList = async (boardId) => {};
+  const handleDeleteList = async (listId) => {
+    const data = await request(() => deleteList(boardId, listId));
+    if (data.ok) {
+      fetchLists();
+    }
+  };
 
   return {
     fetchLists,

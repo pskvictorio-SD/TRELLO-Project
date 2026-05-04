@@ -26,7 +26,7 @@ export default function Board() {
   let tasks = [
     {
       id: 10,
-      list_id: 22,
+      list_id: 2,
       title: "Primera tarea 1",
       description: "",
       priority: "medium",
@@ -37,7 +37,7 @@ export default function Board() {
     },
     {
       id: 9,
-      list_id: 22,
+      list_id: 4,
       title: "Segunda tarea 2",
       description: "Lorem ipsum",
       priority: "high",
@@ -48,7 +48,7 @@ export default function Board() {
     },
     {
       id: 11,
-      list_id: 22,
+      list_id: 5,
       title: "Tercera tarea 3",
       description: "",
       priority: "high",
@@ -84,7 +84,7 @@ export default function Board() {
             onClick={() => {
               openModal("createList");
             }}
-            className="text-center flex items-center justify-center max-h-16 max-w-72 cursor-pointer"
+            className="flex justify-center max-h-16 max-w-72 cursor-pointer"
           >
             <h3 className="text-lg font-medium">Crear otra lista +</h3>
           </Card>

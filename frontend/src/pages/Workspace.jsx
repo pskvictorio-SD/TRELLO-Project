@@ -19,7 +19,6 @@ export default function Workspace() {
 
   useEffect(() => {
     setAppData(null);
-
     fetchWorkspaceData();
   }, []);
 

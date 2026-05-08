@@ -1,72 +1,68 @@
 import TaskCard from "./TaskCard.jsx";
-import Button from "../ui/Button.jsx";
-import useLists from "../../hooks/useLists.js";
-import useModal from "../../hooks/useModal.js";
-import ModalRenderer from "../../utils/ModalRenderer.jsx";
+
 import trash_svg from "../../public/trash.svg";
+
 import { MdDragIndicator } from "react-icons/md";
-import { useState } from "react";
 
 export default function TaskLists({
   list,
   tasks,
-  setDraggedItem,
-  handleDrop,
-  handleReorderTasks,
+  openModal,
 }) {
-  const { modal, openModal, closeModal } = useModal();
-  const { handleEditList, handleDeleteList } = useLists();
-  const editList = () => {
-    openModal("editList", { listName: list.name, listId: list.id });
+  const handleEditList = () => {
+    openModal("editList", {
+      listId: list.id,
+      listName: list.name,
+    });
   };
-  return (
-    <>
-      <div
-        className="flex flex-col justify-center bg-white p-5 rounded-sm shadow-lg w-full sm:max-w-72"
-        onDragOver={(e) => {
-          e.preventDefault();
-          handleDrop(list.id);
-        }}
-      >
-        <div className="flex items-center justify-between">
-          <button className="p-2 cursor-grab active:cursor-grabbing rounded-md hover:bg-blue-100 hover:scale-110 transition-all">
-            <MdDragIndicator />
-          </button>
-          <h2
-            onClick={editList}
-            className="text-xl font-semibold cursor-pointer"
-          >
-            {list.name}
-          </h2>
-          <button
-            onClick={() => openModal("deleteList", list.id)}
-            className="p-2 cursor-pointer rounded-md hover:bg-red-100 hover:scale-110 transition-all"
-            title="Eliminar lista"
-          >
-            <img className="h-5 w-5" src={trash_svg} alt="Eliminar" />
-          </button>
-        </div>
 
-        <div className="flex flex-col gap-5">
-          {tasks.map((task) => {
-            if (task.list_id !== list.id) return null;
-            return (
-              <TaskCard
-                key={task.id}
-                task={task}
-                setDraggedItem={setDraggedItem}
-                handleReorderTasks={handleReorderTasks}
-              />
-            );
-          })}
-        </div>
+  const handleDeleteList = () => {
+    openModal("deleteList", list.id);
+  };
+
+  return (
+    <section className="bg-white rounded-md shadow-md p-4 min-w-72 flex flex-col gap-4">
+
+      {/* Header */}
+      <header className="flex items-center justify-between">
+
+        <button
+          className="p-2 rounded-md hover:bg-gray-100 transition"
+        >
+          <MdDragIndicator className="text-xl" />
+        </button>
+
+        <h2
+          onClick={handleEditList}
+          className="font-semibold text-lg cursor-pointer hover:text-blue-500 transition"
+        >
+          {list.name}
+        </h2>
+
+        <button
+          onClick={handleDeleteList}
+          className="p-2 rounded-md hover:bg-red-100 transition"
+        >
+          <img
+            className="h-4 w-4"
+            src={trash_svg}
+            alt="Eliminar lista"
+          />
+        </button>
+      </header>
+
+      {/* Tasks */}
+      <div className="flex flex-col gap-3">
+        {tasks.length > 0 ? (
+          tasks.map((task) => (
+            <TaskCard key={task.id} task={task} />
+          ))
+        ) : (
+          <p className="text-sm text-gray-400">
+            No hay tareas
+          </p>
+        )}
       </div>
-      <ModalRenderer
-        type={modal.type}
-        isOpen={modal.isOpen}
-        onClose={closeModal}
-        data={modal.data}
-      />
-    </>
+    </section>
   );
 }

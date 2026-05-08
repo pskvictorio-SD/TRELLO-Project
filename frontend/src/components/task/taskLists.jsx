@@ -4,11 +4,27 @@ import trash_svg from "../../public/trash.svg";
 
 import { MdDragIndicator } from "react-icons/md";
 
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+
+import { useDroppable } from "@dnd-kit/core";
+
 export default function TaskLists({
   list,
   tasks,
   openModal,
 }) {
+
+  // 🎯 droppable column
+  const { setNodeRef } = useDroppable({
+    id: list.id,
+    data: {
+      listId: list.id,
+    },
+  });
+
   const handleEditList = () => {
     openModal("editList", {
       listId: list.id,
@@ -21,14 +37,14 @@ export default function TaskLists({
   };
 
   return (
-    <section className="bg-white rounded-md shadow-md p-4 min-w-72 flex flex-col gap-4">
-
+    <section
+      ref={setNodeRef}
+      className="bg-white rounded-md shadow-md p-4 min-w-72 flex flex-col gap-4"
+    >
       {/* Header */}
       <header className="flex items-center justify-between">
 
-        <button
-          className="p-2 rounded-md hover:bg-gray-100 transition"
-        >
+        <button className="p-2 rounded-md hover:bg-gray-100 transition">
           <MdDragIndicator className="text-xl" />
         </button>
 
@@ -52,17 +68,27 @@ export default function TaskLists({
       </header>
 
       {/* Tasks */}
-      <div className="flex flex-col gap-3">
-        {tasks.length > 0 ? (
-          tasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
-          ))
-        ) : (
-          <p className="text-sm text-gray-400">
-            No hay tareas
-          </p>
-        )}
-      </div>
+      <SortableContext
+        items={tasks.map((task) => task.id)}
+        strategy={verticalListSortingStrategy}
+      >
+        <div className="flex flex-col gap-3 min-h-10">
+
+          {tasks.length > 0 ? (
+            tasks.map((task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+              />
+            ))
+          ) : (
+            <p className="text-sm text-gray-400">
+              No hay tareas
+            </p>
+          )}
+
+        </div>
+      </SortableContext>
     </section>
   );
 }

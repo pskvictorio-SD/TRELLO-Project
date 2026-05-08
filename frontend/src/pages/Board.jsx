@@ -11,8 +11,10 @@ import { dataContext } from "../contexts/dataContext.jsx";
 
 import { useContext, useEffect } from "react";
 
+import { DndContext, closestCorners } from "@dnd-kit/core";
+
 export default function Board() {
-  const { appData } = useContext(dataContext);
+  const { appData, setAppData } = useContext(dataContext);
 
   const { modal, openModal, closeModal } = useModal();
   const { fetchLists } = useLists();
@@ -39,8 +41,8 @@ export default function Board() {
     },
     {
       id: 3,
-      title: "Task 2",
-      description: "Task 2 description",
+      title: "Task 3",
+      description: "Task 3 description",
       priority: "Medium",
       due_date: "2023-02-01",
       created_at: "2023-02-01",
@@ -52,6 +54,50 @@ export default function Board() {
     fetchLists();
   }, []);
 
+  // 🔍 encontrar lista de una task
+  const findContainer = (taskId) => {
+    const task = tasks.find((task) => task.id === taskId);
+
+    return task?.list_id;
+  };
+
+  // 🚀 mover task entre columnas
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (!over) return;
+
+    const activeId = active.id;
+    const overId = over.id;
+
+    const sourceListId = findContainer(activeId);
+    const targetListId = over.data.current?.listId;
+
+    if (!sourceListId || !targetListId) return;
+
+    // misma lista → no mover
+    if (sourceListId === targetListId) return;
+
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === activeId) {
+        return {
+          ...task,
+          list_id: targetListId,
+        };
+      }
+
+      return task;
+    });
+
+    setAppData((prev) => ({
+      ...prev,
+      currentBoard: {
+        ...prev.currentBoard,
+        tasks: updatedTasks,
+      },
+    }));
+  };
+
   return (
     <>
       <AppLayout>
@@ -62,32 +108,39 @@ export default function Board() {
           </h1>
         </header>
 
-        {/* Lists */}
-        <main className="flex gap-5 overflow-x-auto pb-4">
-          {lists.map((list) => {
-            const listTasks = tasks.filter((task) => task.list_id === list.id);
+        {/* DND */}
+        <DndContext
+          collisionDetection={closestCorners}
+          onDragEnd={handleDragEnd}
+        >
+          <main className="flex gap-5 overflow-x-auto pb-4">
+            {lists.map((list) => {
+              const listTasks = tasks.filter(
+                (task) => task.list_id === list.id,
+              );
 
-            return (
-              <TaskLists
-                key={list.id}
-                list={list}
-                tasks={listTasks}
-                openModal={openModal}
-              />
-            );
-          })}
+              return (
+                <TaskLists
+                  key={list.id}
+                  list={list}
+                  tasks={listTasks}
+                  openModal={openModal}
+                />
+              );
+            })}
 
-          {/* Create List */}
-          <Card
-            onClick={() => openModal("createList")}
-            className="min-w-72 h-16 flex items-center justify-center cursor-pointer hover:shadow-md transition"
-          >
-            <h3 className="font-medium">Crear otra lista +</h3>
-          </Card>
-        </main>
+            {/* ➕ Create List */}
+            <Card
+              onClick={() => openModal("createList")}
+              className="min-w-72 h-16 flex items-center justify-center cursor-pointer hover:shadow-md transition"
+            >
+              <h3 className="font-medium">Crear otra lista +</h3>
+            </Card>
+          </main>
+        </DndContext>
       </AppLayout>
 
-      {/* Global Modal */}
+      {/* 🪟 Global Modal */}
       <ModalRenderer
         type={modal.type}
         isOpen={modal.isOpen}

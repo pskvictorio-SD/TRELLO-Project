@@ -1,146 +1,132 @@
-import AppLayout from "../layouts/AppLayout.jsx";
-import Card from "../components/ui/Card.jsx";
 import TaskLists from "../components/task/taskLists.jsx";
-
-import ModalRenderer from "../utils/ModalRenderer.jsx";
+import Card from "../components/ui/Card.jsx";
+import AppLayout from "../layouts/AppLayout.jsx";
 
 import useModal from "../hooks/useModal.js";
-import useLists from "../hooks/useLists.js";
+import ModalRenderer from "../utils/ModalRenderer.jsx";
 
 import { dataContext } from "../contexts/dataContext.jsx";
+import { useContext, useEffect, useState } from "react";
+import useLists from "../hooks/useLists.js";
 
-import { useContext, useEffect } from "react";
-
-import { DndContext, closestCorners } from "@dnd-kit/core";
+import { closestCenter, DndContext } from "@dnd-kit/core";
+import {
+  SortableContext,
+  horizontalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
 
 export default function Board() {
-  const { appData, setAppData } = useContext(dataContext);
-
   const { modal, openModal, closeModal } = useModal();
+  const { appData, setAppData } = useContext(dataContext);
   const { fetchLists } = useLists();
 
-  const lists = appData?.currentBoard?.lists || [];
-  const tasks = [
-    {
-      id: 1,
-      title: "Task 1",
-      description: "Task 1 description",
-      priority: "High",
-      due_date: "2023-01-01",
-      created_at: "2023-01-01",
-      list_id: 2,
-    },
-    {
-      id: 2,
-      title: "Task 2",
-      description: "Task 2 description",
-      priority: "Medium",
-      due_date: "2023-02-01",
-      created_at: "2023-02-01",
-      list_id: 4,
-    },
-    {
-      id: 3,
-      title: "Task 3",
-      description: "Task 3 description",
-      priority: "Medium",
-      due_date: "2023-02-01",
-      created_at: "2023-02-01",
-      list_id: 5,
-    },
-  ];
+  const handleDragEnd = (e) => {
+    const { active, over } = e;
+
+    const oldIndex = lists.findIndex((list) => list.id === active.id);
+    const newIndex = lists.findIndex((list) => list.id === over.id);
+
+    const newList = arrayMove(lists, oldIndex, newIndex);
+    setAppData({
+      ...appData,
+      currentBoard: { ...appData.currentBoard, lists: newList },
+    });
+  };
 
   useEffect(() => {
     fetchLists();
   }, []);
 
-  // 🔍 encontrar lista de una task
-  const findContainer = (taskId) => {
-    const task = tasks.find((task) => task.id === taskId);
+  let lists = appData?.currentBoard?.lists || [];
 
-    return task?.list_id;
-  };
-
-  // 🚀 mover task entre columnas
-  const handleDragEnd = (event) => {
-    const { active, over } = event;
-
-    if (!over) return;
-
-    const activeId = active.id;
-    const overId = over.id;
-
-    const sourceListId = findContainer(activeId);
-    const targetListId = over.data.current?.listId;
-
-    if (!sourceListId || !targetListId) return;
-
-    // misma lista → no mover
-    if (sourceListId === targetListId) return;
-
-    const updatedTasks = tasks.map((task) => {
-      if (task.id === activeId) {
-        return {
-          ...task,
-          list_id: targetListId,
-        };
-      }
-
-      return task;
-    });
-
-    setAppData((prev) => ({
-      ...prev,
-      currentBoard: {
-        ...prev.currentBoard,
-        tasks: updatedTasks,
-      },
-    }));
-  };
+  let tasks = [
+    {
+      id: 10,
+      list_id: 2,
+      title: "Primera tarea 1",
+      description: "",
+      priority: "medium",
+      due_date: null,
+      is_completed: 0,
+      created_by: 6,
+      created_at: "2026-03-05T20:28:10.000Z",
+    },
+    {
+      id: 9,
+      list_id: 4,
+      title: "Segunda tarea 2",
+      description: "Lorem ipsum",
+      priority: "high",
+      due_date: null,
+      is_completed: 0,
+      created_by: 6,
+      created_at: "2026-03-05T20:27:40.000Z",
+    },
+    {
+      id: 11,
+      list_id: 5,
+      title: "Tercera tarea 3",
+      description: "",
+      priority: "high",
+      due_date: null,
+      is_completed: 0,
+      created_by: 6,
+      created_at: "2026-03-05T20:28:21.000Z",
+    },
+  ];
 
   return (
     <>
       <AppLayout>
-        {/* Header */}
-        <header className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">
-            {appData?.currentBoard?.title || "Board"}
-          </h1>
-        </header>
-
-        {/* DND */}
         <DndContext
-          collisionDetection={closestCorners}
-          onDragEnd={handleDragEnd}
+          collisionDetection={closestCenter}
+          onDragEnd={(e) => {
+            handleDragEnd(e);
+          }}
         >
-          <main className="flex gap-5 overflow-x-auto pb-4">
-            {lists.map((list) => {
-              const listTasks = tasks.filter(
-                (task) => task.list_id === list.id,
-              );
-
-              return (
-                <TaskLists
-                  key={list.id}
-                  list={list}
-                  tasks={listTasks}
-                  openModal={openModal}
-                />
-              );
-            })}
-
-            {/* ➕ Create List */}
-            <Card
-              onClick={() => openModal("createList")}
-              className="min-w-72 h-16 flex items-center justify-center cursor-pointer hover:shadow-md transition"
+          <div className="flex items-center justify-center">
+            <h1 className="text-2xl font-bold">Tus Tableros</h1>
+          </div>
+          <main className="flex flex-wrap gap-5">
+            <SortableContext
+              items={lists}
+              strategy={horizontalListSortingStrategy}
             >
-              <h3 className="font-medium">Crear otra lista +</h3>
+              {lists.map((list) => {
+                return <TaskLists key={list.id} list={list} tasks={tasks} />;
+              })}
+            </SortableContext>
+            <Card
+              onClick={() => {
+                openModal("createList");
+              }}
+              className="flex justify-center max-h-16 max-w-72 cursor-pointer"
+            >
+              <h3 className="text-lg font-medium">Crear otra lista +</h3>
             </Card>
           </main>
         </DndContext>
       </AppLayout>
 
-      {/* 🪟 Global Modal */}
+      {/* <AppLayout>
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <main className="flex flex-wrap gap-5">
+            <SortableContext
+              items={lists}
+              strategy={horizontalListSortingStrategy}
+            >
+              {lists.map((list) => {
+                return <TaskLists key={list.id} list={list} tasks={tasks} />;
+              })}
+            </SortableContext>
+          </main>
+        </DndContext>
+      </AppLayout> */}
+
       <ModalRenderer
         type={modal.type}
         isOpen={modal.isOpen}

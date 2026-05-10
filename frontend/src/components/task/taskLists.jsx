@@ -1,94 +1,73 @@
 import TaskCard from "./TaskCard.jsx";
-
+import Button from "../ui/Button.jsx";
+import useLists from "../../hooks/useLists.js";
+import useModal from "../../hooks/useModal.js";
+import ModalRenderer from "../../utils/ModalRenderer.jsx";
 import trash_svg from "../../public/trash.svg";
+import { MdBorderLeft, MdDragIndicator } from "react-icons/md";
+import { useState } from "react";
 
-import { MdDragIndicator } from "react-icons/md";
+import { useSortable } from "@dnd-kit/sortable";
 
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-
-import { useDroppable } from "@dnd-kit/core";
-
-export default function TaskLists({
-  list,
-  tasks,
-  openModal,
-}) {
-
-  // 🎯 droppable column
-  const { setNodeRef } = useDroppable({
+export default function TaskLists({ list, tasks }) {
+  const { attributes, listeners, setNodeRef, isOver } = useSortable({
     id: list.id,
-    data: {
-      listId: list.id,
-    },
   });
-
-  const handleEditList = () => {
-    openModal("editList", {
-      listId: list.id,
-      listName: list.name,
-    });
+  const style = {
+    borderRight: isOver ? "1px solid var(--color-secondary-dark)" : "none",
   };
 
-  const handleDeleteList = () => {
-    openModal("deleteList", list.id);
-  };
+  const { modal, openModal, closeModal } = useModal();
+  const { handleEditList, handleDeleteList } = useLists();
 
   return (
-    <section
-      ref={setNodeRef}
-      className="bg-white rounded-md shadow-md p-4 min-w-72 flex flex-col gap-4"
-    >
-      {/* Header */}
-      <header className="flex items-center justify-between">
-
-        <button className="p-2 rounded-md hover:bg-gray-100 transition">
-          <MdDragIndicator className="text-xl" />
-        </button>
-
-        <h2
-          onClick={handleEditList}
-          className="font-semibold text-lg cursor-pointer hover:text-blue-500 transition"
-        >
-          {list.name}
-        </h2>
-
-        <button
-          onClick={handleDeleteList}
-          className="p-2 rounded-md hover:bg-red-100 transition"
-        >
-          <img
-            className="h-4 w-4"
-            src={trash_svg}
-            alt="Eliminar lista"
-          />
-        </button>
-      </header>
-
-      {/* Tasks */}
-      <SortableContext
-        items={tasks.map((task) => task.id)}
-        strategy={verticalListSortingStrategy}
+    <>
+      <div
+        ref={setNodeRef}
+        {...attributes}
+        style={style}
+        className="flex flex-col justify-center bg-white p-5 rounded-sm shadow-lg w-full sm:max-w-72"
       >
-        <div className="flex flex-col gap-3 min-h-10">
-
-          {tasks.length > 0 ? (
-            tasks.map((task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-              />
-            ))
-          ) : (
-            <p className="text-sm text-gray-400">
-              No hay tareas
-            </p>
-          )}
-
+        <div className="flex items-center justify-between">
+          <button
+            {...listeners}
+            className="p-2 cursor-grab active:cursor-grabbing rounded-md hover:bg-blue-100 hover:scale-110 transition-all"
+          >
+            <MdDragIndicator />
+          </button>
+          <h2
+            onClick={() =>
+              openModal("editList", {
+                listName: list.name,
+                listId: list.id,
+              })
+            }
+            className="text-xl font-semibold hover:text-blue-500"
+          >
+            {list.name}
+          </h2>
+          <button
+            onClick={() => openModal("deleteList", list.id)}
+            className="p-2 rounded-md hover:bg-red-100 hover:scale-110 transition-all"
+            title="Eliminar lista"
+          >
+            <img className="h-5 w-5" src={trash_svg} alt="Eliminar" />
+          </button>
         </div>
-      </SortableContext>
-    </section>
+
+        <div className="flex flex-col gap-5">
+          {tasks.map((task) => {
+            if (task.list_id !== list.id) return null;
+            return <TaskCard key={task.id} task={task} />;
+          })}
+        </div>
+      </div>
+      <ModalRenderer
+        type={modal.type}
+        isOpen={modal.isOpen}
+        onClose={closeModal}
+        data={modal.data}
+      />
+    </>
   );
 }

@@ -1,10 +1,26 @@
 import Card from "../ui/Card.jsx";
 import Badge from "../ui/Badge.jsx";
 
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
 export default function TaskCard({ task }) {
+  const { attributes, listeners, setNodeRef, isOver } = useSortable({
+    id: task.id,
+  });
+
+  const style = {
+    borderRight: isOver ? "1px solid var(--color-secondary-dark)" : "none",
+  };
+
   return (
-    <div draggable className="cursor-grab active:cursor-grabbing">
-      <Card size="fluid">
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      className="cursor-grab active:cursor-grabbing"
+    >
+      <Card style={style} size="fluid">
         <div className="flex flex-col gap-5">
           <div>
             <h3 className="text-xl font-medium">{task.title}</h3>

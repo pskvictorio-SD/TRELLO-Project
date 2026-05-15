@@ -7,9 +7,18 @@ import trash_svg from "../../public/trash.svg";
 import { MdBorderLeft, MdDragIndicator } from "react-icons/md";
 import { useState } from "react";
 
-import { useSortable } from "@dnd-kit/sortable";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import {
+  useSortable,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+
+import { reorderTasks } from "../../utils/reorderTasks.js";
 
 export default function TaskLists({ list, tasks }) {
+  const [tareas, setTareas] = useState(tasks);
+
   const { attributes, listeners, setNodeRef, isOver } = useSortable({
     id: list.id,
   });
@@ -21,7 +30,10 @@ export default function TaskLists({ list, tasks }) {
   const { handleEditList, handleDeleteList } = useLists();
 
   return (
-    <>
+    <DndContext
+      collisionDetection={closestCenter}
+      onDragEnd={(e) => reorderTasks(e, tareas, setTareas)}
+    >
       <div
         ref={setNodeRef}
         {...attributes}
@@ -56,10 +68,15 @@ export default function TaskLists({ list, tasks }) {
         </div>
 
         <div className="flex flex-col gap-5">
-          {tasks.map((task) => {
-            if (task.list_id !== list.id) return null;
-            return <TaskCard key={task.id} task={task} />;
-          })}
+          <SortableContext
+            items={tareas}
+            strategy={verticalListSortingStrategy}
+          >
+            {tareas.map((task) => {
+              if (task.list_id !== list.id) return null;
+              return <TaskCard key={task.id} task={task} />;
+            })}
+          </SortableContext>
         </div>
       </div>
       <ModalRenderer
@@ -68,6 +85,6 @@ export default function TaskLists({ list, tasks }) {
         onClose={closeModal}
         data={modal.data}
       />
-    </>
+    </DndContext>
   );
 }

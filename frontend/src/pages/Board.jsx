@@ -7,32 +7,21 @@ import ModalRenderer from "../utils/ModalRenderer.jsx";
 
 import { dataContext } from "../contexts/dataContext.jsx";
 import { useContext, useEffect, useState } from "react";
+
 import useLists from "../hooks/useLists.js";
 
 import { closestCenter, DndContext } from "@dnd-kit/core";
 import {
   SortableContext,
   horizontalListSortingStrategy,
-  arrayMove,
 } from "@dnd-kit/sortable";
+
+import { reorderLists } from "../utils/reorderLists.js";
 
 export default function Board() {
   const { modal, openModal, closeModal } = useModal();
   const { appData, setAppData } = useContext(dataContext);
-  const { fetchLists } = useLists();
-
-  const handleDragEnd = (e) => {
-    const { active, over } = e;
-
-    const oldIndex = lists.findIndex((list) => list.id === active.id);
-    const newIndex = lists.findIndex((list) => list.id === over.id);
-
-    const newList = arrayMove(lists, oldIndex, newIndex);
-    setAppData({
-      ...appData,
-      currentBoard: { ...appData.currentBoard, lists: newList },
-    });
-  };
+  const { handleMoveList, fetchLists } = useLists();
 
   useEffect(() => {
     fetchLists();
@@ -43,7 +32,7 @@ export default function Board() {
   let tasks = [
     {
       id: 10,
-      list_id: 2,
+      list_id: 8,
       title: "Primera tarea 1",
       description: "",
       priority: "medium",
@@ -54,7 +43,7 @@ export default function Board() {
     },
     {
       id: 9,
-      list_id: 4,
+      list_id: 8,
       title: "Segunda tarea 2",
       description: "Lorem ipsum",
       priority: "high",
@@ -65,7 +54,7 @@ export default function Board() {
     },
     {
       id: 11,
-      list_id: 5,
+      list_id: 8,
       title: "Tercera tarea 3",
       description: "",
       priority: "high",
@@ -82,7 +71,7 @@ export default function Board() {
         <DndContext
           collisionDetection={closestCenter}
           onDragEnd={(e) => {
-            handleDragEnd(e);
+            reorderLists(e, lists, setAppData, fetchLists, handleMoveList);
           }}
         >
           <div className="flex items-center justify-center">
@@ -108,24 +97,6 @@ export default function Board() {
           </main>
         </DndContext>
       </AppLayout>
-
-      {/* <AppLayout>
-        <DndContext
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <main className="flex flex-wrap gap-5">
-            <SortableContext
-              items={lists}
-              strategy={horizontalListSortingStrategy}
-            >
-              {lists.map((list) => {
-                return <TaskLists key={list.id} list={list} tasks={tasks} />;
-              })}
-            </SortableContext>
-          </main>
-        </DndContext>
-      </AppLayout> */}
 
       <ModalRenderer
         type={modal.type}

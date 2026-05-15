@@ -42,6 +42,12 @@ export default function useLists() {
     }
   };
 
+  const handleMoveList = async (listId, position, reorder) => {
+    const data = await request(() =>
+      moveList(boardId, listId, position, reorder),
+    );
+  };
+
   const handleDeleteList = async (listId) => {
     const data = await request(() => deleteList(boardId, listId));
     if (data.ok) {
@@ -53,6 +59,7 @@ export default function useLists() {
     fetchLists,
     handleCreateList,
     handleEditList,
+    handleMoveList,
     handleDeleteList,
   };
 }

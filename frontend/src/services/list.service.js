@@ -53,7 +53,22 @@ export const editList = async (boardId, listName, listId) => {
   return res;
 };
 
-export const moveList = async (boardId, listId, position) => {};
+export const moveList = async (boardId, listId, position, reorder) => {
+  const response = await fetch(
+    `http://localhost:3001/api/boards/${boardId}/lists/${listId}/move`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        position: position,
+        reorder: reorder,
+      }),
+    },
+  );
+};
 
 export const deleteList = async (boardId, listId) => {
   const response = await fetch(

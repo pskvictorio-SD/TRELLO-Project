@@ -13,11 +13,13 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-
 import { reorderTasks } from "../../utils/reorderTasks.js";
+import useTasks from "../../hooks/useTasks.js";
 
-export default function TaskLists({ list, tasks }) {
+export default function TaskLists({ list, tasks, setAppData }) {
   const [tareas, setTareas] = useState(tasks);
+
+  const { fetchTasks, handleMoveTasks } = useTasks();
 
   const { attributes, listeners, setNodeRef, isOver } = useSortable({
     id: list.id,
@@ -32,7 +34,7 @@ export default function TaskLists({ list, tasks }) {
   return (
     <DndContext
       collisionDetection={closestCenter}
-      onDragEnd={(e) => reorderTasks(e, tareas, setTareas)}
+      onDragEnd={(e) => reorderTasks(e, tareas, setTareas, list, fetchTasks, handleMoveTasks)}
     >
       <div
         ref={setNodeRef}

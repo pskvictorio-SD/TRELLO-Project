@@ -10,6 +10,8 @@ import {
 import useFetch from "./useFetch.js";
 import { useSearchParams } from "react-router-dom";
 
+import { getTasks } from "../services/task.service.js";
+
 export default function useLists() {
   const { request, loading, error } = useFetch();
   const { appData, setAppData } = useContext(dataContext);
@@ -19,6 +21,11 @@ export default function useLists() {
 
   const fetchLists = async () => {
     const data = await getLists(boardId);
+    // Fetch tasks
+    for (const list of data.lists) {
+      const tasksData = await getTasks(boardId, list.id);
+      list.tasks = tasksData.tasks; // Assuming the response has a 'tasks' field
+    }
 
     setAppData((prev) => ({
       ...prev,

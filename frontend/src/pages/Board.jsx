@@ -6,7 +6,7 @@ import useModal from "../hooks/useModal.js";
 import ModalRenderer from "../utils/ModalRenderer.jsx";
 
 import { dataContext } from "../contexts/dataContext.jsx";
-import { useContext, useEffect, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 
 import useLists from "../hooks/useLists.js";
 
@@ -27,43 +27,11 @@ export default function Board() {
     fetchLists();
   }, []);
 
-  let lists = appData?.currentBoard?.lists || [];
+  useEffect(() => {
+    console.log(appData)
+  }, [appData.currentBoard]);
 
-  let tasks = [
-    {
-      id: 10,
-      list_id: 8,
-      title: "Primera tarea 1",
-      description: "",
-      priority: "medium",
-      due_date: null,
-      is_completed: 0,
-      created_by: 6,
-      created_at: "2026-03-05T20:28:10.000Z",
-    },
-    {
-      id: 9,
-      list_id: 8,
-      title: "Segunda tarea 2",
-      description: "Lorem ipsum",
-      priority: "high",
-      due_date: null,
-      is_completed: 0,
-      created_by: 6,
-      created_at: "2026-03-05T20:27:40.000Z",
-    },
-    {
-      id: 11,
-      list_id: 8,
-      title: "Tercera tarea 3",
-      description: "",
-      priority: "high",
-      due_date: null,
-      is_completed: 0,
-      created_by: 6,
-      created_at: "2026-03-05T20:28:21.000Z",
-    },
-  ];
+  let lists = appData?.currentBoard?.lists || [];
 
   return (
     <>
@@ -83,7 +51,9 @@ export default function Board() {
               strategy={horizontalListSortingStrategy}
             >
               {lists.map((list) => {
-                return <TaskLists key={list.id} list={list} tasks={tasks} />;
+                return (
+                  <TaskLists key={list.id} list={list} tasks={list.tasks} setAppData={setAppData} />
+                );
               })}
             </SortableContext>
             <Card

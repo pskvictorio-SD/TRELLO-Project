@@ -30,10 +30,10 @@ export default function TaskCard({ task }) {
           </div>
           <div className="flex flex-col gap-2 items-baseline-last">
             <Badge variant="danger">
-              <b>priority:</b> {task.priority ? task.priority : "No priority"}
+              <b>Priority:</b> {task.priority ? task.priority : "No priority"}
             </Badge>
             <Badge variant="info">
-              <b>due date:</b> {task.due_date ? task.due_date : "No due date"}
+              <b>Due date:</b> {task.due_date ? task.due_date.slice(0, 10) : "No due date"}
             </Badge>
             <Badge variant="info">
               <b>Created at:</b> {task.created_at.slice(0, 10)}

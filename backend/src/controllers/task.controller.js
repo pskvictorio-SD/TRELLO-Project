@@ -174,7 +174,7 @@ export const updateTask = (req, res) => {
 
 export const moveTask = (req, res) => {
   const { taskId, listId } = req.params;
-  const { position } = req.body;
+  const { position, reorder } = req.body;
 
   const parsedPosition = Number(position);
 
@@ -186,16 +186,15 @@ export const moveTask = (req, res) => {
   }
 
   conn.query(
-    "UPDATE tasks SET list_id = ?, position = ? WHERE id = ?",
+    `UPDATE tasks SET list_id = ?, position = ? WHERE id = ?`,
     [listId, parsedPosition, taskId],
     (err, results) => {
-      if (err) {
+      if (err)
         return res.status(500).json({
           ok: false,
           message: "Error en el servidor",
           error: err.message,
         });
-      }
 
       if (results.affectedRows === 0) {
         return res.status(404).json({
@@ -204,12 +203,66 @@ export const moveTask = (req, res) => {
         });
       }
 
+      if (reorder) {
+        conn.query(
+          "SELECT id FROM tasks WHERE list_id = ? ORDER BY position ASC",
+          [listId],
+          (err, results) => {
+            if (err) {
+              return res.status(500).json({
+                ok: false,
+                message: "Error en el servidor",
+                error: err.message,
+              });
+            }
+            let currentPosition = 10;
+            results.forEach((task) => {
+              conn.query(
+                `
+                  UPDATE tasks
+                  SET position = ?
+                  WHERE id = ?
+                `,
+                [currentPosition, task.id],
+              );
+              currentPosition += 10;
+            });
+          },
+        );
+      }
+
       return res.status(200).json({
         ok: true,
         message: "Tarea movida correctamente",
       });
     },
   );
+
+  // conn.query(
+  //   "UPDATE tasks SET list_id = ?, position = ? WHERE id = ?",
+  //   [listId, parsedPosition, taskId],
+  //   (err, results) => {
+  //     if (err) {
+  //       return res.status(500).json({
+  //         ok: false,
+  //         message: "Error en el servidor",
+  //         error: err.message,
+  //       });
+  //     }
+
+  //     if (results.affectedRows === 0) {
+  //       return res.status(404).json({
+  //         ok: false,
+  //         message: "Tarea no encontrada",
+  //       });
+  //     }
+
+  //     return res.status(200).json({
+  //       ok: true,
+  //       message: "Tarea movida correctamente",
+  //     });
+  //   },
+  // );
 };
 
 export const deleteTask = (req, res) => {

@@ -116,29 +116,72 @@ export const updateList = (req, res) => {
 };
 
 export const moveList = (req, res) => {
-  const { position } = req.body;
-  const list = req.list;
+  const { position, reorder } = req.body;
+  const { boardId, listId } = req.params;
 
-  if (position === undefined || isNaN(position)) {
+  if (!position) {
     return res.status(400).json({
       ok: false,
-      message: "La posición debe ser válida",
+      message: "Posición no especificada",
     });
   }
 
+  // UPDATE
   conn.query(
-    "UPDATE lists SET position = ? WHERE id = ?",
-    [position, list.id],
+    `
+      UPDATE lists
+      SET position = ?
+      WHERE id = ?
+    `,
+    [position, listId],
     (err) => {
       if (err) {
         return res.status(500).json({
           ok: false,
-          message: "Error en el servidor",
+          message: "Error en servidor",
           error: err.message,
         });
       }
 
-      return res.status(200).json({ ok: true, message: "Lista movida", list });
+      // REORDER
+      if (reorder) {
+        conn.query(
+          `
+        SELECT id
+        FROM lists
+        WHERE board_id = ?
+        ORDER BY position ASC
+      `,
+          [boardId],
+          (err, results) => {
+            if (err) {
+              return res.status(500).json({
+                ok: false,
+                message: "Error en servidor",
+                error: err.message,
+              });
+            }
+
+            let currentPosition = 10;
+
+            results.forEach((list) => {
+              conn.query(
+                `
+              UPDATE lists
+              SET position = ?
+              WHERE id = ?
+            `,
+                [currentPosition, list.id],
+              );
+              currentPosition += 10;
+            });
+          },
+        );
+      }
+      return res.status(200).json({
+        ok: true,
+        message: "Lista movida correctamente",
+      });
     },
   );
 };

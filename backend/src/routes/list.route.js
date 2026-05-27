@@ -14,11 +14,11 @@ import { validateListExists } from "../middleware/validateListExistsAndBelongsTo
 const router = Router();
 
 /**
- * @route   POST /api/workspaces/:workspaceId/boards/:boardId/lists
+ * @route   POST /api/boards/:boardId/lists
  * @desc    Crear nueva lista
  */
 router.post(
-  "/:workspaceId/boards/:boardId/lists",
+  "/boards/:boardId/lists",
   authMiddleware,
   userInBoard,
   userRoleInBoard("admin", "member"),
@@ -26,22 +26,22 @@ router.post(
 );
 
 /**
- * @route   GET /api/workspaces/:workspaceId/boards/:boardId/lists
+ * @route   GET /api/boards/:boardId/lists
  * @desc    Obtener listas de un tablero
  */
 router.get(
-  "/:workspaceId/boards/:boardId/lists",
+  "/boards/:boardId/lists",
   authMiddleware,
   userInBoard,
   getListsOfBoard,
 );
 
 /**
- * @route   PUT /api/workspaces/:workspaceId/boards/:boardId/lists/:listId
+ * @route   PUT /api/boards/:boardId/lists/:listId
  * @desc    Actualizar una lista
  */
 router.put(
-  "/:workspaceId/boards/:boardId/lists/:listId",
+  "/boards/:boardId/lists/:listId",
   authMiddleware,
   userInBoard,
   userRoleInBoard("admin", "member"),
@@ -50,11 +50,11 @@ router.put(
 );
 
 /**
- * @route   PATCH /api/workspaces/:workspaceId/boards/:boardId/lists/:listId/move
+ * @route   PATCH /api/boards/:boardId/lists/:listId/move
  * @desc    Mover una lista
  */
 router.patch(
-  "/:workspaceId/boards/:boardId/lists/:listId/move",
+  "/boards/:boardId/lists/:listId/move",
   authMiddleware,
   userInBoard,
   userRoleInBoard("admin", "member"),
@@ -63,11 +63,11 @@ router.patch(
 );
 
 /**
- * @route   DELETE /api/workspaces/:workspaceId/boards/:boardId/lists/:listId
+ * @route   DELETE /api/boards/:boardId/lists/:listId
  * @desc    Eliminar una lista
  */
 router.delete(
-  "/:workspaceId/boards/:boardId/lists/:listId",
+  "/boards/:boardId/lists/:listId",
   authMiddleware,
   userInBoard,
   userRoleInBoard("admin", "member"),

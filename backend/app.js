@@ -28,10 +28,10 @@ import boardMemberRoutes from "./src/routes/boardMembers.route.js";
 app.use("/api/", boardMemberRoutes);
 // Ruta de manejo de listas
 import listRoutes from "./src/routes/list.route.js";
-app.use("/api/workspaces", listRoutes);
+app.use("/api/", listRoutes);
 // Ruta de manejo de tareas
 import taskRoutes from "./src/routes/task.route.js";
-app.use("/api/workspaces", taskRoutes);
+app.use("/api/", taskRoutes);
 
 // Puerto
 const PORT = process.env.PORT || 3000;

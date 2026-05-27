@@ -28,8 +28,6 @@ export const createTask = (req, res) => {
 
   const trimmedTitle = title.trim();
 
-  // TODO: Validar que el dueDate sea válido
-
   conn.query(
     "SELECT MAX(position) AS maxPosition FROM tasks WHERE list_id = ?",
     [listId],
@@ -115,13 +113,6 @@ export const updateTask = (req, res) => {
     return res.status(400).json({
       ok: false,
       message: "El título es requerido",
-    });
-  }
-
-  if (!description || !description.trim()) {
-    return res.status(400).json({
-      ok: false,
-      message: "La descripción es requerida",
     });
   }
 

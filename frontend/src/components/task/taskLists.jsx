@@ -13,16 +13,14 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { reorderTasks } from "../../utils/reorderTasks.js";
-import useTasks from "../../hooks/useTasks.js";
 
-export default function TaskLists({ list, tasks, setAppData }) {
-  const [tareas, setTareas] = useState(tasks);
-
-  const { fetchTasks, handleMoveTasks } = useTasks();
-
+export default function TaskLists({ list, tasks, setAppData, handleDragEnd }) {
   const { attributes, listeners, setNodeRef, isOver } = useSortable({
-    id: list.id,
+    id: `list-${list.id}`,
+    data: {
+      type: "list",
+      list,
+    },
   });
   const style = {
     borderRight: isOver ? "1px solid var(--color-secondary-dark)" : "none",
@@ -32,10 +30,7 @@ export default function TaskLists({ list, tasks, setAppData }) {
   const { handleEditList, handleDeleteList } = useLists();
 
   return (
-    <DndContext
-      collisionDetection={closestCenter}
-      onDragEnd={(e) => reorderTasks(e, tareas, setTareas, list, fetchTasks, handleMoveTasks)}
-    >
+    <>
       <div
         ref={setNodeRef}
         {...attributes}
@@ -71,10 +66,10 @@ export default function TaskLists({ list, tasks, setAppData }) {
 
         <div className="flex flex-col gap-5">
           <SortableContext
-            items={tareas}
+            items={tasks.map((task) => `task-${task.id}`)}
             strategy={verticalListSortingStrategy}
           >
-            {tareas.map((task) => {
+            {tasks.map((task) => {
               if (task.list_id !== list.id) return null;
               return <TaskCard key={task.id} task={task} />;
             })}
@@ -87,6 +82,6 @@ export default function TaskLists({ list, tasks, setAppData }) {
         onClose={closeModal}
         data={modal.data}
       />
-    </DndContext>
+    </>
   );
 }

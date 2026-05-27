@@ -16,20 +16,18 @@ import {
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-import { reorderLists } from "../utils/reorderLists.js";
+import { handleDragEnd } from "../utils/handleDragEnd.js";
+import useTasks from "../hooks/useTasks.js";
 
 export default function Board() {
   const { modal, openModal, closeModal } = useModal();
   const { appData, setAppData } = useContext(dataContext);
   const { handleMoveList, fetchLists } = useLists();
+  const { handleMoveTasks } = useTasks();
 
   useEffect(() => {
     fetchLists();
   }, []);
-
-  useEffect(() => {
-    console.log(appData)
-  }, [appData.currentBoard]);
 
   let lists = appData?.currentBoard?.lists || [];
 
@@ -38,21 +36,34 @@ export default function Board() {
       <AppLayout>
         <DndContext
           collisionDetection={closestCenter}
-          onDragEnd={(e) => {
-            reorderLists(e, lists, setAppData, fetchLists, handleMoveList);
-          }}
+          onDragEnd={(e) =>
+            handleDragEnd(
+              e,
+              lists,
+              setAppData,
+              fetchLists,
+              handleMoveList,
+              handleMoveTasks,
+            )
+          }
         >
           <div className="flex items-center justify-center">
             <h1 className="text-2xl font-bold">Tus Tableros</h1>
           </div>
           <main className="flex flex-wrap gap-5">
             <SortableContext
-              items={lists}
+              items={lists.map((list) => `list-${list.id}`)}
               strategy={horizontalListSortingStrategy}
             >
               {lists.map((list) => {
                 return (
-                  <TaskLists key={list.id} list={list} tasks={list.tasks} setAppData={setAppData} />
+                  <TaskLists
+                    key={list.id}
+                    list={list}
+                    tasks={list.tasks}
+                    setAppData={setAppData}
+                    handleDragEnd={handleDragEnd}
+                  />
                 );
               })}
             </SortableContext>

@@ -6,7 +6,12 @@ import { CSS } from "@dnd-kit/utilities";
 
 export default function TaskCard({ task }) {
   const { attributes, listeners, setNodeRef, isOver } = useSortable({
-    id: task.id,
+    id: `task-${task.id}`,
+    data: {
+      type: "task",
+      task,
+      listId: task.list_id,
+    },
   });
 
   const style = {
@@ -33,7 +38,8 @@ export default function TaskCard({ task }) {
               <b>Priority:</b> {task.priority ? task.priority : "No priority"}
             </Badge>
             <Badge variant="info">
-              <b>Due date:</b> {task.due_date ? task.due_date.slice(0, 10) : "No due date"}
+              <b>Due date:</b>{" "}
+              {task.due_date ? task.due_date.slice(0, 10) : "No due date"}
             </Badge>
             <Badge variant="info">
               <b>Created at:</b> {task.created_at.slice(0, 10)}

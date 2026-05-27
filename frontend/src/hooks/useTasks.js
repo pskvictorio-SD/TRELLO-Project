@@ -21,7 +21,7 @@ export default function useTasks() {
 
   const handleMoveTasks = async (listId, taskId, newPosition, reorder) => {
     const data = await moveTask(boardId, listId, taskId, newPosition, reorder);
-  };
+    };
 
   const handleDeleteTasks = async () => {};
 

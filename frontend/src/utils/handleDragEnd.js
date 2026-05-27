@@ -31,6 +31,6 @@ export const handleDragEnd = (
 
   // Mover tareas entre listas
   if (activeType === "task" && overType === "list") {
-    moveTask(active, over, lists, setAppData);
+    moveTask(active, over, lists, setAppData, handleMoveTasks);
   }
 };

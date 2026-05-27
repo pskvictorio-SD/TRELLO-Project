@@ -23,7 +23,7 @@ export default function TaskCard({ task }) {
       ref={setNodeRef}
       {...attributes}
       {...listeners}
-      className="cursor-grab active:cursor-grabbing"
+      className="cursor-grab active:cursor-grabbing hover:shadow-lg"
     >
       <Card style={style} size="fluid">
         <div className="flex flex-col gap-5">
@@ -38,11 +38,11 @@ export default function TaskCard({ task }) {
               <b>Priority:</b> {task.priority ? task.priority : "No priority"}
             </Badge>
             <Badge variant="info">
-              <b>Due date:</b>{" "}
-              {task.due_date ? task.due_date.slice(0, 10) : "No due date"}
+              <b>Created at:</b> {task.created_at.slice(0, 10)}
             </Badge>
             <Badge variant="info">
-              <b>Created at:</b> {task.created_at.slice(0, 10)}
+              <b>Due date:</b>{" "}
+              {task.due_date ? task.due_date.slice(0, 10) : "No due date"}
             </Badge>
           </div>
         </div>

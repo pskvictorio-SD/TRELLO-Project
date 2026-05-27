@@ -5,6 +5,7 @@ import useModal from "../../hooks/useModal.js";
 import ModalRenderer from "../../utils/ModalRenderer.jsx";
 import trash_svg from "../../public/trash.svg";
 import { MdBorderLeft, MdDragIndicator } from "react-icons/md";
+import { IoAddCircleOutline } from "react-icons/io5";
 import { useState } from "react";
 
 import { DndContext, closestCenter } from "@dnd-kit/core";
@@ -35,7 +36,7 @@ export default function TaskLists({ list, tasks, setAppData, handleDragEnd }) {
         ref={setNodeRef}
         {...attributes}
         style={style}
-        className="flex flex-col justify-center bg-white p-5 rounded-sm shadow-lg w-full sm:max-w-72"
+        className="flex flex-col justify-center bg-white px-5 py-2 gap-5 rounded-sm shadow-lg min-w-72 h-fit"
       >
         <div className="flex items-center justify-between">
           <button
@@ -74,6 +75,19 @@ export default function TaskLists({ list, tasks, setAppData, handleDragEnd }) {
               return <TaskCard key={task.id} task={task} />;
             })}
           </SortableContext>
+        </div>
+
+        <div className="">
+          <Button
+            onClick={() => openModal("createTask", list.id)}
+            variant=""
+            title="Crear tarea"
+          >
+            <div className="flex items-center gap-2 text-lg text-gray-700 hover:text-blue-500">
+              <IoAddCircleOutline />
+              <span className="">Crear tarea</span>
+            </div>
+          </Button>
         </div>
       </div>
       <ModalRenderer

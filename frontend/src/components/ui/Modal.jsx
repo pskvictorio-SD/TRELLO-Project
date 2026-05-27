@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import Button from "./Button.jsx";
 
-export default function Modal( { isOpen, onClose, children }) {
+export default function Modal({ isOpen, onClose, children }) {
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") onClose();
@@ -25,7 +25,7 @@ export default function Modal( { isOpen, onClose, children }) {
       />
 
       {/* Modal content */}
-      <div className="relative bg-white rounded-lg shadow-lg p-6 w-xl min-w-fit z-10">
+      <div className="relative bg-white rounded-lg shadow-lg p-6 w-full sm:w-xl  z-10">
         {children}
       </div>
     </div>

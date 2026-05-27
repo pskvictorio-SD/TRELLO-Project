@@ -84,7 +84,7 @@ function useReorder() {
     // await fetchTasks();
   };
 
-  const moveTask = async (active, over, lists, setAppData) => {
+  const moveTask = async (active, over, lists, setAppData, handleMoveTasks) => {
     const taskId = active.id.slice(5);
     const listId = over.id.slice(5);
 
@@ -123,6 +123,9 @@ function useReorder() {
         lists: newLists,
       },
     }));
+
+    // Hacer fetch de la tarea movida
+    await handleMoveTasks(listId, taskId, targetTask.position, false);
   };
 
   const reorderLists = async (

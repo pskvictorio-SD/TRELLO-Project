@@ -50,7 +50,7 @@ export default function Board() {
           <div className="flex items-center justify-center">
             <h1 className="text-2xl font-bold">Tus Tableros</h1>
           </div>
-          <main className="flex flex-wrap gap-5">
+          <section className="flex overflow-x-auto gap-5">
             <SortableContext
               items={lists.map((list) => `list-${list.id}`)}
               strategy={horizontalListSortingStrategy}
@@ -71,11 +71,11 @@ export default function Board() {
               onClick={() => {
                 openModal("createList");
               }}
-              className="flex justify-center max-h-16 max-w-72 cursor-pointer"
+              className="flex justify-center max-h-16 min-w-72 max-w-72 cursor-pointer"
             >
               <h3 className="text-lg font-medium">Crear otra lista +</h3>
             </Card>
-          </main>
+          </section>
         </DndContext>
       </AppLayout>
 

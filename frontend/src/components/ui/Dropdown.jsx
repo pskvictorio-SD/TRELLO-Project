@@ -1,8 +1,19 @@
 import { useState, useRef, useEffect } from "react";
+import clsx from "clsx";
 
-export default function Dropdown({ title, children }) {
+export default function Dropdown({ title, children, variant }) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  const variants = {
+    primary: "bg-blue-500 text-white",
+    secondary: "bg-gray-500 text-white",
+    danger: "bg-red-500 text-white",
+    warning: "bg-yellow-500 text-white",
+    success: "bg-green-500 text-white",
+    outline: "border border-gray-300 text-gray-900",
+    input: "ring-1 ring-gray-300 px-4 py-2 rounded w-full shadow focus:outline-none focus:ring-2 focus:ring-blue-500",
+  };
 
   const toggleDropdown = () => {
     setOpen(!open);
@@ -27,7 +38,10 @@ export default function Dropdown({ title, children }) {
       <button
         type="button"
         onClick={toggleDropdown}
-        className="flex w-full items-center justify-between rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+        className={clsx(
+          "flex w-full items-center justify-between px-4 py-2 rounded-sm text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75",
+          variants[variant],
+        )}
       >
         {title}
         <svg

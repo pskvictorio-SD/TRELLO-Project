@@ -5,7 +5,7 @@ import AddMemberModal from "../components/modals/AddMemberModal.jsx";
 import EditListModal from "../components/modals/EditListModal.jsx";
 import CreateListModal from "../components/modals/CreateListModal.jsx";
 import DeleteListModal from "../components/modals/DeleteListModal.jsx";
-
+import CreateTaskModal from "../components/modals/CreateTaskModal.jsx";
 export default function ModalRenderer({ type, isOpen, onClose, data }) {
   if (!isOpen) return null;
 
@@ -38,6 +38,10 @@ export default function ModalRenderer({ type, isOpen, onClose, data }) {
       return (
         <DeleteListModal isOpen={isOpen} onClose={onClose} listId={data} />
       );
+
+      // TASKS
+    case "createTask":
+      return <CreateTaskModal isOpen={isOpen} onClose={onClose} listId={data} />;
 
     default:
       return null;

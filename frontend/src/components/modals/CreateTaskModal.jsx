@@ -8,6 +8,8 @@ import Dropdown from "../ui/Dropdown.jsx";
 import { useState } from "react";
 import useTasks from "../../hooks/useTasks.js";
 
+import useLists from "../../hooks/useLists.js";
+
 export default function CreateTaskModal({ isOpen, onClose, listId }) {
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
@@ -15,16 +17,21 @@ export default function CreateTaskModal({ isOpen, onClose, listId }) {
   const [taskDueDate, setTaskDueDate] = useState("");
 
   const { handleCreateTasks } = useTasks();
+  const { fetchLists } = useLists();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Subir board nuevo
-    handleCreateTasks(listId, {
+    await handleCreateTasks(listId, {
       title: taskName,
       description: taskDescription,
       priority: taskPriority,
       dueDate: taskDueDate,
     });
+
+    // Cargar listas
+    await fetchLists();
+
     onClose();
   };
 

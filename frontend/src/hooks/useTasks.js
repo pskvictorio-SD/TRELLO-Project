@@ -17,6 +17,24 @@ export default function useTasks() {
 
   const handleCreateTasks = async (listId, task) => {
     const data = await createTask(boardId, listId, task);
+
+    setAppData((prevData) => {
+      return {
+        ...prevData,
+        currentBoard: {
+          ...prevData.currentBoard,
+          lists: prevData.currentBoard.lists.map((list) => {
+            if (list.id === listId) {
+              return {
+                ...list,
+                tasks: [...list.tasks, data.task],
+              };
+            }
+            return list;
+          }),
+        },
+      };
+    });
   };
 
   const handleEditTasks = async () => {};

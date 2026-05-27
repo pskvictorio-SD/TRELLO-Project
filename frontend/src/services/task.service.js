@@ -1,4 +1,7 @@
 export const createTask = async (boardId, listId, task) => {
+  if (task.dueDate == "") {
+    task.dueDate = null;
+  }
   const response = await fetch(
     `http://localhost:3001/api/boards/${boardId}/lists/${listId}/tasks`,
     {

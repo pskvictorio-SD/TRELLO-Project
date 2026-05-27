@@ -36,7 +36,7 @@ export default function TaskLists({ list, tasks, setAppData, handleDragEnd }) {
         ref={setNodeRef}
         {...attributes}
         style={style}
-        className="flex flex-col justify-center bg-white px-5 py-2 gap-5 rounded-sm shadow-lg min-w-72 h-fit"
+        className="flex flex-col justify-center bg-white px-5 py-2 gap-5 rounded-sm shadow-lg min-w-72 max-w-72 h-fit"
       >
         <div className="flex items-center justify-between">
           <button
@@ -52,7 +52,7 @@ export default function TaskLists({ list, tasks, setAppData, handleDragEnd }) {
                 listId: list.id,
               })
             }
-            className="text-xl font-semibold hover:text-blue-500"
+            className="text-xl font-semibold hover:text-blue-500 line-clamp-4 wrap-break-word max-w-36"
           >
             {list.name}
           </h2>
@@ -77,15 +77,15 @@ export default function TaskLists({ list, tasks, setAppData, handleDragEnd }) {
           </SortableContext>
         </div>
 
-        <div className="">
+        <div>
           <Button
             onClick={() => openModal("createTask", list.id)}
             variant=""
             title="Crear tarea"
           >
             <div className="flex items-center gap-2 text-lg text-gray-700 hover:text-blue-500">
-              <IoAddCircleOutline />
-              <span className="">Crear tarea</span>
+              <IoAddCircleOutline size={22} />
+              <span>Crear tarea</span>
             </div>
           </Button>
         </div>

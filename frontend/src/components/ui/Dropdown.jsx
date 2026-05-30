@@ -62,7 +62,7 @@ export default function Dropdown({ title, children, variant }) {
       </button>
 
       {open && (
-        <div className="mt-2 w-full rounded-lg bg-white shadow-lg border border-gray-200 p-4">
+        <div className="mt-2 w-full rounded-lg bg-white flex flex-col shadow-lg border border-gray-200 p-4">
           {children}
         </div>
       )}

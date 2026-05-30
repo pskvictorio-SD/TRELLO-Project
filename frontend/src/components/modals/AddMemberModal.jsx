@@ -4,7 +4,7 @@ import Button from "../ui/Button.jsx";
 import Dropdown from "../ui/Dropdown.jsx";
 import Form from "../ui/Form.jsx";
 
-import useMembers from "../../hooks/useMembers.js";
+import useInvitation from "../../hooks/useInvitation.js";
 import { useState } from "react";
 
 export default function AddMemberModal({ isOpen, onClose, boardId }) {
@@ -12,7 +12,7 @@ export default function AddMemberModal({ isOpen, onClose, boardId }) {
   const [role, setRole] = useState("");
   const [error, setError] = useState(false);
 
-  const { handleAddMember } = useMembers();
+  const { handleCreateInvitation } = useInvitation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,10 +23,11 @@ export default function AddMemberModal({ isOpen, onClose, boardId }) {
     }
 
     try {
-      await handleAddMember(boardId, email, role);
+      await handleCreateInvitation(boardId, email);
 
       setEmail("");
       setRole("");
+
       onClose();
     } catch (error) {
       setError(error.message);
@@ -51,33 +52,35 @@ export default function AddMemberModal({ isOpen, onClose, boardId }) {
           </fieldset>
 
           <fieldset>
-            <Dropdown title={role || "..."}>
-              <Button
-                type="button"
-                className="w-full"
-                variant="secondary"
-                onClick={() => setRole("admin")}
-              >
-                Administrador
-              </Button>
-              <Button
-                type="button"
-                className="w-full"
-                variant="secondary"
-                value="member"
-                onClick={() => setRole("member")}
-              >
-                Miembro
-              </Button>
-              <Button
-                type="button"
-                className="w-full"
-                variant="secondary"
-                value="viewer"
-                onClick={() => setRole("viewer")}
-              >
-                Observador
-              </Button>
+            <Dropdown variant="input" title={role || "Selecciona un rol"}>
+              <div className="">
+                <Button
+                  type="button"
+                  className="w-full"
+                  variant="outline"
+                  onClick={() => setRole("admin")}
+                >
+                  Administrador
+                </Button>
+                <Button
+                  type="button"
+                  className="w-full"
+                  variant="outline"
+                  value="member"
+                  onClick={() => setRole("member")}
+                >
+                  Miembro
+                </Button>
+                <Button
+                  type="button"
+                  className="w-full"
+                  variant="outline"
+                  value="viewer"
+                  onClick={() => setRole("viewer")}
+                >
+                  Observador
+                </Button>
+              </div>
             </Dropdown>
           </fieldset>
 

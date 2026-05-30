@@ -2,42 +2,16 @@ import { useState, useRef, useEffect } from "react";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import Button from "./ui/Button.jsx";
 
+import { useContext } from "react";
+import { dataContext } from "../contexts/dataContext.jsx";
+
 export default function Notifications() {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
-  const notifications = [
-    {
-      id: 1,
-      title: "Proyecto Frontend",
-      message: "Juan te invitó a un tablero",
-    },
-    {
-      id: 2,
-      title: "Proyecto Backend",
-      message: "María te invitó a un tablero",
-    },
-    {
-      id: 3,
-      title: "Proyecto Frontend",
-      message: "Juan te invitó a un tablero",
-    },
-    {
-      id: 4,
-      title: "Proyecto Backend",
-      message: "María te invitó a un tablero",
-    },
-    {
-      id: 5,
-      title: "Proyecto Frontend",
-      message: "Juan te invitó a un tablero",
-    },
-    {
-      id: 6,
-      title: "Proyecto Backend",
-      message: "María te invitó a un tablero",
-    },
-  ];
+  const { appData, setAppData } = useContext(dataContext);
+
+  const notifications = appData?.workspace?.invitations || [];
 
   useEffect(() => {
     const handleClickOutside = (e) => {

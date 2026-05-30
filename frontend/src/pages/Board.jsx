@@ -50,7 +50,7 @@ export default function Board() {
           <div className="flex items-center justify-center">
             <h1 className="text-2xl font-bold">Tus Tableros</h1>
           </div>
-          <section className="flex overflow-x-auto gap-5">
+          <section className="flex overflow-x-auto gap-5 h-full">
             <SortableContext
               items={lists.map((list) => `list-${list.id}`)}
               strategy={horizontalListSortingStrategy}

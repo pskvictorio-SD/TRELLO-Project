@@ -6,6 +6,9 @@ import EditListModal from "../components/modals/EditListModal.jsx";
 import CreateListModal from "../components/modals/CreateListModal.jsx";
 import DeleteListModal from "../components/modals/DeleteListModal.jsx";
 import CreateTaskModal from "../components/modals/CreateTaskModal.jsx";
+import EditTaskModal from "../components/modals/EditTaskModal.jsx";
+import DeleteTaskModal from "../components/modals/DeleteTaskModal.jsx";
+
 export default function ModalRenderer({ type, isOpen, onClose, data }) {
   if (!isOpen) return null;
 
@@ -42,6 +45,10 @@ export default function ModalRenderer({ type, isOpen, onClose, data }) {
       // TASKS
     case "createTask":
       return <CreateTaskModal isOpen={isOpen} onClose={onClose} listId={data} />;
+    case "editTask":
+      return <EditTaskModal isOpen={isOpen} onClose={onClose} data={data} />;
+    case "deleteTask":
+      return <DeleteTaskModal isOpen={isOpen} onClose={onClose} data={data} />;
 
     default:
       return null;

@@ -3,8 +3,8 @@ import Button from "../ui/Button.jsx";
 import useLists from "../../hooks/useLists.js";
 import useModal from "../../hooks/useModal.js";
 import ModalRenderer from "../../utils/ModalRenderer.jsx";
-import trash_svg from "../../public/trash.svg";
 import { MdBorderLeft, MdDragIndicator } from "react-icons/md";
+import { AiOutlineDelete } from "react-icons/ai";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { useState } from "react";
 
@@ -61,7 +61,7 @@ export default function TaskLists({ list, tasks, setAppData, handleDragEnd }) {
             className="p-2 rounded-md hover:bg-red-100 hover:scale-110 transition-all"
             title="Eliminar lista"
           >
-            <img className="h-5 w-5" src={trash_svg} alt="Eliminar" />
+            <AiOutlineDelete size={22} />
           </button>
         </div>
 

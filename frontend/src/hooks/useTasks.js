@@ -1,6 +1,12 @@
 import { useContext } from "react";
 import { dataContext } from "../contexts/dataContext.jsx";
-import { getTasks, moveTask, createTask } from "../services/task.service.js";
+import {
+  getTasks,
+  moveTask,
+  createTask,
+  updateTask,
+  deleteTask,
+} from "../services/task.service.js";
 import useFetch from "./useFetch.js";
 import { useSearchParams } from "react-router-dom";
 
@@ -17,37 +23,25 @@ export default function useTasks() {
 
   const handleCreateTasks = async (listId, task) => {
     const data = await createTask(boardId, listId, task);
-
-    setAppData((prevData) => {
-      return {
-        ...prevData,
-        currentBoard: {
-          ...prevData.currentBoard,
-          lists: prevData.currentBoard.lists.map((list) => {
-            if (list.id === listId) {
-              return {
-                ...list,
-                tasks: [...list.tasks, data.task],
-              };
-            }
-            return list;
-          }),
-        },
-      };
-    });
   };
 
-  const handleEditTasks = async () => {};
+  const handleUpdateTasks = async (listId, taskId, task) => {
+    const data = await updateTask(boardId, listId, taskId, task);
+  };
 
   const handleMoveTasks = async (listId, taskId, newPosition, reorder) => {
     const data = await moveTask(boardId, listId, taskId, newPosition, reorder);
   };
 
-  const handleDeleteTasks = async () => {};
+  const handleDeleteTasks = async (listId, taskId) => {
+    const data = await deleteTask(boardId, listId, taskId);
+  };
 
   return {
     fetchTasks,
     handleMoveTasks,
     handleCreateTasks,
+    handleUpdateTasks,
+    handleDeleteTasks,
   };
 }

@@ -39,7 +39,27 @@ export const getTasks = async (boardId, listId) => {
   return res;
 };
 
-export const editTask = async () => {};
+export const updateTask = async (boardId, listId, taskId, task) => {
+  const response = await fetch(
+    `http://localhost:3001/api/boards/${boardId}/lists/${listId}/tasks/${taskId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        title: task.title,
+        description: task.description,
+        priority: task.priority,
+        dueDate: task.dueDate,
+      }),
+    },
+  );
+  const res = await response.json();
+
+  return res;
+};
 
 export const moveTask = async (
   boardId,
@@ -67,4 +87,18 @@ export const moveTask = async (
   return res;
 };
 
-export const deleteTask = async () => {};
+export const deleteTask = async (boardId, listId, taskId) => {
+  const response = await fetch(
+    `http://localhost:3001/api/boards/${boardId}/lists/${listId}/tasks/${taskId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    },
+  );
+  const res = await response.json();
+
+  return res;
+};

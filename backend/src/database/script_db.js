@@ -42,6 +42,21 @@ export const script_db = `
     );
 
     -- =========================
+    -- BOARD INVITATIONS (N:N)
+    -- =========================
+    CREATE TABLE IF NOT EXISTS board_invitations (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        board_id INT NOT NULL,
+        sender_id INT NOT NULL,
+        receiver_id INT NOT NULL,
+        status ENUM('pending','accepted','rejected') DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (board_id) REFERENCES boards(id) ON DELETE CASCADE,
+        FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+
+    -- =========================
     -- BOARD MEMBERS (N:N)
     -- =========================
     CREATE TABLE IF NOT EXISTS board_members (

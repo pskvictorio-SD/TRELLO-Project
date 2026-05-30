@@ -116,13 +116,6 @@ export const updateTask = (req, res) => {
     });
   }
 
-  if (dueDate && !isValidDate(dueDate)) {
-    return res.status(400).json({
-      ok: false,
-      message: "La fecha no es válida",
-    });
-  }
-
   const allowedPriorities = ["low", "medium", "high"];
   if (priority && !allowedPriorities.includes(priority)) {
     return res.status(400).json({

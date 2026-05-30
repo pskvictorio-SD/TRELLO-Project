@@ -23,6 +23,9 @@ app.use("/api/workspaces", workspaceRoutes);
 // Ruta de manejo de boards
 import boardRoutes from "./src/routes/board.route.js";
 app.use("/api/workspaces", boardRoutes);
+// Ruta de manejo de invitaciones
+import boardInvitationRoutes from "./src/routes/boardInvitations.route.js";
+app.use("/api/boards", boardInvitationRoutes);
 // Ruta de manejo de miembros de boards
 import boardMemberRoutes from "./src/routes/boardMembers.route.js";
 app.use("/api/", boardMemberRoutes);

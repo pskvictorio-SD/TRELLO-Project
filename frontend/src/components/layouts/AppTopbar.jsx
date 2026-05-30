@@ -1,6 +1,7 @@
 import Avatar from "../ui/Avatar";
 import Button from "../ui/Button";
 import Link from "../ui/Link.jsx";
+import Notifications from "../Notifications.jsx";
 
 export default function AppTopbar() {
   return (
@@ -12,6 +13,8 @@ export default function AppTopbar() {
       <div className="flex items-center gap-4">
         {/* Botón crear */}
         <Button variant="primary">+ Crear Tablero</Button>
+
+        <Notifications />
 
         {/* Avatar */}
         <Avatar src="https://i.pravatar.cc/40" />

@@ -24,27 +24,31 @@ export default function BoardCard({ board }) {
 
   const openBoard = () => {
     navigate(`/boards?boardId=${board.id}`);
-  }
+  };
 
   return (
     <>
-      <Card onClick={openBoard} size="sm" className="hover:scale-105 cursor-pointer">
+      <Card size="sm" className="hover:scale-105">
         <div className="flex items-center justify-between gap-10">
-          <img
-            className="w-20 h-16 rounded-md"
-            src={board.image ? board.image : books_svg}
-            alt="Imagen descriptiva de board"
-          />
-          <div className="flex flex-col gap-5 max-w-1/3">
-            <h2 className="text-xl font-bold">{board.title}</h2>
-            <p
-              className="truncate line-clamp-2 text-sm"
-              title={board.description}
-            >
-              {board.description}
-            </p>
+            <img
+              onClick={openBoard}
+              className="w-20 h-16 rounded-md cursor-pointer"
+              src={board.image ? board.image : books_svg}
+              alt="Imagen descriptiva de board"
+            />
+            <div onClick={openBoard} className="flex flex-col gap-5 max-w-1/3 cursor-pointer">
+              <h2 className="text-xl font-bold">{board.title}</h2>
+              <p
+                className="truncate line-clamp-2 text-sm"
+                title={board.description}
+              >
+                {board.description}
+              </p>
           </div>
-          <button onClick={() => openModal("addMember", board.id)} className="p-2 text-2xl cursor-pointer rounded-md hover:bg-blue-100 hover:scale-110 transition-all">
+          <button
+            onClick={() => openModal("addMember", board.id)}
+            className="p-2 text-2xl cursor-pointer rounded-md hover:bg-blue-100 hover:scale-110 transition-all"
+          >
             <IoMdPersonAdd />
           </button>
         </div>

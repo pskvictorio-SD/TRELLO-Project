@@ -11,7 +11,7 @@ export default function Notifications() {
 
   const { appData, setAppData } = useContext(dataContext);
 
-  const notifications = appData?.workspace?.invitations || [];
+  const notifications = appData?.invitations || [];
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -45,9 +45,7 @@ export default function Notifications() {
       {open && (
         <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-50">
           <div className="px-4 py-3 border-b border-gray-200">
-            <h3 className="font-semibold text-gray-800">
-              Notificaciones
-            </h3>
+            <h3 className="font-semibold text-gray-800">Notificaciones</h3>
           </div>
 
           <div className="max-h-96 overflow-y-auto">
@@ -61,22 +59,17 @@ export default function Notifications() {
                   key={notification.id}
                   className="p-4 border-b border-gray-100 hover:bg-gray-50 transition"
                 >
-                  <h4 className="font-medium text-gray-800">
-                    {notification.title}
+                  <h4 className="font-bold text-lg text-gray-800">
+                    {notification.boardTitle}
                   </h4>
 
-                  <p className="text-sm text-gray-500 mt-1">
-                    {notification.message}
+                  <p className=" text-gray-500 mt-1">
+                    <strong>{notification.senderName}</strong> te ha invitado a unirte a este tablero
                   </p>
 
-                  <div className="flex gap-2 mt-3">
-                    <Button>
-                      Aceptar
-                    </Button>
-
-                    <Button variant="secondary">
-                      Rechazar
-                    </Button>
+                  <div className="flex gap-2 mt-3 justify-end">
+                    <Button>Aceptar</Button>
+                    <Button variant="secondary">Rechazar</Button>
                   </div>
                 </div>
               ))

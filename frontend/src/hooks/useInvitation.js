@@ -13,7 +13,9 @@ export default function useInvitation() {
     const data = await createInvitation(boardId, email);
   };
 
-  const fetchInvitations = async () => {};
+  const fetchInvitations = async () => {
+    const data = await fetchInvitations();
+  };
 
   const handleUpdateInvitation = async () => {};
 
@@ -21,5 +23,6 @@ export default function useInvitation() {
 
   return {
     handleCreateInvitation,
+    fetchInvitations,
   };
 }

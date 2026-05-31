@@ -17,9 +17,9 @@ export const createInvitation = async (boardId, email) => {
   return res;
 };
 
-export const fetchInvitations = async (boardId) => {
+export const fetchInvitations = async () => {
   const response = await fetch(
-    `http://localhost:3001/api/boards/${boardId}/invitations`,
+    `http://localhost:3001/api/workspaces/invitations`,
     {
       method: "GET",
       headers: {

@@ -10,6 +10,7 @@ import useBoards from "../hooks/useBoards.js";
 
 import ModalRenderer from "../utils/ModalRenderer.jsx";
 import useModal from "../hooks/useModal.js";
+import useInvitation from "../hooks/useInvitation.js";
 
 export default function Workspace() {
   const { appData, setAppData } = useContext(dataContext);

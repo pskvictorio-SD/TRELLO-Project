@@ -24,10 +24,10 @@ router.post(
 );
 
 /**
- * @route   GET /api/boards/:boardId/invitations
+ * @route   GET /api/workspaces/invitations
  * @desc    Obtener invitaciones
  */
-router.get("/boards/:boardId/invitations", authMiddleware, getInvitations);
+router.get("/workspaces/invitations", authMiddleware, getInvitations);
 
 /**
  * @route   PUT /api/boards/:boardId/invitations/:invitationId

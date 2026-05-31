@@ -13,9 +13,9 @@ export const sendInvitation = (req, res) => {
     });
   }
 
-  // Verificar que el usuario exista y traer el nombre
+  // Verificar que el usuario exista y traer el id
   conn.query(
-    "SELECT username FROM users WHERE email = ?",
+    "SELECT id FROM users WHERE email = ?",
     [email],
     (err, results) => {
       if (err) {
@@ -33,10 +33,12 @@ export const sendInvitation = (req, res) => {
       }
 
       const username = results[0].username;
+      const receiverId = results[0].id;
       // Verificar que el usuario no este invitado
+      // Insertar invitacion
       conn.query(
-        "SELECT * FROM board_invitations WHERE sender_id = ? AND receiver_id = ?",
-        [userId, userId],
+        "INSERT INTO board_invitations (board_id, sender_id, receiver_id, status) VALUES (?, ?, ?, ?)",
+        [boardId, userId, receiverId, "pending"],
         (err, results) => {
           if (err) {
             return res.status(500).json({
@@ -45,32 +47,11 @@ export const sendInvitation = (req, res) => {
               error: err,
             });
           }
-          if (results.length > 0) {
-            return res.status(409).json({
-              ok: false,
-              message: "El usuario ya ha sido invitado",
-            });
-          }
-
-          // Insertar invitacion
-          conn.query(
-            "INSERT INTO board_invitations (board_id, sender_id, receiver_id, status) VALUES (?, ?, ?, ?)",
-            [boardId, userId, userId, "pending"],
-            (err, results) => {
-              if (err) {
-                return res.status(500).json({
-                  ok: false,
-                  message: "Error en el servidor",
-                  error: err,
-                });
-              }
-              return res.status(201).json({
-                ok: true,
-                message: "Invitación enviada correctamente",
-                invitation: results,
-              });
-            },
-          );
+          return res.status(201).json({
+            ok: true,
+            message: "Invitación enviada correctamente",
+            invitation: results,
+          });
         },
       );
     },
@@ -78,45 +59,41 @@ export const sendInvitation = (req, res) => {
 };
 
 export const getInvitations = (req, res) => {
-  // usuario de el que la recibe
   const userId = req.user.id;
 
-  conn.query(
-    "SELECT * FROM board_invitations WHERE receiver_id = ? AND status = 'pending'",
-    [userId],
-    (err, results) => {
-      if (err) {
-        return res.status(500).json({
-          ok: false,
-          message: "Error en el servidor",
-          error: err,
-        });
-      }
-      if (results.length === 0) {
-        return res.status(404).json({
-          ok: false,
-          message: "No hay invitaciones pendientes",
-        });
-      }
-      conn.query(
-        "SELECT * FROM users WHERE id IN (?)",
-        [results.map((r) => r.sender_id)],
-        (err, results) => {
-          if (err) {
-            return res.status(500).json({
-              ok: false,
-              message: "Error en el servidor",
-              error: err,
-            });
-          }
-          return res.status(200).json({
-            ok: true,
-            invitations: results,
-          });
-        },
-      );
-    },
-  );
+  const query = `
+    SELECT
+      bi.id,
+      bi.status,
+      bi.created_at,
+      bi.board_id,
+      b.title AS boardTitle,
+      u.id AS senderId,
+      u.username AS senderName
+    FROM board_invitations bi
+    INNER JOIN users u
+      ON bi.sender_id = u.id
+    INNER JOIN boards b
+      ON bi.board_id = b.id
+    WHERE bi.receiver_id = ?
+      AND bi.status = 'pending'
+    ORDER BY bi.created_at DESC
+  `;
+
+  conn.query(query, [userId], (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        ok: false,
+        message: "Error en el servidor",
+        error: err,
+      });
+    }
+
+    return res.status(200).json({
+      ok: true,
+      invitations: results,
+    });
+  });
 };
 
 export const statusInvitation = (req, res) => {

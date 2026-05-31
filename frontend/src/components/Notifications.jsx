@@ -64,7 +64,8 @@ export default function Notifications() {
                   </h4>
 
                   <p className=" text-gray-500 mt-1">
-                    <strong>{notification.senderName}</strong> te ha invitado a unirte a este tablero
+                    <strong>{notification.senderName}</strong> te ha invitado a
+                    unirte a este tablero
                   </p>
 
                   <div className="flex gap-2 mt-3 justify-end">

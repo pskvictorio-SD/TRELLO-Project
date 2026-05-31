@@ -4,7 +4,6 @@ import useFetch from "./useFetch.js";
 
 import { getWorkspace } from "../services/workspace.service.js";
 import { getBoardsOfUser } from "../services/board.service.js";
-import { fetchInvitations } from "../services/invitation.service.js";
 
 export default function useWorkspace() {
   const { setAppData } = useContext(dataContext);
@@ -19,11 +18,6 @@ export default function useWorkspace() {
       // Traer boards usando el id
       const boardsRes = await request(() => getBoardsOfUser(workspace.id));
 
-      // Traer invitaciones
-      const invitationsRes = await request(() =>
-        fetchInvitations(workspace.id),
-      );
-
       // Unificar estado
       setAppData((prev) => ({
         ...prev,
@@ -31,7 +25,6 @@ export default function useWorkspace() {
           ...workspace,
           boards: boardsRes.boards,
         },
-        invitations: invitationsRes.invitations,
       }));
     } catch (err) {
       console.error("Error cargando workspace completo", err);

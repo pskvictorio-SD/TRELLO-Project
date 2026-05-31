@@ -2,8 +2,17 @@ import Avatar from "../ui/Avatar";
 import Button from "../ui/Button";
 import Link from "../ui/Link.jsx";
 import Notifications from "../Notifications.jsx";
+import useNotifications from "../../hooks/useNotifications.js";
+
+import { useEffect } from "react";
 
 export default function AppTopbar() {
+
+  const { getBoardInvitations } = useNotifications();
+  useEffect(() => {
+    getBoardInvitations();
+  }, []);
+
   return (
     <header className="h-16 bg-white shadow-md flex items-center justify-around">
       {/* Left */}

@@ -5,11 +5,15 @@ import Button from "./ui/Button.jsx";
 import { useContext } from "react";
 import { dataContext } from "../contexts/dataContext.jsx";
 
+import useNotifications from "../hooks/useNotifications.js";
+
 export default function Notifications() {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
   const { appData, setAppData } = useContext(dataContext);
+
+  const { acceptInvitation, rejectInvitation } = useNotifications();
 
   const notifications = appData?.invitations || [];
 
@@ -69,8 +73,15 @@ export default function Notifications() {
                   </p>
 
                   <div className="flex gap-2 mt-3 justify-end">
-                    <Button>Aceptar</Button>
-                    <Button variant="secondary">Rechazar</Button>
+                    <Button onClick={() => acceptInvitation(notification.id)}>
+                      Aceptar
+                    </Button>
+                    <Button
+                      onClick={() => rejectInvitation(notification.id)}
+                      variant="secondary"
+                    >
+                      Rechazar
+                    </Button>
                   </div>
                 </div>
               ))

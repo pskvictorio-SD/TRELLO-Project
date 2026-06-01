@@ -25,6 +25,8 @@ export default function Workspace() {
 
   const boards = appData?.workspace?.boards || [];
 
+  // console.log(appData);
+
   return (
     <AppLayout>
       <h1 className="text-2xl font-bold mb-6 text-center">Tus Tableros</h1>

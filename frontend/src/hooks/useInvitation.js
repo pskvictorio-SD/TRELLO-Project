@@ -1,6 +1,10 @@
 import { useContext } from "react";
 import { dataContext } from "../contexts/dataContext.jsx";
-import { createInvitation, fetchInvitations } from "../services/invitation.service.js";
+import {
+  createInvitation,
+  fetchInvitations,
+  updateInvitation
+} from "../services/invitation.service.js";
 import useFetch from "./useFetch.js";
 import { useSearchParams } from "react-router-dom";
 
@@ -13,16 +17,24 @@ export default function useInvitation() {
     const data = await createInvitation(boardId, email);
   };
 
-  const fetchInvitations = async () => {
+  const handleFetchInvitations = async () => {
     const data = await fetchInvitations();
+
+    setAppData((prev) => ({
+      ...prev,
+      invitations: data.invitations,
+    }));
   };
 
-  const handleUpdateInvitation = async () => {};
+  const handleUpdateInvitation = async (invitationId, status) => {
+    await updateInvitation(invitationId, status);
+  };
 
   const handleDeleteInvitations = async () => {};
 
   return {
     handleCreateInvitation,
-    fetchInvitations,
+    handleFetchInvitations,
+    handleUpdateInvitation,
   };
 }

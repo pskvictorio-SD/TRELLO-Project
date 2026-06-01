@@ -14,6 +14,10 @@ export const createInvitation = async (boardId, email) => {
   );
   const res = await response.json();
 
+  if (!res.ok) {
+    return alert(res.message);
+  }
+
   return res;
 };
 
@@ -33,9 +37,9 @@ export const fetchInvitations = async () => {
   return res;
 };
 
-export const updateInvitation = async (boardId, invitationId, role) => {
+export const updateInvitation = async (invitationId, status) => {
   const response = await fetch(
-    `http://localhost:3001/api/boards/${boardId}/invitations/${invitationId}`,
+    `http://localhost:3001/api/workspaces/invitations/${invitationId}`,
     {
       method: "PUT",
       headers: {
@@ -43,11 +47,15 @@ export const updateInvitation = async (boardId, invitationId, role) => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({
-        role: role,
+        status: status,
       }),
     },
   );
   const res = await response.json();
+
+  if (!res.ok) {
+    return alert(res.message);
+  }
 
   return res;
 };

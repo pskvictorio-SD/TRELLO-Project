@@ -1,21 +1,51 @@
 import { useContext } from "react";
 import { dataContext } from "../contexts/dataContext.jsx";
-import { fetchInvitations } from "../services/invitation.service.js";
+import useInvitation from "../hooks/useInvitation.js";
 
 export default function useNotifications() {
   // Traer notificaciones
   const { appData, setAppData } = useContext(dataContext);
+  const { handleFetchInvitations, handleUpdateInvitation } = useInvitation();
 
   // Traer notificaciones
   async function getBoardInvitations() {
-    const invitations = await fetchInvitations();
-    setAppData((prev) => ({
-      ...prev,
-      invitations: invitations.invitations,
-    }));
+    await handleFetchInvitations();
+  }
+
+  async function acceptInvitation(invitationId) {
+    try {
+      await handleUpdateInvitation(invitationId, "accepted");
+
+      // Optimistic update eliminando notification
+      setAppData((prev) => ({
+        ...prev,
+        invitations: prev.invitations.filter(
+          (invitation) => invitation.id !== invitationId,
+        ),
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async function rejectInvitation(invitationId) {
+    try {
+      await handleUpdateInvitation(invitationId, "rejected");
+
+      // Optimistic update eliminando notification
+      setAppData((prev) => ({
+        ...prev,
+        invitations: prev.invitations.filter(
+          (invitation) => invitation.id !== invitationId,
+        ),
+      }));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return {
     getBoardInvitations,
+    acceptInvitation,
+    rejectInvitation,
   };
 }

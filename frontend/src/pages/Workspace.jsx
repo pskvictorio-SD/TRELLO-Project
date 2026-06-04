@@ -6,7 +6,6 @@ import Button from "../components/ui/Button.jsx";
 import { dataContext } from "../contexts/dataContext.jsx";
 import { useContext, useEffect } from "react";
 import useWorkspace from "../hooks/useWorkspace.js";
-import useBoards from "../hooks/useBoards.js";
 
 import ModalRenderer from "../utils/ModalRenderer.jsx";
 import useModal from "../hooks/useModal.js";
@@ -14,7 +13,6 @@ import useInvitation from "../hooks/useInvitation.js";
 
 export default function Workspace() {
   const { appData, setAppData } = useContext(dataContext);
-  const { handleGetBoards } = useBoards();
   const { fetchWorkspaceData } = useWorkspace();
   const { modal, openModal, closeModal } = useModal();
 
@@ -24,8 +22,6 @@ export default function Workspace() {
   }, []);
 
   const boards = appData?.workspace?.boards || [];
-
-  // console.log(appData);
 
   return (
     <AppLayout>

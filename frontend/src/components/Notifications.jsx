@@ -73,7 +73,15 @@ export default function Notifications() {
                   </p>
 
                   <div className="flex gap-2 mt-3 justify-end">
-                    <Button onClick={() => acceptInvitation(notification.id)}>
+                    <Button
+                      onClick={() =>
+                        acceptInvitation(
+                          notification.id,
+                          notification.board_id,
+                          notification.role,
+                        )
+                      }
+                    >
                       Aceptar
                     </Button>
                     <Button

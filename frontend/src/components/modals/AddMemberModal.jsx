@@ -23,7 +23,7 @@ export default function AddMemberModal({ isOpen, onClose, boardId }) {
     }
 
     try {
-      await handleCreateInvitation(boardId, email);
+      await handleCreateInvitation(boardId, email, role);
 
       setEmail("");
       setRole("");

@@ -38,6 +38,8 @@ export default function useBoards() {
     const data = await request(() =>
       editBoard(workspaceId, board.id, board.title, board.description),
     );
+
+    console.log(data);
     if (data.ok) {
       handleGetBoards();
     }

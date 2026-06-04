@@ -12,9 +12,14 @@ export default function useNotifications() {
     await handleFetchInvitations();
   }
 
-  async function acceptInvitation(invitationId) {
+  async function acceptInvitation(invitationId, boardId, role) {
     try {
-      await handleUpdateInvitation(invitationId, "accepted");
+      const newBoard = await handleUpdateInvitation(
+        invitationId,
+        "accepted",
+        boardId,
+        role,
+      );
 
       // Optimistic update eliminando notification
       setAppData((prev) => ({
@@ -22,6 +27,10 @@ export default function useNotifications() {
         invitations: prev.invitations.filter(
           (invitation) => invitation.id !== invitationId,
         ),
+        workspace: {
+          ...prev.workspace,
+          boards: [...prev.workspace.boards, newBoard],
+        },
       }));
     } catch (error) {
       console.log(error);

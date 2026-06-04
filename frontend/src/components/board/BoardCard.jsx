@@ -1,59 +1,209 @@
 import Card from "../ui/Card.jsx";
 import Badge from "../ui/Badge.jsx";
-import trash_svg from "../../public/trash.svg";
+
 import calender_svg from "../../public/calender.svg";
-import pencil_svg from "../../public/pencil.svg";
 import books_svg from "../../public/books.svg";
-import Button from "../ui/Button.jsx";
 
-import { IoMdPersonAdd } from "react-icons/io";
-import { useState } from "react";
+import { LuUsers } from "react-icons/lu";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { LuUsersRound } from "react-icons/lu";
+import { AiOutlineDelete } from "react-icons/ai";
+import { CiEdit } from "react-icons/ci";
+
+import { useState, useEffect, useRef } from "react";
+
 import useModal from "../../hooks/useModal.js";
+import useMembers from "../../hooks/useMembers.js";
 import ModalRenderer from "../../utils/ModalRenderer.jsx";
-
-import { useContext } from "react";
-import { dataContext } from "../../contexts/dataContext.jsx";
 
 import { useNavigate } from "react-router-dom";
 
 export default function BoardCard({ board }) {
   const { modal, openModal, closeModal } = useModal();
+  const { handleGetMembersOfBoard } = useMembers();
+  const [members, setMembers] = useState([]);
+
   const navigate = useNavigate();
 
-  const { appData, setAppData } = useContext(dataContext);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuMembersOpen, setMenuMembersOpen] = useState(false);
 
   const openBoard = () => {
     navigate(`/boards?boardId=${board.id}`);
   };
 
+  const handleAction = (action, data) => {
+    openModal(action, data);
+    setMenuOpen(false);
+    setMenuMembersOpen(false);
+  };
+
+  const handleToggleMembers = async (e) => {
+    e.stopPropagation();
+
+    if (!menuMembersOpen && members.length === 0) {
+      try {
+        const data = await handleGetMembersOfBoard(board.id);
+        setMembers(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    setMenuMembersOpen((prev) => !prev);
+  };
+
+  const membersRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (membersRef.current && !membersRef.current.contains(e.target)) {
+        setMenuMembersOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <>
-      <Card size="sm" className="hover:scale-105">
-        <div className="flex items-center justify-between gap-10">
-            <img
-              onClick={openBoard}
-              className="w-20 h-16 rounded-md cursor-pointer"
-              src={board.image ? board.image : books_svg}
-              alt="Imagen descriptiva de board"
-            />
-            <div onClick={openBoard} className="flex flex-col gap-5 max-w-1/3 cursor-pointer">
-              <h2 className="text-xl font-bold">{board.title}</h2>
-              <p
-                className="truncate line-clamp-2 text-sm"
-                title={board.description}
-              >
-                {board.description}
-              </p>
-          </div>
-          <button
-            onClick={() => openModal("addMember", board.id)}
-            className="p-2 text-2xl cursor-pointer rounded-md hover:bg-blue-100 hover:scale-110 transition-all"
+      <Card size="sm" className="hover:scale-105 overflow-visible">
+        <div className="flex items-start justify-between gap-4">
+          <img
+            onClick={openBoard}
+            className="w-20 h-16 rounded-md cursor-pointer"
+            src={board.image || books_svg}
+            alt="Imagen descriptiva de board"
+          />
+
+          <div
+            onClick={openBoard}
+            className="flex flex-col gap-3 flex-1 cursor-pointer"
           >
-            <IoMdPersonAdd />
-          </button>
+            <h2 className="text-xl font-bold">{board.title}</h2>
+
+            <p
+              className="truncate line-clamp-2 text-sm"
+              title={board.description}
+            >
+              {board.description}
+            </p>
+          </div>
+
+          {/* VER MIEMBROS */}
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <div ref={membersRef}>
+                <button
+                  onClick={handleToggleMembers}
+                  className="flex items-center rounded-md hover:bg-blue-100 px-2 py-1 transition-all"
+                  title="Ver miembros"
+                >
+                  <LuUsers size={20} />
+                </button>
+              </div>
+
+              {menuMembersOpen && (
+                <div className="absolute right-0 top-12 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                  <div className="p-3 border-b">
+                    <h3 className="font-semibold">
+                      Miembros ({members.length})
+                    </h3>
+                  </div>
+
+                  <div className="max-h-64 overflow-y-auto">
+                    {members.length === 0 ? (
+                      <div className="p-4 text-sm text-gray-500">
+                        No hay miembros
+                      </div>
+                    ) : (
+                      members.map((member) => (
+                        <div
+                          key={member.id}
+                          className="flex items-center justify-between px-4 py-3 hover:bg-gray-50"
+                        >
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={member.avatar || "https://ui-avatars.com/api/?name=" + member.username}
+                              alt={member.username}
+                              className="w-10 h-10 rounded-full object-cover"
+                            />
+
+                            <div>
+                              <p className="font-medium text-sm">
+                                {member.username}
+                              </p>
+
+                              <p className="text-xs text-gray-500">
+                                {member.email}
+                              </p>
+                            </div>
+                          </div>
+
+                          <Badge
+                            variant={
+                              member.role === "admin" ? "success" : "info"
+                            }
+                          >
+                            {member.role}
+                          </Badge>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* MENU DE ACCIONES */}
+            <div className="relative">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setMenuOpen((prev) => !prev);
+                }}
+                className="p-2 rounded-md hover:bg-gray-100 transition-all"
+                title="Acciones"
+              >
+                <BsThreeDotsVertical />
+              </button>
+
+              {menuOpen && (
+                <div className="absolute right-0 top-10 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden">
+                  <button
+                    onClick={() => handleAction("addMember", board.id)}
+                    className="w-full px-4 py-3 text-left hover:bg-gray-50"
+                  >
+                    <div className="flex items-center gap-2">
+                      <LuUsersRound size={22} /> Añadir miembro
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => handleAction("editBoard", board)}
+                    className="w-full px-4 py-3 text-left hover:bg-gray-50"
+                  >
+                    <div className="flex items-center gap-2">
+                      <CiEdit size={22} /> Editar tablero
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => handleAction("deleteBoard", board.id)}
+                    className="w-full px-4 py-3 text-left text-red-500 hover:bg-red-50"
+                  >
+                    <div className="flex items-center gap-2">
+                      <AiOutlineDelete size={22} /> Eliminar tablero
+                    </div>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
-        <hr />
+        <hr className="my-3" />
 
         <div className="flex items-center justify-between">
           <Badge
@@ -65,28 +215,12 @@ export default function BoardCard({ board }) {
               src={calender_svg}
               alt="Calendario"
             />
+
             <span>{board.created_at.slice(0, 10)}</span>
           </Badge>
-
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => openModal("deleteBoard", board.id)}
-              className="p-2 cursor-pointer rounded-md hover:bg-red-100 hover:scale-110 transition-all"
-              title="Eliminar tablero"
-            >
-              <img className="h-5 w-5" src={trash_svg} alt="Eliminar" />
-            </button>
-
-            <button
-              onClick={() => openModal("editBoard", board)}
-              className="p-2 cursor-pointer rounded-md hover:bg-blue-100 hover:scale-110 transition-all"
-              title="Editar tablero"
-            >
-              <img className="h-5 w-5" src={pencil_svg} alt="Editar" />
-            </button>
-          </div>
         </div>
       </Card>
+
       <ModalRenderer
         type={modal.type}
         isOpen={modal.isOpen}

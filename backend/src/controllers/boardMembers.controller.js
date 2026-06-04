@@ -3,67 +3,59 @@ import { conn } from "../database/db.js";
 // Agregar miembro a un board
 export const addMember = (req, res) => {
   const { boardId } = req.params;
-  const { email, role } = req.body;
-  if (!email || !role) {
-    return res.status(400).json({
-      ok: false,
-      message: "Email y rol son requeridos",
-    });
-  }
-  // Verificar que el usuario exista
+  const { id } = req.user;
+  const { role } = req.body;
+
   conn.query(
-    "SELECT id FROM users WHERE email = ?",
-    [email],
-    (err, results) => {
+    "SELECT * FROM board_members WHERE user_id = ? AND board_id = ?",
+    [id, boardId],
+    (err, members) => {
       if (err) {
+        console.log(err);
         return res.status(500).json({
           ok: false,
           message: "Error en el servidor",
           error: err,
         });
       }
-      if (results.length === 0)
-        return res.status(404).json({
+
+      if (members.length > 0) {
+        return res.status(409).json({
           ok: false,
-          message: "Usuario no encontrado",
-          error: "No existe el usuario con ese email",
+          message: "El usuario ya es miembro del tablero",
         });
+      }
 
-      const userId = results[0].id;
-
-      // Verificar que el usuario no sea ya miembro del board
       conn.query(
-        "SELECT * FROM board_members WHERE user_id = ? AND board_id = ?",
-        [userId, boardId],
-        (err, results) => {
+        "INSERT INTO board_members (user_id, board_id, role) VALUES (?, ?, ?)",
+        [id, boardId, role],
+        (err) => {
           if (err) {
+            console.log(err);
             return res.status(500).json({
               ok: false,
               message: "Error en el servidor",
               error: err,
             });
           }
-          if (results.length > 0)
-            return res.status(409).json({
-              ok: false,
-              message: "El usuario ya es miembro del workspace",
-            });
 
-          // Insertar nuevo miembro
           conn.query(
-            "INSERT INTO board_members (user_id, board_id, role) VALUES (?, ?, ?)",
-            [userId, boardId, role],
-            (err, results) => {
+            "SELECT * FROM boards WHERE id = ?",
+            [boardId],
+            (err, boards) => {
               if (err) {
+                console.log(err);
                 return res.status(500).json({
                   ok: false,
                   message: "Error en el servidor",
                   error: err,
                 });
               }
+
               return res.status(201).json({
                 ok: true,
-                message: "Usuario agregado correctamente",
+                message: "Miembro agregado correctamente",
+                board: boards[0],
               });
             },
           );
@@ -79,8 +71,20 @@ export const getMembers = (req, res) => {
   const { boardId } = req.params;
 
   conn.query(
-    "SELECT user_id FROM board_members WHERE board_id = ? and user_id != ?",
-    [userId, boardId],
+    `
+    SELECT
+      u.id,
+      u.username,
+      u.email,
+      u.avatar,
+      bm.role
+    FROM board_members bm
+    INNER JOIN users u
+      ON bm.user_id = u.id
+    WHERE bm.board_id = ?
+      AND bm.user_id != ?
+    `,
+    [boardId, userId],
     (err, results) => {
       if (err) {
         return res.status(500).json({
@@ -89,29 +93,11 @@ export const getMembers = (req, res) => {
           error: err,
         });
       }
-      if (results.length === 0) {
-        return res.status(404).json({
-          ok: false,
-          message: "No hay miembros en este board",
-        });
-      }
-      conn.query(
-        "SELECT * FROM users WHERE id IN (?)",
-        [results.map((r) => r.user_id)],
-        (err, results) => {
-          if (err) {
-            return res.status(500).json({
-              ok: false,
-              message: "Error en el servidor",
-              error: err,
-            });
-          }
-          return res.status(200).json({
-            ok: true,
-            members: results,
-          });
-        },
-      );
+
+      return res.status(200).json({
+        ok: true,
+        members: results,
+      });
     },
   );
 };

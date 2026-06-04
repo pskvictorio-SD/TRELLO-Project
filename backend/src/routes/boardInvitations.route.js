@@ -30,11 +30,11 @@ router.post(
 router.get("/workspaces/invitations", authMiddleware, getInvitations);
 
 /**
- * @route   PUT /api/boards/:boardId/invitations/:invitationId
+ * @route   PUT /api/workspaces/invitations
  * @desc    Actualizar invitacion
  */
 router.put(
-  "/boards/:boardId/invitations/:invitationId",
+  "/workspaces/invitations/:invitationId",
   authMiddleware,
   statusInvitation,
 );

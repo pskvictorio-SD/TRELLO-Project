@@ -18,8 +18,6 @@ const router = Router();
 router.post(
   "/boards/:boardId/members",
   authMiddleware,
-  userInBoard,
-  userRoleInBoard("admin", "member"),
   addMember,
 );
 
@@ -27,7 +25,7 @@ router.post(
  * @route   GET /api/boards/:boardId/members
  * @desc    Obtener miembros de un board
  */
-router.get("/:workspaceId/boards/", authMiddleware, userInBoard, getMembers);
+router.get("/boards/:boardId/members", authMiddleware, userInBoard, getMembers);
 
 /**
  * @route   PUT /api/boards/:boardId/members/:userId

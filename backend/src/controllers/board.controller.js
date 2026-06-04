@@ -94,7 +94,7 @@ export const updateBoard = (req, res) => {
   const { title, description } = req.body;
   const { boardId } = req.params;
 
-  if (!title || !description) {
+  if (!title) {
     return res.status(400).json({
       ok: false,
       message: "Faltan datos",

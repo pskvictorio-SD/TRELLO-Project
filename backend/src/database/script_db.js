@@ -50,6 +50,7 @@ export const script_db = `
         sender_id INT NOT NULL,
         receiver_id INT NOT NULL,
         status ENUM('pending','accepted','rejected') DEFAULT 'pending',
+        role ENUM('admin', 'member', 'viewer') DEFAULT 'viewer',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (board_id) REFERENCES boards(id) ON DELETE CASCADE,
         FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,

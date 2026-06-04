@@ -3,21 +3,21 @@ import { conn } from "../database/db.js";
 // Enviar invitacion a un usuario
 export const sendInvitation = (req, res) => {
   const { boardId } = req.params;
-  const { email } = req.body;
-  const userId = req.user.id;
+  const { email, role } = req.body;
+  const senderId = req.user.id;
 
-  if (!email) {
+  if (!email || !role) {
     return res.status(400).json({
       ok: false,
-      message: "Falta el email del usuario",
+      message: "Falta el email o el rol del usuario",
     });
   }
 
-  // Verificar que el usuario exista y traer el id
+  // Buscar usuario
   conn.query(
-    "SELECT id FROM users WHERE email = ?",
+    "SELECT id, username FROM users WHERE email = ?",
     [email],
-    (err, results) => {
+    (err, users) => {
       if (err) {
         return res.status(500).json({
           ok: false,
@@ -25,21 +25,28 @@ export const sendInvitation = (req, res) => {
           error: err,
         });
       }
-      if (results.length === 0) {
+      if (users.length === 0) {
         return res.status(404).json({
           ok: false,
           message: "Usuario no encontrado",
         });
       }
 
-      const username = results[0].username;
-      const receiverId = results[0].id;
-      // Verificar que el usuario no este invitado
-      // Insertar invitacion
+      const receiverId = users[0].id;
+
+      // Evitar auto invitación
+      if (receiverId === senderId) {
+        return res.status(400).json({
+          ok: false,
+          message: "No puedes invitarte a ti mismo",
+        });
+      }
+
+      // Verificar si ya pertenece al board
       conn.query(
-        "INSERT INTO board_invitations (board_id, sender_id, receiver_id, status) VALUES (?, ?, ?, ?)",
-        [boardId, userId, receiverId, "pending"],
-        (err, results) => {
+        "SELECT id FROM board_members WHERE board_id = ? AND user_id = ?",
+        [boardId, receiverId],
+        (err, members) => {
           if (err) {
             return res.status(500).json({
               ok: false,
@@ -47,11 +54,62 @@ export const sendInvitation = (req, res) => {
               error: err,
             });
           }
-          return res.status(201).json({
-            ok: true,
-            message: "Invitación enviada correctamente",
-            invitation: results,
-          });
+
+          if (members.length > 0) {
+            return res.status(400).json({
+              ok: false,
+              message: "El usuario ya pertenece al tablero",
+            });
+          }
+
+          // Verificar invitación pendiente
+          conn.query(
+            `SELECT id
+             FROM board_invitations
+             WHERE board_id = ?
+             AND receiver_id = ?
+             AND status = 'pending'`,
+            [boardId, receiverId],
+            (err, invitations) => {
+              if (err) {
+                return res.status(500).json({
+                  ok: false,
+                  message: "Error en el servidor",
+                  error: err,
+                });
+              }
+
+              if (invitations.length > 0) {
+                return res.status(400).json({
+                  ok: false,
+                  message: "El usuario ya tiene una invitación pendiente",
+                });
+              }
+
+              // Crear invitación
+              conn.query(
+                `INSERT INTO board_invitations
+                 (board_id, sender_id, receiver_id, status, role)
+                 VALUES (?, ?, ?, 'pending', ?)`,
+                [boardId, senderId, receiverId, role],
+                (err, result) => {
+                  if (err) {
+                    return res.status(500).json({
+                      ok: false,
+                      message: "Error en el servidor",
+                      error: err,
+                    });
+                  }
+
+                  return res.status(201).json({
+                    ok: true,
+                    message: "Invitación enviada correctamente",
+                    invitationId: result.insertId,
+                  });
+                },
+              );
+            },
+          );
         },
       );
     },
@@ -65,6 +123,7 @@ export const getInvitations = (req, res) => {
     SELECT
       bi.id,
       bi.status,
+      bi.role,
       bi.created_at,
       bi.board_id,
       b.title AS boardTitle,
@@ -109,7 +168,7 @@ export const statusInvitation = (req, res) => {
   }
 
   conn.query(
-    "UPDATE board_invitations SET status = ? WHERE id = ? AND sender_id = ?",
+    "UPDATE board_invitations SET status = ? WHERE id = ?",
     [status, invitationId, userId],
     (err, results) => {
       if (err) {

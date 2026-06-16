@@ -61,48 +61,96 @@ function Login() {
 
   return (
     <AuthLayout>
-      <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}
-        size="lg"
-        className="p-6"
-      >
-        {loading && <Spinner />}
-        {error && <p>Error: {error.message}</p>}
-        <div className="flex flex-col justify-center items-center">
-          <h1 className="text-3xl font-bold text-center">Iniciar Sesión</h1>
-          <div className="flex flex-col gap-5 mt-5 w-full px-5">
-            <Input
-              value={values.email}
-              onChange={handleChange}
-              type="email"
-              placeholder="Email"
-              name="email"
-            />
-            {errors.email && <p className="text-red-500">{errors.email}</p>}
+      <div className="">
+        {/* Dashed Grid */}
+        <div
+          className="absolute inset-0 -z-10"
+          style={{
+            backgroundImage: `
+        linear-gradient(to right, #e7e5e4 1px, transparent 1px),
+        linear-gradient(to bottom, #e7e5e4 1px, transparent 1px)
+      `,
+            backgroundSize: "20px 20px",
+            backgroundPosition: "0 0, 0 0",
+            maskImage: `
+        repeating-linear-gradient(
+          to right,
+          black 0px,
+          black 3px,
+          transparent 3px,
+          transparent 8px
+        ),
+        repeating-linear-gradient(
+          to bottom,
+          black 0px,
+          black 3px,
+          transparent 3px,
+          transparent 8px
+        )
+      `,
+            WebkitMaskImage: `
+        repeating-linear-gradient(
+          to right,
+          black 0px,
+          black 3px,
+          transparent 3px,
+          transparent 8px
+        ),
+        repeating-linear-gradient(
+          to bottom,
+          black 0px,
+          black 3px,
+          transparent 3px,
+          transparent 8px
+        )
+      `,
+            maskComposite: "intersect",
+            WebkitMaskComposite: "source-in",
+          }}
+        />
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+          size="lg"
+          className="p-6"
+        >
+          {loading && <Spinner />}
+          {error && <p>Error: {error.message}</p>}
+          <div className="flex flex-col justify-center items-center">
+            <h1 className="text-3xl font-bold text-center">Iniciar Sesión</h1>
+            <div className="flex flex-col gap-5 mt-5 w-full px-5">
+              <Input
+                value={values.email}
+                onChange={handleChange}
+                type="email"
+                placeholder="Email"
+                name="email"
+              />
+              {errors.email && <p className="text-red-500">{errors.email}</p>}
 
-            <Input
-              value={values.password}
-              onChange={handleChange}
-              type="password"
-              placeholder="Contraseña"
-              name="password"
-            />
+              <Input
+                value={values.password}
+                onChange={handleChange}
+                type="password"
+                placeholder="Contraseña"
+                name="password"
+              />
 
-            {errors.password && (
-              <p className="text-red-500">{errors.password}</p>
-            )}
+              {errors.password && (
+                <p className="text-red-500">{errors.password}</p>
+              )}
 
-            {res && !res.ok && <p className="text-red-500">{res.message}</p>}
+              {res && !res.ok && <p className="text-red-500">{res.message}</p>}
 
-            <Input variant="button" type="submit" />
+              <Input variant="button" type="submit" />
 
-            <Link to="/auth/register">¿No tienes cuenta? Registrate</Link>
+              <Link to="/auth/register">¿No tienes cuenta? Registrate</Link>
+            </div>
           </div>
-        </div>
-      </Form>
+        </Form>
+      </div>
     </AuthLayout>
   );
 }

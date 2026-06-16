@@ -33,10 +33,6 @@ export default function AuthHeader() {
             )}
           </Link>
         </nav>
-
-        <Link to="/register">
-          <Button>Empezar gratis</Button>
-        </Link>
       </div>
     </header>
   );

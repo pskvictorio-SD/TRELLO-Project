@@ -78,56 +78,103 @@ function Register() {
 
   return (
     <AuthLayout>
-      <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}
-        size="lg"
-        className="p-6"
-      >
-        {loading && <Spinner />}
-        {error && <p>Error: {error.message}</p>}
-        <div className="flex flex-col justify-center items-center">
-          <h1 className="text-3xl font-bold text-center">Register</h1>
-          <div className="flex flex-col gap-5 mt-5 w-full px-5">
+      <div className="">
+        {/* Dashed Grid */}
+        <div
+          className="absolute inset-0 -z-10"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, #e7e5e4 1px, transparent 1px),
+              linear-gradient(to bottom, #e7e5e4 1px, transparent 1px)
+            `,
+            backgroundSize: "20px 20px",
+            backgroundPosition: "0 0, 0 0",
+            maskImage: `
+              repeating-linear-gradient(
+                to right,
+                black 0px,
+                black 3px,
+                transparent 3px,
+                transparent 8px
+              ),
+              repeating-linear-gradient(
+                to bottom,
+                black 0px,
+                black 3px,
+                transparent 3px,
+                transparent 8px
+              )
+            `,
+            WebkitMaskImage: `
+              repeating-linear-gradient(
+                to right,
+                black 0px,
+                black 3px,
+                transparent 3px,
+                transparent 8px
+              ),
+              repeating-linear-gradient(
+                to bottom,
+                black 0px,
+                black 3px,
+                transparent 3px,
+                transparent 8px
+              )
+            `,
+            maskComposite: "intersect",
+            WebkitMaskComposite: "source-in",
+          }}
+        />
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+          size="lg"
+          className="p-6"
+        >
+          {loading && <Spinner />}
+          {error && <p>Error: {error.message}</p>}
+          <div className="flex flex-col justify-center items-center">
+            <h1 className="text-3xl font-bold text-center">Register</h1>
+            <div className="flex flex-col gap-5 mt-5 w-full px-5">
+              <Input
+                type="text"
+                placeholder="Nombre"
+                name="name"
+                value={values.name}
+                onChange={handleChange}
+              />
+              {errors.name && <p className="text-red-500">{errors.name}</p>}
 
-            <Input
-              type="text"
-              placeholder="Nombre"
-              name="name"
-              value={values.name}
-              onChange={handleChange}
-            />
-            {errors.name && <p className="text-red-500">{errors.name}</p>}
+              <Input
+                type="text"
+                name="email"
+                placeholder="Email"
+                value={values.email}
+                onChange={handleChange}
+              />
+              {errors.email && <p className="text-red-500">{errors.email}</p>}
 
-            <Input
-              type="text"
-              name="email"
-              placeholder="Email"
-              value={values.email}
-              onChange={handleChange}
-            />
-            {errors.email && <p className="text-red-500">{errors.email}</p>}
+              <Input
+                type="password"
+                name="password"
+                placeholder="Contraseña"
+                value={values.password}
+                onChange={handleChange}
+              />
+              {errors.password && (
+                <p className="text-red-500">{errors.password}</p>
+              )}
+              {res && !res.ok && <p className="text-red-500">{res.message}</p>}
 
-            <Input
-              type="password"
-              name="password"
-              placeholder="Contraseña"
-              value={values.password}
-              onChange={handleChange}
-            />
-            {errors.password && (
-              <p className="text-red-500">{errors.password}</p>
-            )}
-            {res && !res.ok && <p className="text-red-500">{res.message}</p>}
+              <Input variant="button" type="submit" />
 
-            <Input variant="button" type="submit" />
-
-            <Link to="/auth/login">¿Ya tienes una cuenta? Inicia Sesión</Link>
+              <Link to="/auth/login">¿Ya tienes una cuenta? Inicia Sesión</Link>
+            </div>
           </div>
-        </div>
-      </Form>
+        </Form>
+      </div>
     </AuthLayout>
   );
 }

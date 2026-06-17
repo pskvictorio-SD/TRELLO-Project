@@ -68,25 +68,19 @@ export default function BoardCard({ board }) {
 
   return (
     <>
-      <Card size="sm" className="hover:scale-105 overflow-visible">
+      <Card
+        size="sm"
+        bg="dark"
+        className="hover:scale-105 overflow-visible text-gray-200 border-2 border-gray-700"
+      >
         <div className="flex items-start justify-between gap-4">
-          <img
-            onClick={openBoard}
-            className="w-20 h-16 rounded-md cursor-pointer"
-            src={board.image || books_svg}
-            alt="Imagen descriptiva de board"
-          />
-
           <div
             onClick={openBoard}
             className="flex flex-col gap-3 flex-1 cursor-pointer"
           >
             <h2 className="text-xl font-bold">{board.title}</h2>
 
-            <p
-              className="truncate line-clamp-2 text-sm"
-              title={board.description}
-            >
+            <p className="text-sm" title={board.description}>
               {board.description}
             </p>
           </div>
@@ -97,7 +91,7 @@ export default function BoardCard({ board }) {
               <div ref={membersRef}>
                 <button
                   onClick={handleToggleMembers}
-                  className="flex items-center rounded-md hover:bg-blue-100 px-2 py-1 transition-all"
+                  className="flex items-center rounded-md hover:bg-blue-900 px-2 py-1 transition-all"
                   title="Ver miembros"
                 >
                   <LuUsers size={20} />
@@ -105,7 +99,7 @@ export default function BoardCard({ board }) {
               </div>
 
               {menuMembersOpen && (
-                <div className="absolute right-0 top-12 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                <div className="absolute right-0 top-12 w-72 bg-gray-800 border border-gray-200 rounded-lg shadow-lg z-50">
                   <div className="p-3 border-b">
                     <h3 className="font-semibold">
                       Miembros ({members.length})
@@ -121,11 +115,15 @@ export default function BoardCard({ board }) {
                       members.map((member) => (
                         <div
                           key={member.id}
-                          className="flex items-center justify-between px-4 py-3 hover:bg-gray-50"
+                          className="flex items-center justify-between px-4 py-3"
                         >
                           <div className="flex items-center gap-3">
                             <img
-                              src={member.avatar || "https://ui-avatars.com/api/?name=" + member.username}
+                              src={
+                                member.avatar ||
+                                "https://ui-avatars.com/api/?name=" +
+                                  member.username
+                              }
                               alt={member.username}
                               className="w-10 h-10 rounded-full object-cover"
                             />
@@ -163,17 +161,17 @@ export default function BoardCard({ board }) {
                   e.stopPropagation();
                   setMenuOpen((prev) => !prev);
                 }}
-                className="p-2 rounded-md hover:bg-gray-100 transition-all"
+                className="p-2 rounded-md hover:bg-blue-900 transition-all"
                 title="Acciones"
               >
                 <BsThreeDotsVertical />
               </button>
 
               {menuOpen && (
-                <div className="absolute right-0 top-10 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden">
+                <div className="absolute right-0 top-10 w-48 bg-gray-800 border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden">
                   <button
                     onClick={() => handleAction("addMember", board.id)}
-                    className="w-full px-4 py-3 text-left hover:bg-gray-50"
+                    className="w-full px-4 py-3 text-left cursor-pointer hover:bg-gray-700"
                   >
                     <div className="flex items-center gap-2">
                       <LuUsersRound size={22} /> Añadir miembro
@@ -182,7 +180,7 @@ export default function BoardCard({ board }) {
 
                   <button
                     onClick={() => handleAction("editBoard", board)}
-                    className="w-full px-4 py-3 text-left hover:bg-gray-50"
+                    className="w-full px-4 py-3 text-left cursor-pointer hover:bg-gray-700"
                   >
                     <div className="flex items-center gap-2">
                       <CiEdit size={22} /> Editar tablero
@@ -191,7 +189,7 @@ export default function BoardCard({ board }) {
 
                   <button
                     onClick={() => handleAction("deleteBoard", board.id)}
-                    className="w-full px-4 py-3 text-left text-red-500 hover:bg-red-50"
+                    className="w-full px-4 py-3 text-left text-red-500 cursor-pointer hover:bg-red-500 hover:text-white"
                   >
                     <div className="flex items-center gap-2">
                       <AiOutlineDelete size={22} /> Eliminar tablero
@@ -202,8 +200,6 @@ export default function BoardCard({ board }) {
             </div>
           </div>
         </div>
-
-        <hr className="my-3" />
 
         <div className="flex items-center justify-between">
           <Badge

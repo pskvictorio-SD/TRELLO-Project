@@ -35,7 +35,7 @@ export default function Notifications() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="relative flex items-center justify-center p-2 rounded-full hover:bg-gray-100 transition"
+        className="relative flex items-center justify-center p-2 rounded-full hover:bg-blue-900 transition"
       >
         <IoMdNotificationsOutline size={24} />
 

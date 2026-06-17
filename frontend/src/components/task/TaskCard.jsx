@@ -39,7 +39,7 @@ export default function TaskCard({ task }) {
         hover:shadow-lg
       "
       >
-        <Card style={style} size="fluid">
+        <Card style={style} size="fluid" bg="dark_light">
           <div className="flex flex-col gap-5">
             <div className="flex items-start justify-between gap-3">
               {/* DRAG */}
@@ -49,10 +49,11 @@ export default function TaskCard({ task }) {
 
                 p-2
                 rounded-md
-                hover:bg-blue-100
+                hover:bg-blue-900
                 cursor-grab
                 active:cursor-grabbing
-                hover:scale-110
+
+                mr-2
 
                 opacity-0
                 -translate-x-2
@@ -95,7 +96,7 @@ export default function TaskCard({ task }) {
                 <p
                   title={task.description}
                   className="
-                  text-gray-600
+                  text-gray-400
                   text-sm
                   italic
 
@@ -123,7 +124,7 @@ export default function TaskCard({ task }) {
                   className="
                 p-2
                 rounded-md
-                hover:bg-orange-100
+                hover:bg-blue-900
                 hover:scale-110
 
                 opacity-0
@@ -145,7 +146,7 @@ export default function TaskCard({ task }) {
                   className="
                 p-2
                 rounded-md
-                hover:bg-red-100
+                hover:bg-blue-900
                 hover:scale-110
 
                 opacity-0

@@ -14,9 +14,9 @@ export default function AppTopbar() {
   }, []);
 
   return (
-    <header className="h-16 bg-white shadow-md flex items-center justify-around">
+    <header className="h-16 shadow-lg flex items-center justify-around text-gray-200">
       {/* Left */}
-      <div className="font-semibold text-gray-700">Dashboard</div>
+      <div className="font-semibold">Dashboard</div>
 
       {/* Right */}
       <div className="flex items-center gap-4">

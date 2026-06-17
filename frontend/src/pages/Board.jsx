@@ -72,6 +72,7 @@ export default function Board() {
                 openModal("createList");
               }}
               className="flex justify-center max-h-16 min-w-72 max-w-72 cursor-pointer"
+              bg="dark"
             >
               <h3 className="text-lg font-medium">Crear otra lista +</h3>
             </Card>

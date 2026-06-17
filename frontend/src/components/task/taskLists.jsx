@@ -36,12 +36,12 @@ export default function TaskLists({ list, tasks, setAppData, handleDragEnd }) {
         ref={setNodeRef}
         {...attributes}
         style={style}
-        className="flex flex-col justify-center bg-white px-5 py-2 gap-5 rounded-sm shadow-lg min-w-72 max-w-72 h-fit"
+        className="flex flex-col justify-center px-5 py-2 gap-5 rounded-sm shadow-lg min-w-72 max-w-72 h-fit bg-gray-900 text-gray-200"
       >
         <div className="flex items-center justify-between">
           <button
             {...listeners}
-            className="p-2 cursor-grab active:cursor-grabbing rounded-md hover:bg-blue-100 hover:scale-110 transition-all"
+            className="p-2 cursor-grab active:cursor-grabbing rounded-md hover:bg-blue-900 hover:scale-110 transition-all"
           >
             <MdDragIndicator />
           </button>
@@ -58,7 +58,7 @@ export default function TaskLists({ list, tasks, setAppData, handleDragEnd }) {
           </h2>
           <button
             onClick={() => openModal("deleteList", list.id)}
-            className="p-2 rounded-md hover:bg-red-100 hover:scale-110 transition-all"
+            className="p-2 rounded-md hover:bg-blue-900 hover:scale-110 transition-all"
             title="Eliminar lista"
           >
             <AiOutlineDelete size={22} />
@@ -83,7 +83,7 @@ export default function TaskLists({ list, tasks, setAppData, handleDragEnd }) {
             variant=""
             title="Crear tarea"
           >
-            <div className="flex items-center gap-2 text-lg text-gray-700 hover:text-blue-500">
+            <div className="flex items-center gap-2 text-lg text-gray-200 hover:text-blue-500">
               <IoAddCircleOutline size={22} />
               <span>Crear tarea</span>
             </div>

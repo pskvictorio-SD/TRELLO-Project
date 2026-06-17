@@ -9,7 +9,7 @@ export default function Button({
   ...props
 }) {
   const variants = {
-    primary: "bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700",
+    primary: "bg-blue-900 text-white hover:bg-blue-800 active:bg-blue-700",
     secondary: "bg-gray-300 text-black hover:bg-gray-400 active:bg-gray-500",
     success: "bg-green-500 text-white hover:bg-green-600 active:bg-green-700",
     edit: "bg-yellow-400 text-white hover:bg-yellow-600 active:bg-yellow-700",

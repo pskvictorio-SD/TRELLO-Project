@@ -30,10 +30,11 @@ export default function Workspace() {
       <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-3">
         <Card
           onClick={() => openModal("createBoard")}
-          className="cursor-pointer flex items-center justify-center"
+          className="hover:scale-105 overflow-visible cursor-pointer text-gray-200 border-2 border-gray-700 h-fit max-w-fit"
           size="sm"
+          bg="dark"
         >
-          <h2>Crear un nuevo tablero +</h2>
+          <h2 className="max-w-max">Crear un nuevo tablero +</h2>
         </Card>
 
         <ModalRenderer

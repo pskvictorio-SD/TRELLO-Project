@@ -131,6 +131,7 @@ function Register() {
             handleSubmit();
           }}
           size="lg"
+          bg="white"
           className="p-6"
         >
           {loading && <Spinner />}

@@ -30,7 +30,7 @@ export default function Workspace() {
       <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-3">
         <Card
           onClick={() => openModal("createBoard")}
-          className="hover:scale-105 overflow-visible cursor-pointer text-gray-200 border-2 border-gray-700 h-fit max-w-fit"
+          className="hover:scale-105 overflow-hidden cursor-pointer text-gray-200 border-2 border-dashed border-gray-700 h-fit max-w-fit"
           size="sm"
           bg="dark"
         >
@@ -44,17 +44,9 @@ export default function Workspace() {
           data={modal.data}
         />
 
-        {boards.length === 0 ? (
-          <div className="col-span-full text-center space-y-4">
-            <h2 className="text-2xl font-bold">Aún no tienes tableros</h2>
-
-            <Button onClick={() => openModal("createBoard")} variant="primary">
-              Crear mi primer tablero +
-            </Button>
-          </div>
-        ) : (
-          boards.map((board) => <BoardCard key={board.id} board={board} />)
-        )}
+        {boards.map((board) => (
+          <BoardCard key={board.id} board={board} />
+        ))}
       </section>
     </AppLayout>
   );

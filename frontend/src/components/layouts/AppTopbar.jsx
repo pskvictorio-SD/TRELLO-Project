@@ -3,10 +3,9 @@ import Button from "../ui/Button";
 import Link from "../ui/Link.jsx";
 import Notifications from "../Notifications.jsx";
 import useNotifications from "../../hooks/useNotifications.js";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { dataContext } from "../../contexts/dataContext.jsx";
-
-import { useEffect } from "react";
+import useModal from "../../hooks/useModal.js";
 
 export default function AppTopbar() {
   const { getBoardInvitations } = useNotifications();
@@ -26,7 +25,7 @@ export default function AppTopbar() {
       {/* Right */}
       <div className="flex items-center gap-4">
         {/* Botón crear */}
-        <Button variant="primary">+ Crear Tablero</Button>
+        <Button onclick={() => openModal("createBoard")} variant="primary">+ Crear Tablero</Button>
 
         <Notifications />
 

@@ -3,15 +3,20 @@ import Button from "../ui/Button";
 import Link from "../ui/Link.jsx";
 import Notifications from "../Notifications.jsx";
 import useNotifications from "../../hooks/useNotifications.js";
+import { useContext } from "react";
+import { dataContext } from "../../contexts/dataContext.jsx";
 
 import { useEffect } from "react";
 
 export default function AppTopbar() {
-
   const { getBoardInvitations } = useNotifications();
   useEffect(() => {
     getBoardInvitations();
   }, []);
+
+  // Obtener el nombre del usuario para crear avatar
+  const { appData, setAppData } = useContext(dataContext);
+  const username = appData?.workspace?.name.split(" ")[2] || "";
 
   return (
     <header className="h-16 shadow-lg flex items-center justify-around text-gray-200">
@@ -26,9 +31,9 @@ export default function AppTopbar() {
         <Notifications />
 
         {/* Avatar */}
-        <Avatar src="https://i.pravatar.cc/40" />
+        <Avatar src={"https://ui-avatars.com/api/?name=" + username} />
 
-        <Link variant="ghost">Logout</Link>
+        <Link variant="default">Logout</Link>
       </div>
     </header>
   );

@@ -7,11 +7,13 @@ import {
   deleteBoard,
 } from "../services/board.service.js";
 import useFetch from "./useFetch.js";
+import { useNavigate } from "react-router-dom";
 
 export default function useBoards() {
   const { request, loading, error } = useFetch();
   const { appData, setAppData } = useContext(dataContext);
   const workspaceId = appData?.workspace?.id;
+  const navigate = useNavigate();
 
   const handleGetBoards = async () => {
     const data = await getBoardsOfUser(workspaceId);
@@ -31,6 +33,8 @@ export default function useBoards() {
     );
     if (data.ok) {
       handleGetBoards();
+      navigate(`/boards?boardId=${data.board.insertId}`);
+      window.location.reload();
     }
   };
 

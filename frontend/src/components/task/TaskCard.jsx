@@ -163,18 +163,26 @@ export default function TaskCard({ task }) {
 
             {/* BADGES */}
             <div className="flex flex-col gap-2 items-baseline-last">
+              {task.assigned_to ? (
+                <Badge variant="success">
+                  <p>
+                    <strong>Asignado a: </strong> {task.assigned_to.username}
+                  </p>
+                </Badge>
+              ) : null}
+
               <Badge variant="danger">
-                <b>Priority:</b> {task.priority ? task.priority : null}
+                <b>Prioridad:</b> {task.priority ? task.priority : null}
               </Badge>
 
               <Badge variant="info">
-                <b>Created at:</b> {task.created_at.slice(0, 10)}
+                <b>Creado:</b> {task.created_at.slice(0, 10)}
               </Badge>
 
               {task.due_date ? (
                 <Badge variant="info">
                   <p>
-                    <b>Due date:</b> {task.due_date.slice(0, 10)}
+                    <b>Fecha límite:</b> {task.due_date.slice(0, 10)}
                   </p>
                 </Badge>
               ) : null}

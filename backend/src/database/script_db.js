@@ -19,7 +19,7 @@ export const script_db = `
     );
 
     -- =========================
-    -- workspaces (WORKSPACES)
+    -- WORKSPACE
     -- =========================
     CREATE TABLE IF NOT EXISTS workspaces (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -90,13 +90,14 @@ export const script_db = `
         list_id INT NOT NULL,
         title VARCHAR(150) NOT NULL,
         description TEXT,
+        assigned_to INT DEFAULT NULL,
         priority ENUM('low', 'medium', 'high') DEFAULT 'medium',
         due_date DATE,
-        is_completed BOOLEAN DEFAULT FALSE,
         position INT NOT NULL,
         created_by INT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (list_id) REFERENCES lists(id) ON DELETE CASCADE,
-        FOREIGN KEY (created_by) REFERENCES users(id)
+        FOREIGN KEY (created_by) REFERENCES users(id),
+        FOREIGN KEY (assigned_to) REFERENCES users(id)
     );
 `;

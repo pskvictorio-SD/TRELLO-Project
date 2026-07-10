@@ -1,6 +1,6 @@
 export const createInvitation = async (boardId, email, role) => {
   const response = await fetch(
-    `http://localhost:3001/api/boards/${boardId}/invitations`,
+    `${import.meta.env.VITE_API_URL}/boards/${boardId}/invitations`,
     {
       method: "POST",
       headers: {
@@ -24,7 +24,7 @@ export const createInvitation = async (boardId, email, role) => {
 
 export const fetchInvitations = async () => {
   const response = await fetch(
-    `http://localhost:3001/api/workspaces/invitations`,
+    `${import.meta.env.VITE_API_URL}/workspaces/invitations`,
     {
       method: "GET",
       headers: {
@@ -40,7 +40,7 @@ export const fetchInvitations = async () => {
 
 export const updateInvitation = async (invitationId, status) => {
   const response = await fetch(
-    `http://localhost:3001/api/workspaces/invitations/${invitationId}`,
+    `${import.meta.env.VITE_API_URL}/workspaces/invitations/${invitationId}`,
     {
       method: "PUT",
       headers: {
@@ -63,7 +63,7 @@ export const updateInvitation = async (invitationId, status) => {
 
 export const deleteInvitation = async (boardId, invitationId) => {
   const response = await fetch(
-    `http://localhost:3001/api/boards/${boardId}/invitations/${invitationId}`,
+    `${import.meta.env.VITE_API_URL}/boards/${boardId}/invitations/${invitationId}`,
     {
       method: "DELETE",
       headers: {

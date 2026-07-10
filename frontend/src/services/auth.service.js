@@ -1,5 +1,7 @@
+
+
 export async function registerUser(user) {
-  const response = await fetch("http://localhost:3001/api/auth/register", {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
     method: "POST",
     body: JSON.stringify(user),
     headers: {
@@ -12,7 +14,7 @@ export async function registerUser(user) {
 }
 
 export async function loginUser(user) {
-  const response = await fetch("http://localhost:3001/api/auth/login", {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
     method: "POST",
     body: JSON.stringify(user),
     headers: {

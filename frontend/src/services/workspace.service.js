@@ -1,5 +1,5 @@
 export async function getWorkspace() {
-  const response = await fetch("http://localhost:3001/api/workspaces", {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/workspaces`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -12,7 +12,7 @@ export async function getWorkspace() {
 }
 
 export async function createWorkspace() {
-  const response = await fetch("http://localhost:3001/api/workspaces", {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/workspaces`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

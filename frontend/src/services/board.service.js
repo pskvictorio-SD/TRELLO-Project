@@ -1,6 +1,6 @@
 export const createBoard = async (workspaceId, boardName, boardDescription) => {
   const response = await fetch(
-    `http://localhost:3001/api/workspaces/${workspaceId}/boards/`,
+    `${import.meta.env.VITE_API_URL}/workspaces/${workspaceId}/boards/`,
     {
       method: "POST",
       headers: {
@@ -20,7 +20,7 @@ export const createBoard = async (workspaceId, boardName, boardDescription) => {
 
 export const getBoardsOfUser = async (workspaceId) => {
   const response = await fetch(
-    `http://localhost:3001/api/workspaces/${workspaceId}/boards`,
+    `${import.meta.env.VITE_API_URL}/workspaces/${workspaceId}/boards`,
     {
       method: "GET",
       headers: {
@@ -41,7 +41,7 @@ export const editBoard = async (
   boardDescription,
 ) => {
   const response = await fetch(
-    `http://localhost:3001/api/workspaces/${workspaceId}/boards/${boardId}`,
+    `${import.meta.env.VITE_API_URL}/workspaces/${workspaceId}/boards/${boardId}`,
     {
       method: "PUT",
       headers: {
@@ -61,7 +61,7 @@ export const editBoard = async (
 
 export const deleteBoard = async (workspaceId, boardId) => {
   const response = await fetch(
-    `http://localhost:3001/api/workspaces/${workspaceId}/boards/${boardId}/`,
+    `${import.meta.env.VITE_API_URL}/workspaces/${workspaceId}/boards/${boardId}/`,
     {
       method: "DELETE",
       headers: {

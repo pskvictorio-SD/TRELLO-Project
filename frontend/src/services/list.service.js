@@ -1,6 +1,6 @@
 export const createList = async (listName, boardId) => {
   const response = await fetch(
-    `http://localhost:3001/api/boards/${boardId}/lists`,
+    `${import.meta.env.VITE_API_URL}/boards/${boardId}/lists`,
     {
       method: "POST",
       headers: {
@@ -19,7 +19,7 @@ export const createList = async (listName, boardId) => {
 
 export const getLists = async (boardId) => {
   const response = await fetch(
-    `http://localhost:3001/api/boards/${boardId}/lists`,
+    `${import.meta.env.VITE_API_URL}/boards/${boardId}/lists`,
     {
       method: "GET",
       headers: {
@@ -35,7 +35,7 @@ export const getLists = async (boardId) => {
 
 export const editList = async (boardId, listName, listId) => {
   const response = await fetch(
-    `http://localhost:3001/api/boards/${boardId}/lists/${listId}`,
+    `${import.meta.env.VITE_API_URL}/boards/${boardId}/lists/${listId}`,
     {
       method: "PUT",
       headers: {
@@ -55,7 +55,7 @@ export const editList = async (boardId, listName, listId) => {
 
 export const moveList = async (boardId, listId, position, reorder) => {
   const response = await fetch(
-    `http://localhost:3001/api/boards/${boardId}/lists/${listId}/move`,
+    `${import.meta.env.VITE_API_URL}/boards/${boardId}/lists/${listId}/move`,
     {
       method: "PATCH",
       headers: {
@@ -68,11 +68,14 @@ export const moveList = async (boardId, listId, position, reorder) => {
       }),
     },
   );
+  const res = await response.json();
+
+  return res;
 };
 
 export const deleteList = async (boardId, listId) => {
   const response = await fetch(
-    `http://localhost:3001/api/boards/${boardId}/lists/${listId}`,
+    `${import.meta.env.VITE_API_URL}/boards/${boardId}/lists/${listId}`,
     {
       method: "DELETE",
       headers: {

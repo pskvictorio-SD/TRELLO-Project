@@ -1,6 +1,6 @@
 export const addMember = async (boardId, role) => {
   const response = await fetch(
-    `http://localhost:3001/api/boards/${boardId}/members`,
+    `${import.meta.env.VITE_API_URL}/boards/${boardId}/members`,
     {
       method: "POST",
       headers: {
@@ -19,7 +19,7 @@ export const addMember = async (boardId, role) => {
 
 export const getMembers = async (boardId) => {
   const response = await fetch(
-    `http://localhost:3001/api/boards/${boardId}/members`,
+    `${import.meta.env.VITE_API_URL}/boards/${boardId}/members`,
     {
       method: "GET",
       headers: {

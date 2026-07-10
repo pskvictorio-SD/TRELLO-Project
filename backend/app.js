@@ -8,7 +8,15 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://trello-project-kappa.vercel.app",
+    ],
+    credentials: true,
+  }),
+);
 
 // Rutas
 // Ruta de autenticacion de usuarios

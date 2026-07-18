@@ -25,7 +25,7 @@ export default function AppLayout({ children }) {
 
         <div className="flex flex-1 gap-5 min-h-screen">
           {/* Sidebar */}
-          <aside
+          {/* <aside
             style={{
               backgroundColor: "#0a0a0a",
               backgroundImage: `
@@ -38,7 +38,7 @@ export default function AppLayout({ children }) {
             className="w-52 xl:w-72 hidden md:flex px-3 py-6 m-5 rounded text-gray-300"
           >
             <AppSidebar />
-          </aside>
+          </aside> */}
 
           {/* Main */}
           <main

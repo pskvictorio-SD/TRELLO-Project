@@ -1,4 +1,3 @@
-import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Workspace from "./pages/Workspace.jsx";
@@ -14,7 +13,7 @@ const App = () => {
     <BrowserRouter>
       <DataContextProvider>
         <Routes>
-          <Route path="/auth/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/auth/register" element={<Register />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/workspace" element={<Workspace />} />

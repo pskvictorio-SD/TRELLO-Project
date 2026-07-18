@@ -7,7 +7,7 @@ export default function AuthFooter() {
         {/* Información */}
         <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
           <p>
-            © {new Date().getFullYear()} (Nombre del proyecto)
+            © {new Date().getFullYear()} TU EQUIPO
           </p>
 
           <span className="hidden md:block">•</span>
@@ -18,7 +18,7 @@ export default function AuthFooter() {
 
           <span className="hidden md:block">•</span>
 
-          <p>v0.1.0 MVP</p>
+          <p>v1.0.0 MVP</p>
         </div>
 
         {/* Redes */}

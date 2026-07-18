@@ -6,7 +6,7 @@ import useModal from "../hooks/useModal.js";
 import ModalRenderer from "../utils/ModalRenderer.jsx";
 
 import { dataContext } from "../contexts/dataContext.jsx";
-import { use, useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 import useLists from "../hooks/useLists.js";
 

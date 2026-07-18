@@ -18,7 +18,7 @@ export default function AppTopbar() {
   const { modal, openModal, closeModal } = useModal();
 
   // Obtener el nombre del usuario para crear avatar
-  const { appData, setAppData } = useContext(dataContext);
+  const { appData } = useContext(dataContext);
   const username = appData?.workspace?.name.split(" ")[2] || "";
 
   return (
@@ -26,7 +26,7 @@ export default function AppTopbar() {
       {" "}
       <header className="h-16 shadow-lg flex items-center justify-around text-gray-200">
         {/* Left */}
-        <div className="font-semibold">Dashboard</div>
+        <div className="font-semibold">Tablero</div>
 
         {/* Right */}
         <div className="flex items-center gap-4">

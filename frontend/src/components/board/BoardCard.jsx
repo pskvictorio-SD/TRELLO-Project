@@ -2,7 +2,6 @@ import Card from "../ui/Card.jsx";
 import Badge from "../ui/Badge.jsx";
 
 import calender_svg from "../../public/calender.svg";
-import books_svg from "../../public/books.svg";
 
 import { LuUsers } from "react-icons/lu";
 import { BsThreeDotsVertical } from "react-icons/bs";

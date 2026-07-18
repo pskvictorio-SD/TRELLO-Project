@@ -171,7 +171,7 @@ function Register() {
 
               <Input variant="button" type="submit" />
 
-              <Link to="/auth/login">¿Ya tienes una cuenta? Inicia Sesión</Link>
+              <Link to="/">¿Ya tienes una cuenta? Inicia Sesión</Link>
             </div>
           </div>
         </Form>

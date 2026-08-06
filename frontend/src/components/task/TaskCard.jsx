@@ -33,7 +33,7 @@ export default function TaskCard({ task, currentUserRole }) {
         .then((data) => setMembers(data.members))
         .catch(() => setMembers([]));
     }
-  }, [currentUserRole, boardId, handleGetMembersOfBoard]);
+  }, [currentUserRole, boardId]);
 
   const handleQuickAssign = async (memberId) => {
     await handleAssignTask(task.list_id, task.id, memberId || null);

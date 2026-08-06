@@ -39,7 +39,7 @@ export default function EditTaskModal({ isOpen, onClose, data }) {
           setCurrentUserRole(null);
         });
     }
-  }, [isOpen, boardId, handleGetMembersOfBoard]);
+  }, [isOpen, boardId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

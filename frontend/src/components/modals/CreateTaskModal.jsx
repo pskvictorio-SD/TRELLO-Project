@@ -38,7 +38,7 @@ export default function CreateTaskModal({ isOpen, onClose, listId }) {
           setCurrentUserRole(null);
         });
     }
-  }, [isOpen, boardId, handleGetMembersOfBoard]);
+  }, [isOpen, boardId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -129,21 +129,21 @@ export default function CreateTaskModal({ isOpen, onClose, listId }) {
               <Dropdown title={taskPriority} variant="input">
                 <ul className="flex flex-col gap-2">
                   <Button
-                    onClick={(e) => setTaskPriority("high")}
+                    onClick={() => setTaskPriority("high")}
                     className="w-full"
                   >
                     Alta
                   </Button>
 
                   <Button
-                    onClick={(e) => setTaskPriority("medium")}
+                    onClick={() => setTaskPriority("medium")}
                     className="w-full"
                   >
                     Media
                   </Button>
 
                   <Button
-                    onClick={(e) => setTaskPriority("low")}
+                    onClick={() => setTaskPriority("low")}
                     className="w-full"
                   >
                     Baja

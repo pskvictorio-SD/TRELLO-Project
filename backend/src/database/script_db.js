@@ -100,4 +100,22 @@ export const script_db = `
         FOREIGN KEY (created_by) REFERENCES users(id),
         FOREIGN KEY (assigned_to) REFERENCES users(id)
     );
+
+    -- =========================
+    -- MIGRACIÓN: Agregar columna assigned_to si no existe
+    -- =========================
+    DROP PROCEDURE IF EXISTS add_assigned_to_if_not_exists;
+    CREATE PROCEDURE add_assigned_to_if_not_exists()
+    BEGIN
+        IF NOT EXISTS (
+            SELECT 1 FROM information_schema.COLUMNS
+            WHERE TABLE_SCHEMA = 'trello_app'
+              AND TABLE_NAME = 'tasks'
+              AND COLUMN_NAME = 'assigned_to'
+        ) THEN
+            ALTER TABLE tasks ADD COLUMN assigned_to INT DEFAULT NULL, ADD FOREIGN KEY (assigned_to) REFERENCES users(id);
+        END IF;
+    END;
+    CALL add_assigned_to_if_not_exists();
+    DROP PROCEDURE add_assigned_to_if_not_exists;
 `;

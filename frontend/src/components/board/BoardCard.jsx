@@ -43,7 +43,7 @@ export default function BoardCard({ board }) {
     if (!menuMembersOpen && members.length === 0) {
       try {
         const data = await handleGetMembersOfBoard(board.id);
-        setMembers(data);
+        setMembers(data.members);
       } catch (err) {
         console.error(err);
       }

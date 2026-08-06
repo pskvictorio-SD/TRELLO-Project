@@ -15,7 +15,13 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-export default function TaskLists({ list, tasks, setAppData, handleDragEnd }) {
+export default function TaskLists({
+  list,
+  tasks,
+  setAppData,
+  handleDragEnd,
+  currentUserRole,
+}) {
   const { attributes, listeners, setNodeRef, isOver } = useSortable({
     id: `list-${list.id}`,
     data: {
@@ -72,7 +78,13 @@ export default function TaskLists({ list, tasks, setAppData, handleDragEnd }) {
           >
             {tasks.map((task) => {
               if (task.list_id !== list.id) return null;
-              return <TaskCard key={task.id} task={task} />;
+              return (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  currentUserRole={currentUserRole}
+                />
+              );
             })}
           </SortableContext>
         </div>

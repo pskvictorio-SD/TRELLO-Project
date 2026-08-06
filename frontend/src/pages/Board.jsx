@@ -18,16 +18,34 @@ import {
 
 import { handleDragEnd } from "../utils/handleDragEnd.js";
 import useTasks from "../hooks/useTasks.js";
+import useMembers from "../hooks/useMembers.js";
+import { useSearchParams } from "react-router-dom";
 
 export default function Board() {
   const { modal, openModal, closeModal } = useModal();
   const { appData, setAppData } = useContext(dataContext);
   const { handleMoveList, fetchLists } = useLists();
   const { handleMoveTasks } = useTasks();
+  const { handleGetMembersOfBoard } = useMembers();
+  const [searchParams] = useSearchParams();
+  const boardId = searchParams.get("boardId");
 
   useEffect(() => {
     fetchLists();
-  }, []);
+    if (boardId) {
+      handleGetMembersOfBoard(boardId)
+        .then((data) => {
+          setAppData((prev) => ({
+            ...prev,
+            currentBoard: {
+              ...(prev.currentBoard || {}),
+              currentUserRole: data.currentUserRole,
+            },
+          }));
+        })
+        .catch(() => {});
+    }
+  }, [boardId]);
 
   let lists = appData?.currentBoard?.lists || [];
 
@@ -63,6 +81,7 @@ export default function Board() {
                     tasks={list.tasks}
                     setAppData={setAppData}
                     handleDragEnd={handleDragEnd}
+                    currentUserRole={appData?.currentBoard?.currentUserRole}
                   />
                 );
               })}

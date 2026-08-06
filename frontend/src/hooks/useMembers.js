@@ -28,7 +28,10 @@ export default function useMembers() {
       throw new Error("Error al obtener miembros");
     }
 
-    return data.members;
+    return {
+      members: data.members,
+      currentUserRole: data.currentUserRole,
+    };
   };
 
   const handleChangeRole = async (board, userId) => {};

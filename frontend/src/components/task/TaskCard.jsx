@@ -1,6 +1,7 @@
 import Card from "../ui/Card.jsx";
 import Badge from "../ui/Badge.jsx";
 import Tooltip from "../ui/Tooltip.jsx";
+import Button from "../ui/Button.jsx";
 
 import { CiEdit } from "react-icons/ci";
 import { MdDragIndicator } from "react-icons/md";
@@ -10,8 +11,34 @@ import { useSortable } from "@dnd-kit/sortable";
 
 import useModal from "../../hooks/useModal.js";
 import ModalRenderer from "../../utils/ModalRenderer.jsx";
+import useMembers from "../../hooks/useMembers.js";
+import useTasks from "../../hooks/useTasks.js";
+import useLists from "../../hooks/useLists.js";
+import Dropdown from "../ui/Dropdown.jsx";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { FaUserPlus } from "react-icons/fa";
 
-export default function TaskCard({ task }) {
+export default function TaskCard({ task, currentUserRole }) {
+  const [members, setMembers] = useState([]);
+  const { handleGetMembersOfBoard } = useMembers();
+  const { handleAssignTask } = useTasks();
+  const { fetchLists } = useLists();
+  const [searchParams] = useSearchParams();
+  const boardId = searchParams.get("boardId");
+
+  useEffect(() => {
+    if (currentUserRole === "admin" && boardId) {
+      handleGetMembersOfBoard(boardId)
+        .then((data) => setMembers(data.members))
+        .catch(() => setMembers([]));
+    }
+  }, [currentUserRole, boardId, handleGetMembersOfBoard]);
+
+  const handleQuickAssign = async (memberId) => {
+    await handleAssignTask(task.list_id, task.id, memberId || null);
+    await fetchLists();
+  };
   const { attributes, listeners, setNodeRef, isOver } = useSortable({
     id: `task-${task.id}`,
     data: {
@@ -119,6 +146,7 @@ export default function TaskCard({ task }) {
                       description: task.description,
                       priority: task.priority,
                       dueDate: task.due_date,
+                      assignedTo: task.assigned_to?.id || "",
                     })
                   }
                   className="
@@ -170,6 +198,39 @@ export default function TaskCard({ task }) {
                   </p>
                 </Badge>
               ) : null}
+
+              {currentUserRole === "admin" && (
+                <Dropdown
+                  title={
+                    <span className="flex items-center gap-1">
+                      <FaUserPlus /> Asignar
+                    </span>
+                  }
+                  variant="outline"
+                >
+                  <ul className="flex flex-col gap-2">
+                    <Button
+                      type="button"
+                      className="w-full"
+                      variant="outline"
+                      onClick={() => handleQuickAssign("")}
+                    >
+                      Sin asignar
+                    </Button>
+                    {members.map((member) => (
+                      <Button
+                        key={member.id}
+                        type="button"
+                        className="w-full"
+                        variant="outline"
+                        onClick={() => handleQuickAssign(member.id)}
+                      >
+                        {member.username}
+                      </Button>
+                    ))}
+                  </ul>
+                </Dropdown>
+              )}
 
               <Badge variant="danger">
                 <b>Prioridad:</b> {task.priority ? task.priority : null}

@@ -94,10 +94,28 @@ export const getMembers = (req, res) => {
         });
       }
 
-      return res.status(200).json({
-        ok: true,
-        members: results,
-      });
+      // Obtener el rol del usuario actual en el board
+      conn.query(
+        "SELECT role FROM board_members WHERE user_id = ? AND board_id = ?",
+        [userId, boardId],
+        (err, roleResults) => {
+          if (err) {
+            return res.status(500).json({
+              ok: false,
+              message: "Error en el servidor",
+              error: err,
+            });
+          }
+
+          const currentUserRole = roleResults[0]?.role || null;
+
+          return res.status(200).json({
+            ok: true,
+            members: results,
+            currentUserRole,
+          });
+        },
+      );
     },
   );
 };

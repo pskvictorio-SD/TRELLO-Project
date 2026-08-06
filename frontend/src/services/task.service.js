@@ -15,6 +15,7 @@ export const createTask = async (boardId, listId, task) => {
         description: task.description,
         priority: task.priority,
         dueDate: task.dueDate,
+        assignedTo: task.assignedTo,
       }),
     },
   );
@@ -53,6 +54,25 @@ export const updateTask = async (boardId, listId, taskId, task) => {
         description: task.description,
         priority: task.priority,
         dueDate: task.dueDate,
+      }),
+    },
+  );
+  const res = await response.json();
+
+  return res;
+};
+
+export const assignTask = async (boardId, listId, taskId, assignedTo) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/boards/${boardId}/lists/${listId}/tasks/${taskId}/assign`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        assignedTo: assignedTo,
       }),
     },
   );

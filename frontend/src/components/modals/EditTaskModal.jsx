@@ -5,9 +5,11 @@ import Button from "../ui/Button.jsx";
 import Form from "../ui/Form.jsx";
 import Dropdown from "../ui/Dropdown.jsx";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useTasks from "../../hooks/useTasks.js";
 import useLists from "../../hooks/useLists.js";
+import useMembers from "../../hooks/useMembers.js";
+import { useSearchParams } from "react-router-dom";
 
 export default function EditTaskModal({ isOpen, onClose, data }) {
   const date = data.dueDate == null ? null : data.dueDate.split("T")[0];
@@ -15,9 +17,29 @@ export default function EditTaskModal({ isOpen, onClose, data }) {
   const [taskDescription, setTaskDescription] = useState(data.description);
   const [taskPriority, setTaskPriority] = useState(data.priority);
   const [taskDueDate, setTaskDueDate] = useState(date);
+  const [assignedTo, setAssignedTo] = useState(data.assignedTo || "");
+  const [members, setMembers] = useState([]);
+  const [currentUserRole, setCurrentUserRole] = useState(null);
 
-  const { handleUpdateTasks } = useTasks();
+  const { handleUpdateTasks, handleAssignTask } = useTasks();
   const { fetchLists } = useLists();
+  const { handleGetMembersOfBoard } = useMembers();
+  const [searchParams] = useSearchParams();
+  const boardId = searchParams.get("boardId");
+
+  useEffect(() => {
+    if (isOpen && boardId) {
+      handleGetMembersOfBoard(boardId)
+        .then((data) => {
+          setMembers(data.members);
+          setCurrentUserRole(data.currentUserRole);
+        })
+        .catch(() => {
+          setMembers([]);
+          setCurrentUserRole(null);
+        });
+    }
+  }, [isOpen, boardId, handleGetMembersOfBoard]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +51,11 @@ export default function EditTaskModal({ isOpen, onClose, data }) {
       priority: taskPriority,
       dueDate: taskDueDate,
     });
+
+    // Si es admin y la asignación cambió, asignar/desasignar
+    if (currentUserRole === "admin") {
+      await handleAssignTask(data.listId, data.taskId, assignedTo || null);
+    }
 
     // Cargar listas
     await fetchLists();
@@ -65,6 +92,43 @@ export default function EditTaskModal({ isOpen, onClose, data }) {
                 placeholder="Ej. Crear un componente de tareas que..."
               />
             </div>
+
+            {/* ASIGNADO A (solo admin) */}
+            {currentUserRole === "admin" && (
+              <div className="flex flex-col gap-2">
+                <label className="font-medium">Asignar a</label>
+
+                <Dropdown
+                  title={
+                    members.find((m) => m.id === Number(assignedTo))
+                      ?.username || "Sin asignar"
+                  }
+                  variant="input"
+                >
+                  <ul className="flex flex-col gap-2">
+                    <Button
+                      type="button"
+                      className="w-full"
+                      variant="outline"
+                      onClick={() => setAssignedTo("")}
+                    >
+                      Sin asignar
+                    </Button>
+                    {members.map((member) => (
+                      <Button
+                        key={member.id}
+                        type="button"
+                        className="w-full"
+                        variant="outline"
+                        onClick={() => setAssignedTo(member.id)}
+                      >
+                        {member.username}
+                      </Button>
+                    ))}
+                  </ul>
+                </Dropdown>
+              </div>
+            )}
 
             {/* PRIORIDAD */}
             <div className="flex flex-col gap-2">

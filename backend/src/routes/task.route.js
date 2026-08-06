@@ -5,6 +5,7 @@ import {
   updateTask,
   moveTask,
   deleteTask,
+  assignTask,
 } from "../controllers/task.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { userInBoard } from "../middleware/userInBoard.js";
@@ -58,6 +59,18 @@ router.patch(
   userInBoard,
   userRoleInBoard("admin", "member"),
   moveTask,
+);
+
+/**
+ * @route   PATCH /api/boards/:boardId/lists/:listId/tasks/:taskId/assign
+ * @desc    Asignar/desasignar una tarea a un miembro del board (solo admin)
+ */
+router.patch(
+  "/boards/:boardId/lists/:listId/tasks/:taskId/assign",
+  authMiddleware,
+  userInBoard,
+  userRoleInBoard("admin"),
+  assignTask,
 );
 
 /**

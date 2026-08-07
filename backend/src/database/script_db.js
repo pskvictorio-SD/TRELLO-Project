@@ -1,6 +1,6 @@
 export const script_db = `
-    CREATE DATABASE IF NOT EXISTS trello_app;
-    USE trello_app;
+    CREATE DATABASE IF NOT EXISTS tu_equipo;
+    USE tu_equipo;
 
     -- =========================
     -- USERS
@@ -109,7 +109,7 @@ export const script_db = `
     BEGIN
         IF NOT EXISTS (
             SELECT 1 FROM information_schema.COLUMNS
-            WHERE TABLE_SCHEMA = 'trello_app'
+            WHERE TABLE_SCHEMA = 'tu_equipo'
               AND TABLE_NAME = 'tasks'
               AND COLUMN_NAME = 'assigned_to'
         ) THEN

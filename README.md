@@ -1,6 +1,6 @@
-# TRELLO-Project
+# Tu Equipo
 
-Aplicación web tipo **Trello** para la gestión de tareas en equipos de trabajo. Permite a los usuarios crear **workspaces** (espacios de trabajo), **boards** (tableros), **listas** y **tareas**, manteniendo la organización y claridad mediante un sistema de **invitaciones**, **roles** y **colaboración en equipo**.
+Aplicación web tipo Trello llamada **Tu Equipo**, para la gestión de tareas en equipos de trabajo. Permite a los usuarios crear **workspaces** (espacios de trabajo), **boards** (tableros), **listas** y **tareas**, manteniendo la organización y claridad mediante un sistema de **invitaciones**, **roles** y **colaboración en equipo**.
 
 ## ✨ Características
 
@@ -200,7 +200,7 @@ PORT=3000
 DB_HOST=localhost
 DB_USER=tu_usuario
 DB_PASSWORD=tu_contraseña
-DB_NAME=trello_app
+DB_NAME=tu_equipo
 JWT_SECRET=tu_secreto_jwt
 ```
 

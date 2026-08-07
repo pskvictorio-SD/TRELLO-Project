@@ -1,5 +1,6 @@
 import TaskCard from "./TaskCard.jsx";
 import Button from "../ui/Button.jsx";
+import Tooltip from "../ui/Tooltip.jsx";
 import useLists from "../../hooks/useLists.js";
 import useModal from "../../hooks/useModal.js";
 import ModalRenderer from "../../utils/ModalRenderer.jsx";
@@ -22,8 +23,13 @@ export default function TaskLists({
   handleDragEnd,
   currentUserRole,
 }) {
+  // Solo admin/member pueden mover listas; viewer queda sin permiso
+  const canDragList =
+    currentUserRole === "admin" || currentUserRole === "member";
+
   const { attributes, listeners, setNodeRef, isOver } = useSortable({
     id: `list-${list.id}`,
+    disabled: !canDragList,
     data: {
       type: "list",
       list,
@@ -36,6 +42,20 @@ export default function TaskLists({
   const { modal, openModal, closeModal } = useModal();
   const { handleEditList, handleDeleteList } = useLists();
 
+  const dragHandle = (
+    <button
+      {...(canDragList ? listeners : {})}
+      disabled={!canDragList}
+      className={`p-2 rounded-md transition-all ${
+        canDragList
+          ? "hover:bg-blue-900 hover:scale-110 cursor-grab active:cursor-grabbing"
+          : "text-gray-600 cursor-not-allowed"
+      }`}
+    >
+      <MdDragIndicator />
+    </button>
+  );
+
   return (
     <>
       <div
@@ -45,12 +65,13 @@ export default function TaskLists({
         className="flex flex-col justify-center px-5 py-2 gap-5 rounded-sm shadow-lg min-w-72 max-w-72 h-fit bg-gray-900 text-gray-200"
       >
         <div className="flex items-center justify-between">
-          <button
-            {...listeners}
-            className="p-2 cursor-grab active:cursor-grabbing rounded-md hover:bg-blue-900 hover:scale-110 transition-all"
-          >
-            <MdDragIndicator />
-          </button>
+          {canDragList ? (
+            dragHandle
+          ) : (
+            <Tooltip content="No tenés permisos para mover listas" delay={200}>
+              {dragHandle}
+            </Tooltip>
+          )}
           <h2
             onClick={() =>
               openModal("editList", {

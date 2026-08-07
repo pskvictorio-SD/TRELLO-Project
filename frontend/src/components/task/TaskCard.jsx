@@ -39,8 +39,14 @@ export default function TaskCard({ task, currentUserRole }) {
     await handleAssignTask(task.list_id, task.id, memberId || null);
     await fetchLists();
   };
+
+  // Solo admin/member pueden mover tareas; viewer queda sin permiso
+  const canDragTask =
+    currentUserRole === "admin" || currentUserRole === "member";
+
   const { attributes, listeners, setNodeRef, isOver } = useSortable({
     id: `task-${task.id}`,
+    disabled: !canDragTask,
     data: {
       type: "task",
       task,
@@ -53,6 +59,34 @@ export default function TaskCard({ task, currentUserRole }) {
   };
 
   const { modal, openModal, closeModal } = useModal();
+
+  const dragHandle = (
+    <button
+      {...(canDragTask ? listeners : {})}
+      disabled={!canDragTask}
+      className={`
+
+        p-2
+        rounded-md
+        ${canDragTask ? "hover:bg-blue-900 text-inherit" : "text-gray-600"}
+
+        mr-2
+
+        opacity-0
+        -translate-x-2
+
+        group-hover:opacity-100
+        group-hover:translate-x-0
+
+        transition-all
+        duration-200
+
+        ${canDragTask ? "cursor-grab active:cursor-grabbing" : "cursor-not-allowed"}
+      `}
+    >
+      <MdDragIndicator />
+    </button>
+  );
 
   return (
     <>
@@ -70,30 +104,16 @@ export default function TaskCard({ task, currentUserRole }) {
           <div className="flex flex-col gap-5">
             <div className="flex items-start justify-between gap-3">
               {/* DRAG */}
-              <button
-                {...listeners}
-                className="
-
-                p-2
-                rounded-md
-                hover:bg-blue-900
-                cursor-grab
-                active:cursor-grabbing
-
-                mr-2
-
-                opacity-0
-                -translate-x-2
-
-                group-hover:opacity-100
-                group-hover:translate-x-0
-
-                transition-all
-                duration-200
-              "
-              >
-                <MdDragIndicator />
-              </button>
+              {canDragTask ? (
+                dragHandle
+              ) : (
+                <Tooltip
+                  content="No tenés permisos para mover tareas"
+                  delay={200}
+                >
+                  {dragHandle}
+                </Tooltip>
+              )}
 
               {/* CONTENIDO */}
               <div

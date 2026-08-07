@@ -30,6 +30,7 @@ export default function useLists() {
     setAppData((prev) => ({
       ...prev,
       currentBoard: {
+        ...prev.currentBoard,
         lists: data.lists,
       },
     }));

@@ -1,3 +1,13 @@
+/**
+ * La aplicacion Express.
+ *
+ * Se **exporta** en vez de quedarse escuchando un puerto, porque el mismo
+ * archivo sirve en dos entornos: en desarrollo se levanta un servidor, y en
+ * produccion corre como funcion serverless, donde el que atiende el puerto es
+ * el proveedor y no este proceso. Llamar a `listen()` incondicionalmente
+ * funcionaria en el primer caso y fallaria en silencio en el segundo.
+ */
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -8,15 +18,30 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://trello-project-kappa.vercel.app",
-    ],
-    credentials: true,
-  }),
-);
+/*
+ * Los origenes permitidos vienen del entorno y no del codigo: cambian cada vez
+ * que se despliega el frontend en una URL nueva, y tocar el codigo para eso
+ * obliga a un commit y un redeploy del backend por un dato de configuracion.
+ * El de desarrollo queda fijo porque es el mismo en cualquier maquina.
+ */
+const ORIGENES = [
+  "http://localhost:5173",
+  ...(process.env.CORS_ORIGENES ?? "")
+    .split(",")
+    .map((origen) => origen.trim())
+    .filter((origen) => origen !== ""),
+];
+
+app.use(cors({ origin: ORIGENES, credentials: true }));
+
+/*
+ * Un punto de salud sin base de datos. Sirve para distinguir "la funcion no
+ * arranca" de "la funcion arranca pero no llega a la base", que son dos fallas
+ * con causas distintas y desde afuera se ven igual.
+ */
+app.get("/api/salud", (_req, res) => {
+  res.json({ ok: true, servicio: "tu-equipo-api" });
+});
 
 // Rutas
 // Ruta de autenticacion de usuarios
@@ -44,8 +69,16 @@ app.use("/api/", listRoutes);
 import taskRoutes from "./src/routes/task.route.js";
 app.use("/api/", taskRoutes);
 
-// Puerto
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-});
+/*
+ * En serverless no hay puerto que escuchar: el proveedor invoca la app como
+ * manejador. `VERCEL` la define la plataforma; en cualquier otro entorno
+ * —la maquina de desarrollo, un contenedor— se levanta el servidor normal.
+ */
+if (process.env.VERCEL === undefined) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`✅ Server running on http://localhost:${PORT}`);
+  });
+}
+
+export default app;

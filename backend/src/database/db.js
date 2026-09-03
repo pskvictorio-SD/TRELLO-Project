@@ -26,6 +26,23 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+/**
+ * Sin esta comprobacion, una variable faltante no se nota al arrancar: el pool
+ * se crea igual, sin la base declarada, y el primer sintoma es una consulta
+ * que falla contra un esquema que no es el de la aplicacion (`sys`, el
+ * esquema interno de TiDB) con un mensaje que no dice nada sobre la causa real.
+ * Mejor reventar aca, con el nombre exacto de lo que falta.
+ */
+const REQUERIDAS = ["DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME"];
+const faltantes = REQUERIDAS.filter((clave) => !process.env[clave]);
+if (faltantes.length > 0) {
+  throw new Error(
+    `Faltan variables de entorno: ${faltantes.join(", ")}. ` +
+      "Revisa Settings -> Environment Variables en Vercel (o el .env local) " +
+      "y que esten cargadas para el entorno que estas usando.",
+  );
+}
+
 export const conn = mysql2.createPool({
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT || 3306),
